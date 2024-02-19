@@ -6,21 +6,18 @@
     <title>Feedback</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <style>
-      /* ライトモード用のスタイル */
-@media (prefers-color-scheme: light) {
-  body {
-    background-color: #ffffff; /* 明るい背景色 */
-    color: #000000; /* 暗いテキスト色 */
-  }
-}
-
-/* ダークモード用のスタイル */
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #343a40; /* Bootstrapのダークテーマの背景色に合わせた */
-    color: #ffffff; /* 明るいテキスト色 */
-  }
-}
+    @media (prefers-color-scheme: light) {
+      body {
+        background-color: #ffffff; /* 明るい背景色 */
+        color: #000000; /* 暗いテキスト色 */
+      }
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #343a40; /* Bootstrapのダークテーマの背景色に合わせた */
+        color: #ffffff; /* 明るいテキスト色 */
+      }
+    }
     </style>
   </head>
   <body>
@@ -28,8 +25,8 @@
     <div class="text-center">
       <div class="mt-3">この記事は役に立ちましたか？</div>
       <div class="mt-2">
-        <button type="button" class="btn btn-primary mr-3">はい</button>
-        <button type="button" class="btn btn-light ml-3">いいえ</button>
+        <button type="button" class="btn btn-dark btn-sm" style="width:100px;" onclick="alert(location.href)">はい</button>
+        <button type="button" class="btn btn-secondary btn-sm ms-3" style="width:100px;">いいえ</button>
       </div>
     </div>
   </body>
