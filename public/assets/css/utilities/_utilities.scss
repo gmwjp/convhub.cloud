@@ -1,0 +1,164 @@
+/* Scss Document */
+
+$white: #FFFFFF !default;
+$black: #323A46 !default;
+$dark-black: #1f242b !default;
+$link: #37B7CE !default;
+$dark-link: #31a1b5 !default;
+
+$yel: #FFD800 !default;
+$dark-yel: #e5c300 !default;
+$thin-yel: #FFF7D5 !default;
+$border-yel: #EADA96 !default;
+
+//responsive
+@mixin pc {
+  @media (min-width:768px) {
+    @content;
+  }
+}
+@mixin tab {
+  @media (max-width:1028px) and (min-width:768px) {
+    @content;
+  }
+}
+@mixin sp {
+  @media (max-width:767px) {
+    @content;
+  }
+}
+@mixin se {
+  @media (max-width:320px) {
+    @content;
+  }
+}
+
+@include pc {
+  .sp { display: none;}
+}
+@include sp {
+  .pc { display: none;}
+}
+
+//transition
+@mixin transition {
+  transition: all .3s cubic-bezier(0.85, 0, 0.15, 1) 0s;
+}
+
+
+//buttons
+.c-btn {
+  display: inline-block;
+  background-image: url("../images/common/btn-arrow-right.svg");
+  background-repeat: no-repeat;
+  background-position: right 50%;
+  @include transition;
+  
+  &:hover {
+    text-decoration: none;
+  }
+  
+  &[target="_blank"] {
+    background-image: url("../images/common/btn-blank.svg");
+    background-repeat: no-repeat;
+    background-position: right 50%;
+  }
+  
+  &.small {
+    height: 34px;
+    line-height: 34px;
+    padding: 0 34px 0 17px;
+    font-size: 14px;
+    border-radius: 17px;
+    background-size: 34px;
+    
+    @include sp {
+      height: 30px;
+      line-height: 30px;
+      padding: 0 30px 0 15px;
+      font-size: 13px;
+      border-radius: 15px;
+      background-size: 30px;
+    };
+    @include se {
+      height: 26px;
+      line-height: 26px;
+      padding: 0 24px 0 13px;
+      font-size: 12px;
+      border-radius: 13px;
+      background-size: 26px;
+    };
+  }
+  &.medium {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 40px 0 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    background-size: 40px;
+    
+    @include sp {
+      height: 36px;
+      line-height: 36px;
+      padding: 0 36px 0 18px;
+      font-size: 15px;
+      border-radius: 18px;
+      background-size: 36px;
+    };
+    @include se {
+      height: 32px;
+      line-height: 32px;
+      padding: 0 32px 0 16px;
+      font-size: 13px;
+      border-radius: 16px;
+      background-size: 32px;
+    };
+  }
+  &.large {
+    height: 50px;
+    line-height: 50px;
+    padding: 0 50px 0 25px;
+    font-size: 17px;
+    border-radius: 25px;
+    background-size: 50px;
+    
+    @include sp {
+      height: 46px;
+      line-height: 46px;
+      padding: 0 46px 0 23px;
+      font-size: 16px;
+      border-radius: 23px;
+      background-size: 46px;
+    };
+    @include se {
+      height: 42px;
+      line-height: 42px;
+      padding: 0 42px 0 21px;
+      font-size: 15px;
+      border-radius: 21px;
+      background-size: 42px;
+    };
+  }
+  
+  &.block {
+    display: block;
+  }
+  &.primary {
+    background-color: $link;
+    color: $white;
+    
+    &:hover {
+      background-color: $dark-link;
+      color: $white;
+    }
+  }
+  &.black {
+    background-color: $black;
+    color: $white;
+    
+    &:hover {
+      background-color: $dark-black;
+      color: $white;
+    }
+  }
+}

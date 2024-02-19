@@ -1,0 +1,38 @@
+
+@media screen and (min-width: 0px) and (max-width: 900px) {
+	.only_lg { display:none;}
+	.only_sm { display:block;}
+}
+@media screen and (min-width: 900px) {
+	.only_lg { display:block;}
+	.only_sm { display:none;}
+}
+.sm {
+	width:200px;
+}
+
+.md {
+	width:300px;
+}
+.xs {
+	width:100px;
+}
+.xxs {
+	width:50px;
+}
+.lg {
+	width:400px;
+}
+.inline {
+	display:inline;
+}
+.none {
+	display:none;
+}
+.href {
+	cursor:pointer;
+}
+.item-title {
+	font-weight:bold;
+	margin-bottom: 10px;
+}

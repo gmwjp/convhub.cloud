@@ -1,0 +1,651 @@
+/* Scss Document */
+
+//overwrite bs
+.container-fluid.tutorial {
+  width: 100%;
+  height: auto;
+  background-image:
+    url("../images/tutorial/bg.svg"),
+    linear-gradient(105deg, rgba(255,0,161,1) 0%, rgba(120,0,181,1) 33%, rgba(5,0,238,1) 66%, rgba(0,250,216,1) 100%);
+  background-attachment: 
+    fixed;
+  background-size: 
+    contain,
+    auto;
+  padding: 0 0 120px 0;
+  
+  @include sp {
+    padding: 50px 15px;
+  }
+  @include se {
+    padding: 40px 10px;
+  }
+}
+
+//tutorial
+.tutorial-container {
+  width: 900px;
+  height: auto;
+  margin: 0 auto;
+  
+  @include sp {
+    width: 100%;
+  }
+}
+
+.tutorial-header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  
+  @include sp {
+    flex-flow: column nowrap;
+    padding: 0 10px;
+  }
+  @include se {
+    padding: 0 5px;
+  }
+  
+  .data-item {
+    color: $white;
+    padding-left: 50px;
+    width: 550px;
+  
+    @include sp {
+      padding: 0;
+      width: 100%;
+      text-align: center;
+    }
+    
+    h2 {
+      font-size: 40px;
+      line-height: 1em;
+      letter-spacing: 0.1em;
+  
+      @include sp {
+        font-size: 40px;
+      }
+      @include se {
+        font-size: 32px;
+      }
+    }
+    p {
+      margin-top: 1em;
+      line-height: 1.75em;
+      font-size: 18px;
+      letter-spacing: 0.05em;
+  
+      @include sp {
+        text-align: left;
+        font-size: 16px;
+        br { display: none;}
+      }
+      @include se {
+        font-size: 14px;
+      }
+    }
+
+  }
+  .thumb-item {
+    width: 450px;
+    height: auto;
+  
+    @include sp {
+      width: 80%;
+      margin: 0 auto;
+      max-width: 450px;
+    }
+    
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+.tutorial-content {
+  @include sp {
+    margin-top: 50px;
+  }
+  @include se {
+    margin-top: 40px;
+  }
+}
+
+.tutorial-steps-nav {
+  ul {
+    list-style: none;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    
+    li {
+      line-height: 60px;
+      background: $black;
+      color: $white;
+      cursor: pointer;
+      font-size: 18px;
+      text-align: center;
+      width: 240px;
+      height: 60px;
+      margin: 0 20px;
+      border-radius: 12px 12px 0 0;
+      @include transition;
+      
+      @include sp {
+        width: auto;
+        padding: 0 1.25em;
+        font-size: 12px;
+        height: 40px;
+        line-height: 40px;
+        margin: 0 5px;
+        border-radius: 8px 8px 0 0;
+        letter-spacing: 0;
+      }
+      @include se {
+        font-size: 10px;
+        height: 32px;
+        line-height: 32px;
+        margin: 0 3px;
+        border-radius: 6px 6px 0 0;
+      }
+      
+      &:hover {
+        background: $dark-black;
+      }
+      
+      &.active {
+        background: $white;
+        color: $black;
+        cursor: default;
+        
+        &:hover {
+          background: $white;
+        }
+      }
+    }
+  }
+}
+
+.tutorial-steps-data {
+  background: $white;
+  padding: 50px;
+  border-radius: 20px;
+  
+  @include sp {
+    padding: 50px 25px;
+    border-radius: 10px;
+  }
+  @include se {
+    padding: 40px 20px;
+    border-radius: 8px;
+  }
+}
+
+.tutorial-steps-item {
+  
+  &:not(:nth-child(1)){
+    display: none;
+  }
+  
+  .tutorial-steps-desc {
+    font-size: 16px;
+    text-align: center;
+    color: $black;
+  
+    @include sp {
+      font-size: 15px;
+      text-align: left;
+      br {
+        display: none;
+      }
+    }
+    @include se {
+      font-size: 13px;
+    }
+    
+    span {
+      font-weight: bold;
+    }
+  }
+  
+  //reset bs
+  dl, ul, dt, dd, li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  dl {
+    margin-top: 50px;
+  
+    @include sp {
+      margin-top: 50px;
+    }
+    @include se {
+      margin-top: 40px;
+    }
+    
+    dt {
+      position: relative;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      background: rgba( $black, 0.1);
+      cursor: pointer;
+      
+      @include sp {
+        flex-flow: column nowrap;
+      }
+      
+      &:not(:first-of-type) {
+        margin-top: 50px;
+  
+        @include sp {
+          margin-top: 25px;
+        }
+        @include se {
+          margin-top: 20px;
+        }
+      }
+      
+      &::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate( 0, -50%);
+        width: 60px;
+        height: 60px;
+        background: url("../images/tutorial/icon-steps-arrow.svg") no-repeat 50% 50%;
+        background-size: 100%;
+        @include transition;
+  
+        @include sp {
+          width: 50px;
+          height: 50px;
+          top: auto;
+          bottom: 0;
+          transform: translate( 0, 0);
+        }
+        @include se {
+          width: 40px;
+          height: 40px;
+        }
+      }
+      &.active::after {
+        transform: translate( 0, -50%) rotate(180deg);
+        
+        @include sp {
+          transform: translate( 0, 0) rotate(180deg);
+        }
+      }
+      
+      .num {
+        background: $black;
+        color: $white;
+        line-height: 1em;
+        font-size: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100px;
+  
+        @include sp {
+          font-size: 12px;
+          width: 100%;
+          text-align: center;
+          display: block;
+          padding: 0.25em 0;
+        }
+        @include se {
+          font-size: 11px;
+        }
+      }
+      .title {
+        flex: 1;
+        font-size: 18px;
+        line-height: 1em;
+        padding: 1.25em;
+        font-weight: normal;
+        color: $black;
+        
+        @include sp {
+          font-size: 16px;
+        }
+        @include se {
+          font-size: 14px;
+        }
+      }
+    }
+    dd {
+      display: none;
+    }
+  }
+}
+  
+ul.tutorial-step-list {
+  li {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    margin-top: 30px;
+        
+    @include sp {
+      margin-top: 30px;
+      flex-flow: column-reverse nowrap;
+      padding-bottom: 50px;
+      border-bottom: 1px solid #ededed;
+      
+      &:last-of-type {
+        margin-bottom: 120px;
+      }
+    }
+    @include se {
+      margin-top: 24px;
+      padding-bottom: 40px;
+      
+      &:last-of-type {
+        margin-bottom: 96px;
+      }
+    }
+    
+    .sl-thumb {
+      width: 400px;
+      height: auto;
+        
+      @include sp {
+        width: 100%;
+        margin-top: 15px;
+      }
+      @include se {
+        width: 100%;
+        margin-top: 12px;
+      }
+      
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+    .sl-data {
+      flex: 1;
+      padding: 0 0 0 30px;
+        
+      @include sp {
+        padding: 0;
+      }
+      
+      .sl-title {
+        color: $black;
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 0.5em;
+        
+        @include sp {
+          font-size: 16px;
+        }
+        @include se {
+          font-size: 14px;
+        }
+      }
+      .sl-text {
+        color: $black;
+        font-size: 16px;
+        margin: 0.5em 0 0 0;
+        padding: 0;
+        
+        @include sp {
+          font-size: 14px;
+        }
+        @include se {
+          font-size: 13px;
+        }
+      }
+      .sl-notice {
+        width: 100%;
+        height: auto;
+        font-size: 14px;
+        line-height: 1.25em;
+        padding: 1em;
+        color: $black;
+        background: $thin-yel;
+        border: 1px solid $border-yel;
+        margin: 0.5em 0 0 0;
+        
+        @include sp {
+          font-size: 13px;
+        }
+        @include se {
+          font-size: 12px;
+        }
+      }
+      .sl-link {
+        margin-top: 15px;
+        
+        @include sp {
+        }
+        @include se {
+          margin-top: 12px;
+        }
+      }
+      .sl-caution {
+        width: 100%;
+        height: auto;
+        font-size: 12px;
+        line-height: 1.25em;
+        color: rgba( $black, 0.75);
+        margin: 0.5em 0 0 0;
+        
+        @include sp {
+          font-size: 11px;
+        }
+        @include se {
+          font-size: 10px;
+        }
+      }
+      .sl-link {
+        margin-top: 15px;
+        
+        @include sp {
+          text-align: center;
+          .c-btn:not(:last-of-type) {
+            margin-bottom: 15px;
+          }
+        }
+        @include se {
+          margin-top: 12px;
+          
+          .c-btn:not(:last-of-type) {
+            margin-bottom: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.tutorial-about {
+  text-align: center;
+  padding: 90px 0 0 0;
+  
+  @include sp {
+    padding: 50px 10px 0 10px;
+  }
+  @include se {
+    padding: 40px 5px 0 5px;
+  }
+  
+  h3.ta-title {
+    line-height: 1em;
+    color: $white;
+    font-size: 32px;
+    margin-bottom: 1em;
+  
+    @include sp {
+      font-size: 26px;
+    }
+    @include se {
+      font-size: 20px;
+    }
+  }
+  .ta-text {
+    font-size: 16px;
+    color: $white;
+    line-height: 2em;
+    margin-bottom: 1.5em;
+  
+    @include sp {
+      font-size: 15px;
+      text-align: left;
+      br { display: none;}
+    }
+    @include se {
+      font-size: 13px;
+    }
+    
+    span {
+      font-weight: bold;
+    }
+    
+  }
+  .ta-image {
+    width: 300px;
+    height: auto;
+    margin: 0 auto;
+  
+    @include sp {
+      width: 60%;
+      max-width: 300px;
+    }
+    
+    img {
+      width: 100%;
+      height: auto;
+    }    
+  }
+  .ta-link {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin: 30px 0 0 0;
+  
+    @include sp {
+      margin: 25px 0 0 0;
+    }
+    @include se {
+      margin: 20px 0 0 0;
+    }
+    
+    .ta-btn {
+      margin: 0 10px;
+      background-color: $black;
+      color: $white;
+      display: block;
+      line-height: 40px;
+      height: 40px;
+      padding: 0 1.5em 0 50px;
+      border-radius: 20px;
+      background-repeat: no-repeat;
+      background-position: left 10px center;
+      background-size: 40px 40px;
+      @include transition;
+  
+      @include sp {
+        line-height: 30px;
+        height: 30px;
+        padding: 0 1.5em 0 40px;
+        border-radius: 15px;
+        background-position: left 10px center;
+        background-size: 30px 30px;
+        margin: 0 8px;
+      }
+      @include se {
+        line-height: 26px;
+        height: 26px;
+        padding: 0 1.5em 0 34px;
+        border-radius: 13px;
+        background-position: left 8px center;
+        background-size: 34px 34px;
+        margin: 0 6px;
+      }
+      
+      &:hover {
+        background-color: $dark-black;
+      }
+      
+      &.twitter{
+        background-image: url("../images/tutorial/icon-twitter.svg");
+      }
+      
+      &.form{
+        background-image: url("../images/tutorial/icon-form.svg");
+      }
+
+    }
+  }
+}
+
+.tutorial-faq {
+  h3 {
+    margin: 3em 0 0 0;
+    padding: 0 0 0.5em 0;
+    text-align: center;
+    font-size: 24px;
+    line-height: 1em;
+    letter-spacing: 0.1em;
+    color: $black;
+
+    @include sp {
+      font-size: 20px;
+      line-height: 1.25em;
+    }
+    @include se {
+      font-size: 16px;
+    }
+  }
+  .turorial-faq-list {
+    margin: 0;
+    padding: 0;
+    
+    li {
+      position: relative;
+      color: $black;
+      font-size: 16px;
+      margin: 1.5em 0 0 0;
+      padding: 0 0 0 1.85em;
+      
+      &:hover {
+        opacity: 0.5;
+      }
+      
+      a {
+        color: $black;
+      }
+      
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 0;        
+        content: "";
+        width: 1.5em;
+        height: 1.5em;
+        background-color: $black;
+        background-image: url("../images/common/btn-arrow-right.svg");
+        background-size: 100%;
+        border-radius: 50%;
+      }
+
+      @include sp {
+        font-size: 14px;
+      }
+      @include se {
+        font-size: 13px;
+      }
+      
+    }
+  }
+}

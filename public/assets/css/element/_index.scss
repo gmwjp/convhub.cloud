@@ -1,0 +1,507 @@
+/* Scss Document */
+
+.service-header {
+  position: absolute;
+  z-index: 9999;
+  width: 100%;
+  height: 80px;
+  padding: 20px;
+  
+  @include sp {
+    height: 60px;
+    padding: 15px;
+  }
+  @include se {
+    height: 48px;
+    padding: 12px;
+  }
+  
+  .service-header-nav {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+  }
+  
+  .service-header-logo {
+    height: 40px;
+    width: auto;
+  
+    @include sp {
+      position: absolute;
+      top: 15px;
+      left: 60px;
+      height: 30px;
+    }
+    @include se {
+      top: 12px;
+      left: 48px;
+      height: 24px;
+    }
+    
+    img {
+      height: 100%;
+      width: auto;
+    }
+  }
+  .service-header-link {
+    list-style: none;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+  
+    @include sp {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba( $white, 0.95);
+      flex-flow: column nowrap;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      width: 100%;
+      transform: scaleX(0);
+      
+      &.active {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+    }
+    
+    li {
+      line-height: 40px;
+      font-size: 16px;
+      margin-left: 2em;
+        
+      @include sp {
+        margin: 0;
+      }
+      
+      a {
+        position: relative;
+        color: $white;
+        
+        @include sp {
+          color: $black;
+          display: block;
+          width: 100%;
+          font-size: 18px;
+          line-height: 3em;
+        }
+        
+        @include se {
+          font-size: 16px;
+        }
+        
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -0.35em;
+          width: 100%;
+          height: 2px;
+          background: $white;
+          transform:  scaleX(0);
+          @include transition;
+        }
+        &:hover:before {
+          transform:  scaleX(1);
+        }
+      }
+    }
+  }
+  .service-header-btn-sp {
+    display: none;
+    
+    @include sp {
+      display: block;
+      position: absolute;
+      z-index: 9999;
+      left: 15px;
+      top: 18px;
+      width: 30px;
+      height: 24px;
+      
+      @include se {
+        left: 12px;
+        top: 15px;
+        width: 24px;
+        height: 19px;
+      }
+
+      span {
+        display: block;
+        position: absolute;
+        cursor: pointer;
+        height: 3px;
+        width: 50%;
+        background: $white;
+        opacity: 1;
+        transform: rotate(0deg);
+        transition: .25s ease-in-out;
+
+        &:nth-child(even) {
+          left: 50%;
+          border-radius: 0 3px 3px 0;
+        }
+        &:nth-child(odd) {
+          left:0px;
+          border-radius: 3px 0 0 3px;
+        }
+        &:nth-child(1), 
+        &:nth-child(2) {
+          top: 0px;
+        }
+        &:nth-child(3), 
+        &:nth-child(4) {
+          top: 10px;
+        }
+        &:nth-child(5),
+        &:nth-child(6) {
+          top: 21px;
+        }
+      }
+      &.active span {
+        background: $black;
+        
+        &:nth-child(1),
+        &:nth-child(6) {
+          transform: rotate(45deg);
+        }
+        &:nth-child(2),
+        &:nth-child(5) {
+          transform: rotate(-45deg);
+        }
+        &:nth-child(1) {
+          left: 2px;
+          top: 4px;
+        }
+        &:nth-child(2) {
+          left: calc(50% - 2px);
+          top: 4px;
+        }
+        &:nth-child(3) {
+          left: -50%;
+          opacity: 0;
+        }
+        &:nth-child(4) {
+          left: 100%;
+          opacity: 0;
+        }
+        &:nth-child(5) {
+          left: 2px;
+          top: 14px;
+        }
+        &:nth-child(6) {
+          left: calc(50% - 2px);
+          top: 14px;
+        }
+      }
+    }
+  }
+  
+  .service-header-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: auto;
+    height: 40px;
+  
+    @include sp {
+      top: 15px;
+      right: 15px;
+      height: 30px;
+    }
+    @include se {
+      top: 12px;
+      right: 12px;
+      height: 24px;
+    }
+    
+    a {
+      font-size: 16px;
+      display: inline-block;
+      border: 2px solid $white;
+      line-height: 36px;
+      border-radius: 40px;
+      color: $white;
+      padding: 0 2em;
+      @include transition;
+  
+      @include sp {
+        line-height: 26px;
+        border-radius: 30px;
+        font-size: 15px;
+        padding: 0 1.25em;
+      }
+      @include se {
+        line-height: 20px;
+        border-radius: 24px;
+        font-size: 14px;
+      }
+      
+      &:hover {
+        background: rgba( $white, 0.1);
+      }
+    }
+  }
+}
+
+.service-hero {
+  
+  //kill bs
+  ul, ol, dl, dd, dt, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  position: relative;
+  width: 100%;
+  height: auto;
+  background-image:
+    url("../images/tutorial/bg.svg"),
+    linear-gradient(105deg, rgba(255,0,161,1) 0%, rgba(120,0,181,1) 33%, rgba(5,0,238,1) 66%, rgba(0,250,216,1) 100%);
+  background-attachment: 
+    fixed;
+  background-size: 
+    contain,
+    auto;
+  padding: 80px 0;
+  
+  @include sp {
+    padding: 90px 0 50px 0;
+  }
+  @include se {
+    padding: 72px 0 40px 0;
+  }
+  
+  .sh-content {
+    width: 1140px;
+    height: 600px;
+    padding: 0 50px;
+    margin: 0 auto;
+    display: flex;
+    background: url("../images/index/main_image.png") no-repeat center right;
+    background-size: auto 600px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+  
+    @include sp {
+      width: 100%;
+      height: auto;
+      background: none;
+      padding: 0 25px;
+      text-align: center;
+    }
+    @include se {
+      padding: 0 20px;
+    }
+    
+  }
+  .sh-data {
+    width: 100%;
+    
+    .service_name {
+      color: rgba( $white, 0.5);
+      line-height: 1em;
+      margin-bottom: 1.5em;
+      font-size: 14px;
+      
+      @include sp {
+        font-size: 13px;
+      }
+      @include se {
+        font-size: 12px;
+      }
+    }
+    
+    .service_title {
+      width: 499px;
+      height: auto;
+      
+      @include sp {
+        width: 100%;
+        max-width: 499px;
+        margin: 0 auto;
+      }
+      
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+    .service_text {
+      color: $white;
+      font-size: 18px;
+      margin-top: 2em;
+      line-height: 2em;
+      letter-spacing: 0.05em;
+      
+      @include sp {
+        font-size: 16px;
+        text-align: left;
+        br {display: none;}
+      }
+      @include se {
+        font-size: 14px;
+      }
+    }
+    .service_link {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      
+      @include sp {
+        justify-content: center;
+      }
+      
+      .btn-regist {
+        width: auto;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 25px;
+        font-size: 16px;
+        background-color: $yel;
+        padding: 0 50px 0 2em;
+        color: $black;
+        margin-right: 15px;
+        background-image: url("../images/common/btn-arrow-blk-right.svg");
+        background-size: 50px 50px;
+        background-position: right 50%;
+        background-repeat: no-repeat;
+      
+        @include sp {
+          height: 40px;
+          line-height: 40px;
+          border-radius: 20px;
+          font-size: 15px;
+          padding: 0 40px 0 1.5em;
+          background-size: 40px 40px;
+        }
+        @include se {
+          height: 32px;
+          line-height: 32px;
+          border-radius: 16px;
+          font-size: 14px;
+          padding: 0 36px 0 1.5em;
+          background-size: 36px 36px;
+        }
+        
+        &:hover {
+          background-color: $dark-yel;
+        }
+      }
+      .dropdown-area {
+        position: relative;
+        width: auto;
+        height: auto;
+      }
+      .btn-demo {
+        cursor: pointer;
+        width: auto;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 25px;
+        font-size: 16px;
+        background-color: $black;
+        padding: 0 50px 0 2em;
+        color: $white;
+        background-image: url("../images/common/btn-door.svg");
+        background-size: 50px 50px;
+        background-position: right 50%;
+        background-repeat: no-repeat;
+      
+        @include sp {
+          height: 40px;
+          line-height: 40px;
+          border-radius: 20px;
+          font-size: 15px;
+          padding: 0 40px 0 1.5em;
+          background-size: 40px 40px;
+        }
+        @include se {
+          height: 32px;
+          line-height: 32px;
+          border-radius: 16px;
+          font-size: 14px;
+          padding: 0 36px 0 1.5em;
+          background-size: 36px 36px;
+        }
+        
+        &.active,
+        &:hover, &:active {
+          background-color: $dark-black;
+        }
+      }
+      .dropdown-list {
+        display: none;
+        position: absolute;
+        top: 55px;
+        left: 50%;
+        transform: translate( -50%, 0);
+        background: rgba( $white, 0.9);
+        font-size: 14px;
+        border-radius: 6px;
+        padding: 0.5em 0;
+        box-shadow: 0 5px 5px 5px rgba( $black, 0.25);
+        
+        @include sp {
+          top: 45px;
+          border-radius: 5px;
+        }
+        @include se {
+          top: 37px;
+          font-size: 13px;
+          border-radius: 4px;
+          box-shadow: 0 4px 4px 4px rgba( $black, 0.25);
+        }
+        
+        
+        li {
+          
+          a {
+            display: block;
+            color: $black;
+            padding: 0.5em 3em 0.5em 1.5em;
+            word-break: keep-all;
+            
+            &:hover {
+              background: rgba( $black, 0.1);
+            }
+          }
+        }
+      }
+    }
+    .service_image {
+      width: 100%;
+      height: auto;
+      margin-top: 25px;
+      
+      @include se {
+        max-width: 600px;
+        margin-top: 20px;
+      }
+      
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+  
+  .sh-patent {
+    position: absolute;
+    color: rgba( $white, 0.5);
+    line-height: 1em;
+    bottom: 1em;
+    left: 1em;
+    font-size: 10px;
+  }
+  
+}

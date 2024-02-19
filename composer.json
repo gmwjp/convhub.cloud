@@ -1,0 +1,52 @@
+{
+    "name": "codeigniter4/appstarter",
+    "type": "project",
+    "description": "CodeIgniter4 starter app",
+    "homepage": "https://codeigniter.com",
+    "license": "MIT",
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "abraham/twitteroauth": "^6.0",
+        "algolia/algoliasearch-client-php": "^3.4",
+        "aws/aws-sdk-php": "^3.277",
+        "codeigniter4/framework": ">=4.3 <4.4.0",
+        "elasticsearch/elasticsearch": "^6.0",
+        "ezyang/htmlpurifier": "^4.16",
+        "php-ffmpeg/php-ffmpeg": "^1.1",
+        "phpmailer/phpmailer": "^6.8",
+        "phpseclib/mcrypt_compat": "^2.0",
+        "setasign/fpdi": "^2.5",
+        "tecnickcom/tcpdf": "^6.6"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.9",
+        "mikey179/vfsstream": "^1.6",
+        "phpunit/phpunit": "^9.1"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    },
+    "autoload": {
+        "exclude-from-classmap": [
+            "**/Database/Migrations/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Support\\": "tests/_support"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "support": {
+        "forum": "https://forum.codeigniter.com/",
+        "source": "https://github.com/codeigniter4/CodeIgniter4",
+        "slack": "https://codeigniterchat.slack.com"
+    }
+}
