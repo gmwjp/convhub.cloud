@@ -31,3 +31,14 @@
     </div>
   </body>
 </html>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+  // URLSearchParamsオブジェクトを使用してURLのクエリパラメータを取得
+    const queryParams = new URLSearchParams(window.location.search);
+  // 'title'パラメータの値を取得
+    const title = queryParams.get('title');
+  // コンソールに表示
+    console.log(title);
+  // 必要に応じてその他の処理をここに追加
+  });
+</script>
