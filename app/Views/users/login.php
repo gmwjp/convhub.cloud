@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label>メールアドレス</label>
-                        <input type="text" name="mail" class="form-control" value="<?=request()->getPost("mail")?>">
+                        <input type="text" name="mail" class="form-control" value="<?=esc(request()->getPost("mail"))?>">
                         <?=err($errors->getError("mail"))?>
                         <div class="alert">
                             「<?=esc(env("smtp.from"))?>」からのメールを受信できるアドレスを使うか、設定で着信を許可してください。
@@ -36,13 +36,13 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label>メールアドレス</label>
-                        <input type="text" name="mail2" class="form-control" value="<?=request()->getPost("mail2")?>">
+                        <input type="text" name="mail2" class="form-control" value="<?=esc(request()->getPost("mail2"))?>">
                         <?=err($errors->getError("mail2"))?>
                         <?if(!empty($login_error)){?><?=err("メールアドレスまたはパスワードが違います")?><?}?>
                     </div>
                     <div class="form-group">
                         <label>パスワード</label>
-                        <input type="password" name="password" class="form-control" value="<?=request()->getPost("password")?>">
+                        <input type="password" name="password" class="form-control" value="<?=esc(request()->getPost("password"))?>">
                         <?=err($errors->getError("password"))?>
                     </div>
                     <div class="form-group">

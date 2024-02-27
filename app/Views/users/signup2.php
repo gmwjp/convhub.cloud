@@ -15,12 +15,12 @@
 	</div>
 	<div class="form-group">
 		<label>パスワード</label>
-		<input type="password" name="password" class="form-control" value="<?=request()->getPost("password")?>">
+		<input type="password" name="password" class="form-control" value="<?=esc(request()->getPost("password"))?>">
 		<?=err($errors->getError("password"))?>
 	</div>
 	<div class="form-group">
 		<label>パスワード再入力</label>
-		<input type="password" name="password_confirm" class="form-control" value="<?=request()->getPost("password_confirm")?>">
+		<input type="password" name="password_confirm" class="form-control" value="<?=esc(request()->getPost("password_confirm"))?>">
 		<?=err($errors->getError("password_confirm"))?>
 	</div>
 	<div class="text-center">

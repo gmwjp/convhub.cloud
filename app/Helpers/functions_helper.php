@@ -10,7 +10,10 @@ function csp_script_nonce_test($nonce_only = false) {
         return "nonce='".$nonce."'";
     }
 }
-
+function requester_name($mail){
+    $parts = explode('@', $mail);
+    return $parts[0];
+}
 function csrf(){
     return csrf_field();
 }

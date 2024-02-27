@@ -16,13 +16,13 @@
 		<link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style" />
 		<link href="/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style" />
 		<link href="/assets/css/notifIt.css" rel="stylesheet" media="screen">
-		<link href="/assets/css/pictsquare.css?d=20240201_1" rel="stylesheet" medit="screen">
-		<script <?=csp_script_nonce_test()?> src="/assets/js/1.12.4.jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="/assets/css/common.css?d=20230519_1" />
-		<script <?=csp_script_nonce_test()?> src="/assets/js/pictsquare.js?d=20200510_6"></script>
+		<script <?=csp_script_nonce_test()?> src="/assets/js/guides.js?d=20200510_6"></script>
 		<script <?=csp_script_nonce_test()?> src="/assets/js/notifIt.min.js"></script>
-		<script <?=csp_script_nonce_test()?> type="text/javascript" src="/assets/js/ajaxzip3.js" charset="utf-8"></script>
 		<script <?=csp_script_nonce_test()?> src="/assets/js/sortable.min.js"></script>
 		<script <?=csp_script_nonce_test()?>>
 			var csrf_token_name = '<?=csrf_token()?>';
@@ -73,18 +73,22 @@
 				return jqxhrObj;
 			}
 		</script>
+		<style>
+			.none {
+				display:none;
+			}
+			.item-title {
+				font-weight: bold;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+			.inline {
+				display:inline;
+			}
+		</style>
 	</head>
 	<body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
 		<div class="follow-regist active" id="order-regist" style="line-height:0;background:rgba(0, 0, 0, 0.3);bottom: 0;"></div>
-		<?php
-		/*
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K2B28V4"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-	<!-- Begin page -->
-		*/
-		?>
         <div class="wrapper">
 			<?$yet_place_num = 0?>
 			<?if(!empty($my_user)){?>
@@ -113,45 +117,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 				<div class="h-100" id="left-side-menu-container" data-simplebar>
 					<!--- Sidemenu -->
 					<ul class="metismenu side-nav">
-					<li class="side-nav-title side-nav-item">ガイド</li>
+					<li class="side-nav-title side-nav-item">問い合わせ管理</li>
 						<li class="side-nav-item">
-							<a href="/products/index" class="side-nav-link">
+							<a href="/tickets/index" class="side-nav-link">
 								<i class="fal fa-lock"></i>
 								<span> チケット </span>
 							</a>
 						</li>
 						<li class="side-nav-item">
-							<a href="/products/index" class="side-nav-link">
-								<i class="fal fa-lock"></i>
-								<span> FAQ </span>
-							</a>
-						</li>
-					
-						<li class="side-nav-title side-nav-item">システム設定</li>
-						<li class="side-nav-item">
-							<a href="/products/index" class="side-nav-link">
-								<i class="fal fa-lock"></i>
-								<span> 類義語 </span>
-							</a>
-						</li>
-						<li class="side-nav-item">
-							<a href="/products/index" class="side-nav-link">
+							<a href="/templates/index" class="side-nav-link">
 								<i class="fal fa-lock"></i>
 								<span> テンプレート </span>
 							</a>
 						</li>
 						<li class="side-nav-item">
-							<a href="/products/index" class="side-nav-link">
+							<a href="/forms/index" class="side-nav-link">
 								<i class="fal fa-lock"></i>
 								<span> フォーム </span>
 							</a>
 						</li>
+						<li class="side-nav-title side-nav-item">ウィジェット設定</li>
 						<li class="side-nav-item">
-							<a href="/products/index" class="side-nav-link">
+							<a href="/widgets/index/feedback" class="side-nav-link">
 								<i class="fal fa-lock"></i>
-								<span> プロダクト </span>
+								<span> フィードバック </span>
 							</a>
 						</li>
+						<li class="side-nav-title side-nav-item">システム設定</li>
 					</ul>
 					</div>
 				</div>
@@ -203,7 +195,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 						</div>
 					</div>
 			<?}?>
-			<div class="content-page">
+			<div class="content-page" style="padding-bottom:0px;">
 				<div class="content">
 					<div class="navbar-custom">
 						<?if(!empty($my_user)){?>
@@ -255,7 +247,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 						<div class="row">
-							<div class="col-12 pb-5">
+							<div class="col-12 pb-5 pt-3">
 								<?php echo $content ?>
 							</div>
 						</div>

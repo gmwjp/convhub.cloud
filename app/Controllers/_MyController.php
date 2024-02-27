@@ -28,7 +28,7 @@ abstract class _MyController extends BaseController
 				//未決済注文
 			} else {
 				session()->destroy();
-				$this->redirect("/accs/login");
+				$this->redirect("/users/login");
 			}
 		}
 		//メソッド名コントローラー名をセット
@@ -44,9 +44,9 @@ abstract class _MyController extends BaseController
 	function title($text){
 		$this->set("page_title",$text);
 	}
-	function hasAccSession(){
-		if(empty($this->my_acc)){
-			$this->redirect("/accs/login?fromurl=".$_SERVER["REQUEST_URI"]);
+	function hasUserSession(){
+		if(empty($this->my_user)){
+			$this->redirect("/users/login?fromurl=".$_SERVER["REQUEST_URI"]);
 		}
 	}
 	public function view($view,$layout = "default"){

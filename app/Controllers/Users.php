@@ -9,8 +9,7 @@ class Users extends _MyController {
 	function login(){
 		$this->title("ログイン");
 		if(request()->getPost("execute")){
-			$this->model("Users")->validate = $this->model("Users")->validate_login;
-			if($this->model("Users")->oldValidates(request()->getPost())){
+			if($this->model("Users")->validates("login")){
 				//ログイン処理
 				$user = $this->model("Users")->where("mail",request()->getPost("mail2"))->last();
 				if($user){
@@ -109,6 +108,6 @@ class Users extends _MyController {
 	function dashboard(){
 		$this->title("top");
 		$this->hasUsersession();
-		return $this->view("/users/dashboard","member");
+		return $this->view("/users/dashboard");
 	}
 }

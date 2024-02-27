@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="pinterest" content="nopin" />
-		<meta name="description" content="OP-NET" />
+		<meta name="description" content="" />
 		<?if(!empty($meta)){?>
 			<?foreach($meta as $key => $val){?>
 			<?foreach($val as $key2 => $val2){?>
@@ -60,7 +60,7 @@
             <div class="container">
                 <!-- logo -->
                 <a href="/" class="navbar-brand mr-lg-5">
-                    OP-NET
+                    <?=esc($page_title)?>
                 </a>
 				<?php
 				/*

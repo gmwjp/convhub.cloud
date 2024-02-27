@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="pinterest" content="nopin" />
-		<meta name="description" content="OP-NET" />
+		<meta name="description" content="" />
 		<?if(!empty($meta)){?>
 			<?foreach($meta as $key => $val){?>
 			<?foreach($val as $key2 => $val2){?>
@@ -20,12 +20,13 @@
 		<link href="/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style" />
 		<link href="/assets/css/notifIt.css" rel="stylesheet" media="screen">
 		<link href="/assets/css/pictsquare.css" rel="stylesheet" medit="screen">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
-		<script src="/assets/js/opnet.js"></script>
+		<link rel="stylesheet" type="text/css" href="/assets/css/common.css?d=20230519_1" />
+		<script <?=csp_script_nonce_test()?> src="/assets/js/guides.js?d=20200510_6"></script>
 		<script src="/assets/js/notifIt.min.js"></script>
 		<script type="text/javascript" src="https://ajaxzip3.github.io/ajaxzip3.js" charset="utf-8"></script>
-		<script src="https://widget.univapay.com/client/checkout.js"></script>
 		<script>
 			var csrf_token_name = '<?=csrf_token()?>';
 			var csrf_token_value = '<?=csrf_hash()?>';
@@ -60,7 +61,7 @@
             <div class="container">
                 <!-- logo -->
                 <a href="/" class="navbar-brand mr-lg-5">
-                    OP-NET
+                    <?=esc($page_title)?>
                 </a>
 				<?php
 				/*
@@ -95,26 +96,6 @@
 	        <?=$content?>
 			</div>
 		</div>
-
-		<footer class="footer" style="left:0px;">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-3">
-						<?=date("Y")?> © <a href="/">OP-NET</a>
-					</div>
-					<div class="col-md-9">
-						<div class="text-md-right footer-links d-none d-md-block">
-							<small>
-							<a href="/statics/term">利用規約</a>
-							<a href="/statics/policy">プライバイシーポリシー</a>
-							<a href="/statics/toku">特定商取引法に関する表記</a>
-							<a href="/statics/company">運営会社</a>
-						</small>
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
         <script src="/assets/js/vendor.min.js"></script>
         <script src="/assets/js/app.min.js"></script>
     </body>
