@@ -19,7 +19,7 @@
       }
     }
     </style>
-	<script <?=csp_script_nonce_test()?>>
+	<script>
 		var csrf_token_name = '<?=csrf_token()?>';
 		var csrf_token_value = '<?=csrf_hash()?>';
 		function postData(url,data,done_func=null,fail_func=null){
