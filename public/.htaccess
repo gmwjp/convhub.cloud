@@ -48,7 +48,7 @@ Options -Indexes
 </IfModule>
 
 # X-Frame-Optionsヘッダーを無効にする
-Header always set X-Frame-Options "SAMEORIGIN"
+Header always set X-Frame-Options ""
 
 # Disable server signature start
 	ServerSignature Off
