@@ -44,10 +44,10 @@ class Filters extends BaseConfig
     */
     // �O���[�o���t�B���^�̐��`
     public array $globals = [
-        // 'before' => [
-        //     'csrf' => ['except' => []]
-        // ],
-        // 'after'  => []
+         'before' => [
+             'csrf' => ['except' => []]
+         ],
+         'after'  => []
     ];
 
 
@@ -63,7 +63,7 @@ class Filters extends BaseConfig
      * with a method you don't expect could bypass the filter.
      */
     public array $methods = [
-        'post' => ['csrf']
+        //'post' => ['csrf']
     ];
 
     /**
