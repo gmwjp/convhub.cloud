@@ -13,6 +13,10 @@
         </small>
     </div>
 </div>
+<form action="/widgets/exec/<?=esc($widget->code)?>?action=view" method="post">
+    <button type="submit">send</button>
+    <?=csrf()?>
+</form>
 <script>
 $(function(){
     //閲覧数をカウント
