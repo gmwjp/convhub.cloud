@@ -100,7 +100,7 @@ class Widgets extends _MyController {
 			$this->set("widget",$widget);
 			
 			$this->set("csrf_token",$csrf_token = bin2hex(random_bytes(32)));
-			writeLog("csrf_token","critical");
+			writeLog("csrf_token:".$csrf_token,"critical");
 			session()->set('csrf_token', $csrf_token);
 
 			return $this->view("/widgets/show","widget");
