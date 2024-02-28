@@ -281,7 +281,7 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Cookie::$secure property instead.
      */
-    public bool $cookieSecure = false;
+    public bool $cookieSecure = true;
 
     /**
      * --------------------------------------------------------------------------
@@ -316,7 +316,7 @@ class App extends BaseConfig
      *
      * @deprecated use Config\Cookie::$samesite property instead.
      */
-    public ?string $cookieSameSite = 'Lax';
+    public ?string $cookieSameSite = 'None';
 
     /**
      * --------------------------------------------------------------------------
