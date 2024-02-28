@@ -13,19 +13,13 @@
         </small>
     </div>
 </div>
-<form action="/widgets/exec/<?=esc($widget->code)?>?action=view" method="post">
-    <button type="submit">send</button>
-    <input type="">
-</form>
 <script>
 $(function(){
     //閲覧数をカウント
-    postData("/widgets/exec/<?=esc($widget->code)?>?action=view",{csrf_token : '<?=$csrf_token?>'});
+    postData("/widgets/exec/<?=esc($widget->code)?>?action=view",{});
     //フィードバック送信
     $(".feedback_button").click(function(){
-        postData("/widgets/exec/<?=esc($widget->code)?>?action=answer&param="+$(this).data("answer"),{
-            csrf_token : '<?=$csrf_token?>'
-        },function(data){
+        postData("/widgets/exec/<?=esc($widget->code)?>?action=answer&param="+$(this).data("answer"),{},function(data){
             $("#feedback").html("フィードバックいただきありがとうございます");
             var res = JSON.parse(data);
             $("#all_count").html(res.data.all_count);
