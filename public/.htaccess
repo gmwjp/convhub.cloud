@@ -44,9 +44,6 @@ Options -Indexes
 	ErrorDocument 404 index.php
 </IfModule>
 <IfModule mod_headers.c>
-    Header set Access-Control-Allow-Origin "*"
-</IfModule>
-<IfModule mod_headers.c>
     Header edit Set-Cookie ^(.*)$ $1;SameSite=None;Secure
 </IfModule>
 # Disable server signature start
