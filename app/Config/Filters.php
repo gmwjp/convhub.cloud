@@ -44,10 +44,10 @@ class Filters extends BaseConfig
     */
     // �O���[�o���t�B���^�̐��`
     public array $globals = [
-        //  'before' => [
-        //      'csrf' => ['except' => []]
-        //  ],
-        //  'after'  => []
+         'before' => [
+             'csrf' => ['except' => []]
+         ],
+         'after'  => []
     ];
 
 
@@ -77,7 +77,7 @@ class Filters extends BaseConfig
 
     public function __construct()
     {
-        $this->globals["before"]["csrf"]["except"][] = 'widgets/exec/*';
+        //$this->globals["before"]["csrf"]["except"][] = 'widgets/exec/*';
         // $apiConfig = new ApiConfig();
         // $this->globals['before']['csrf']['except'] = $apiConfig->UriList();
 

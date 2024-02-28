@@ -98,11 +98,6 @@ class Widgets extends _MyController {
 		$widget = $this->model("Widgets")->where("code",$code)->last();
 		if($widget){
 			$this->set("widget",$widget);
-			
-			$this->set("csrf_token",$csrf_token = bin2hex(random_bytes(32)));
-			writeLog("csrf_token:".$csrf_token,"critical");
-			session()->set('csrf_token', $csrf_token);
-
 			return $this->view("/widgets/show","widget");
 		} else {
 			print "widgetが見つかりません";
@@ -120,13 +115,11 @@ class Widgets extends _MyController {
 			unset($dat);
 			$dat["id"] = $widget->id;
 			if(request()->getGet("action") == "view"){
-				writeLog(session()->get("csrf_token").":".request()->getPost("csrf_token"),"critical");
 				$dat["view_count"] = $widget->view_count+1;
 				$widget_id = $this->model("Widgets")->write($dat);
 				$this->library("Api")->success();
 			}
 			if(request()->getGet("action") == "answer"){
-				writeLog(session()->get("csrf_token").":".request()->getPost("csrf_token"),"critical");
 				if(request()->getGet("param") == "yes"){
 					$dat["yes_count"] = $widget->yes_count+1;
 				} else if(request()->getGet("param") == "no"){
