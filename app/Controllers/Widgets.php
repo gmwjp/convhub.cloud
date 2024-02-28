@@ -99,9 +99,9 @@ class Widgets extends _MyController {
 		if($widget){
 			$this->set("widget",$widget);
 			
-			$this->set("csrfToken",$csrfToken = bin2hex(random_bytes(32)));
-			writeLog("csrfToken","critical");
-			session()->set('csrf_token', $csrfToken);
+			$this->set("csrf_token",$csrf_token = bin2hex(random_bytes(32)));
+			writeLog("csrf_token","critical");
+			session()->set('csrf_token', $csrf_token);
 
 			return $this->view("/widgets/show","widget");
 		} else {
