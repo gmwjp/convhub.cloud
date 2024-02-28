@@ -19,7 +19,6 @@ $(function(){
     postData("/widgets/exec/<?=esc($widget->code)?>?action=view",{});
     //フィードバック送信
     $(".feedback_button").click(function(){
-        alert("test");
         postData("/widgets/exec/<?=esc($widget->code)?>?action=answer&param="+$(this).data("answer"),{},function(data){
             $("#feedback").html("フィードバックいただきありがとうございます");
             var res = JSON.parse(data);
