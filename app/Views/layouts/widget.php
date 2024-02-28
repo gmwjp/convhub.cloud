@@ -29,6 +29,7 @@
 				dataType: 'json',
 				success: function(data) {
 					csrf_token_value = data.value;
+					console.log("token:"+csrf_token_value);
 					$('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
 				},
 				error: function() {
