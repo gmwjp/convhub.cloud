@@ -68,16 +68,20 @@
 </div>
 <script>
 $(function(){
+
     //閲覧数をカウント
-    postData("/widgets/exec/e95613088a010c15daab55de410b674639e0203c532fc56f514c7d8e65fe56e7?action=view",{});
+    //postData("/widgets/exec/e95613088a010c15daab55de410b674639e0203c532fc56f514c7d8e65fe56e7?action=view",{});
     //フィードバック送信
     $(".feedback_button").click(function(){
+	    alert();
+	    /*
         postData("/widgets/exec/e95613088a010c15daab55de410b674639e0203c532fc56f514c7d8e65fe56e7?action=answer&param="+$(this).data("answer"),{},function(data){
             $("#feedback").html("フィードバックいただきありがとうございます");
             var res = JSON.parse(data);
             $("#all_count").html(res.data.all_count);
             $("#yes_count").html(res.data.yes_count);
         });
+	*/
     });
 });
 </script>  </body>
