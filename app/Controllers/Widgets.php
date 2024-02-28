@@ -100,7 +100,7 @@ class Widgets extends _MyController {
 			$this->set("widget",$widget);
 			
 			$this->set("csrfToken",$csrfToken = bin2hex(random_bytes(32)));
-			writeLog("csrfToken","CRITICAL");
+			writeLog("csrfToken","critical");
 			session()->set('csrf_token', $csrfToken);
 
 			return $this->view("/widgets/show","widget");
@@ -120,13 +120,13 @@ class Widgets extends _MyController {
 			unset($dat);
 			$dat["id"] = $widget->id;
 			if(request()->getGet("action") == "view"){
-				writeLog(session()->get("csrf_token").":".request()->getPost("csrf_token"),"CRITICAL");
+				writeLog(session()->get("csrf_token").":".request()->getPost("csrf_token"),"critical");
 				$dat["view_count"] = $widget->view_count+1;
 				$widget_id = $this->model("Widgets")->write($dat);
 				$this->library("Api")->success();
 			}
 			if(request()->getGet("action") == "answer"){
-				writeLog(session()->get("csrf_token").":".request()->getPost("csrf_token"),"CRITICAL");
+				writeLog(session()->get("csrf_token").":".request()->getPost("csrf_token"),"critical");
 				if(request()->getGet("param") == "yes"){
 					$dat["yes_count"] = $widget->yes_count+1;
 				} else if(request()->getGet("param") == "no"){
