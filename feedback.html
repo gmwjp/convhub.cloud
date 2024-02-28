@@ -1,0 +1,86 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Feedback</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+    @media (prefers-color-scheme: light) {
+      body {
+        background-color: #ffffff; /* 明るい背景色 */
+        color: #000000; /* 暗いテキスト色 */
+      }
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #343a40; /* Bootstrapのダークテーマの背景色に合わせた */
+        color: #ffffff; /* 明るいテキスト色 */
+      }
+    }
+    </style>
+	<script>
+		var csrf_token_name = 'csrf_test_name';
+		var csrf_token_value = '719d66c37d7ac4db9a18f15e10950dcd';
+		function postData(url,data,done_func=null,fail_func=null){
+			$.ajax({
+				url: '/widgets/get_token',
+				method: 'GET',
+				dataType: 'json',
+				success: function(data) {
+					csrf_token_value = data.value;
+					$('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
+				},
+				error: function() {
+					console.error('CSRF取得エラー');
+				}
+			}).done(function(){
+				data[csrf_token_name] = csrf_token_value;
+				$.post(url,data).done(function(data, textStatus, jqXHR) {
+					csrf_token_value = jqXHR.getResponseHeader('X-CSRF-TOKEN');
+					$('input[name="' + csrf_token_name + '"]').val(csrf_token_value);
+					if(done_func) done_func(data);
+				}).fail(function(data){
+					if(fail_func) fail_func(data);
+				});
+			});
+		}
+	</script>
+  </head>
+  <body>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+	<div class="text-center">
+    <div id="feedback"  class="mt-3">
+        <div>この記事は役に立ちましたか？</div>
+        <div class="mt-2">
+            <button type="button" class="btn btn-dark btn-sm feedback_button" style="width:100px;" data-answer="yes" id="yes_button">はい</button>
+            <button type="button" class="btn btn-secondary btn-sm ms-3 feedback_button" style="width:100px;" data-answer="no" id="no_button">いいえ</button>
+        </div>
+    </div>
+    <div class="mt-2 text-secondary">
+        <small>
+            <span id="all_count">12</span>人中
+            <span id="yes_count">10</span>人がこの記事が役に立ったと言っています
+        </small>
+    </div>
+</div>
+<script>
+$(function(){
+
+    //閲覧数をカウント
+    //postData("/widgets/exec/e95613088a010c15daab55de410b674639e0203c532fc56f514c7d8e65fe56e7?action=view",{});
+    //フィードバック送信
+    $(".feedback_button").click(function(){
+	$.post("https://convhub.site/widgets/exec/e95613088a010c15daab55de410b674639e0203c532fc56f514c7d8e65fe56e7?action=answer&param="+$(this).data("answer"),{},function(){
+            $("#feedback").html("フィードバックいただきありがとうございます");
+	console.log(data);
+            var res = JSON.parse(data);
+            $("#all_count").html(res.data.all_count);
+            $("#yes_count").html(res.data.yes_count);	
+        });
+    });
+});
+</script>  </body>
+</html>
