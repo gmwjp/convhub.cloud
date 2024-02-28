@@ -46,10 +46,12 @@ Options -Indexes
 <IfModule mod_headers.c>
     Header set Access-Control-Allow-Origin "*"
 </IfModule>
-<LocationMatch "^/widgets/show/.+$">
-	# X-Frame-Optionsヘッダーを無効にする
-	Header always set X-Frame-Options ""
-</LocationMatch>
+# URLが/widgets/show/に続く任意の文字列に一致する場合
+RewriteCond %{REQUEST_URI} ^/widgets/show/.+
+# 条件に一致した場合、環境変数を設定
+RewriteRule ^ - [E=ALLOW_FRAME:1]
+# 環境変数ALLOW_FRAMEが設定されている場合、X-Frame-Optionsを空に設定
+Header always set X-Frame-Options "" env=ALLOW_FRAME
 
 # Disable server signature start
 	ServerSignature Off
