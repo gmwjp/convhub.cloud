@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
 	<body>
-	<?=$content?>
+	test
   </body>
 </html>
