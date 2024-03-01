@@ -167,7 +167,16 @@ class Forms extends _MyController {
 							$items_temp->results[$key]->detail = $this->library("Notion")->get_data($form->notion_secret,$item->id);
 						}
 						$this->set("items",$items_temp);
-						return $this->view("/forms/show/confirm","form");		
+						//ファイルをTEMPフォルダへ移動
+						$attaches = [];
+						foreach (request()->getPost("files")["name"] as $key=>$file) {
+							$path_parts = pathinfo($file);
+							$temp_path = FCPATH."temp/files/".session_id()."file_".$key.".".$path_parts["extension"];	//FCPATHは「publicフォルダのパス」
+							rename(request()->getPost("files")["tmp_name"][$key],$temp_path);
+							$attaches[] = ["fname"=>$file,"path"=>$temp_path];
+						}
+						$this->set("attaches",$attaches);
+						return $this->view("/forms/show/confirm","form");
 					} else {
 						//バリデーションエラー
 						return $this->view("/forms/show/input","form");
@@ -187,6 +196,7 @@ class Forms extends _MyController {
 						//バリデーションOK・データ保存
 						request()->addPost("subform_id",request()->getGet("subform"));
 						request()->addPost("form_id",$form->id);
+						request()->addPost("token",$this->model("forms")->createCode());
 						//基本データ
 						$ticket_id = $this->model("Tickets")->write(request()->getPost());
 						//追加項目
@@ -224,6 +234,21 @@ class Forms extends _MyController {
 									}
 								}
 							}
+						}
+						//添付ファイル処理
+						if(request()->getPost("files")){
+							$attaches = [];
+							foreach (request()->getPost("files") as $file) {
+								$path_parts = pathinfo($file);	//元ファイルから拡張子を取得
+								$token = $this->model("Forms")->createCode();	//ファイル名は生成したトークンとする
+								rename($file, WRITEPATH."file/attach/".$token.".".$path_parts["extension"]);	//tempからwritableフォルダへ移動
+								$attaches[] = $token.".".$path_parts["extension"];
+							}
+							//基本データに添付ファイル情報を反映
+							unset($dat);
+							$dat["id"] = $ticket_id;
+							$dat["attaches"] = json_encode($attaches);
+							$this->model("Tickets")->write($dat);
 						}
 						//リダイレクトして完了画面を表示
 						$this->redirect("/forms/show/complate/".$code);

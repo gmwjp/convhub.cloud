@@ -106,6 +106,17 @@
                             <div><?=nl2br(esc(request()->getPost("body")))?></div>
                             <input type="hidden" name="body" value="<?=esc(request()->getPost("body"))?>">
                         </div>
+                        <?if($attaches){?>
+                            <div class="form-group">
+                                <label>添付ファイル</label>
+                                <div>
+                                    <?foreach ($attaches as $attach){ ?>
+                                        <?//ひとまず表示はファイル名のみにしております?>
+                                        <?=$attach["fname"]?><input type="hidden" name="files[]" value="<?=$attach["path"]?>"><br>
+                                    <?}?>
+                                </div>
+                            </div>
+                       <?}?>
                         <div class="form-group">
                             <div class="text-center">
                                 <button type="submit" class="btn btn-dark" name="execute" value="on">送信する</button>
