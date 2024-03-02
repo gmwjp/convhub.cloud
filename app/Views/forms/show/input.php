@@ -1,6 +1,6 @@
 <div class="row mt-4">
     <div class="col-md-8 col-sm-12">
-        <form method="post" action="/forms/show/confirm/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>">
+        <form method="post" action="/forms/show/confirm/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>" enctype="multipart/form-data">
             <div class="card">
                 <div class="card-header">
                     <h4>問い合わせを行う</h4>
