@@ -6,7 +6,7 @@ abstract class _MyController extends BaseController
     function initSystem(){
         parent::initSystem();
 		//SSL通信の制御
-		if($_SERVER["HTTP_HOST"] != "guides.site"){
+		if($_SERVER["HTTP_HOST"] != "convhub.cloud"){
 			//本番サーバー以外はSSL認証を無視
 			$defaultContextOptions = [
 				'ssl' => [

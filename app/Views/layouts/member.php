@@ -5,7 +5,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="pinterest" content="nopin" />
-		<meta name="description" content="OP-NET" />
+		<meta name="description" content="ConvHUB" />
 		<?if(!empty($meta)){?>
 			<?foreach($meta as $key => $val){?>
 			<?foreach($val as $key2 => $val2){?>
@@ -60,7 +60,7 @@
             <div class="container">
                 <!-- logo -->
                 <a href="/" class="navbar-brand mr-lg-5">
-                    OP-NET
+                    ConvHUB
                 </a>
 				<?php
 				/*
@@ -100,7 +100,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-3">
-						<?=date("Y")?> © <a href="/">OP-NET</a>
+						<?=date("Y")?> © <a href="/">ConvHUB</a>
 					</div>
 					<div class="col-md-9">
 						<div class="text-md-right footer-links d-none d-md-block">

@@ -1,8 +1,6 @@
-<?=$this->element("page_title")?>
-<div class="alert">
-    ログインまたは会員登録を行ってください。
-</div>
-<div class="row">
+<div class="row mt-3">
+    <?php
+    /*
     <div class="col-md-6 col-sm-12">
         <form method="post" action="/users/signup">
             <div class="card">
@@ -27,11 +25,13 @@
             <?=csrf()?>
         </form>
     </div>
-    <div class="col-md-6 col-sm-12">
+    */
+    ?>
+    <div class="col-md-6 col-sm-12 offset-md-3">
         <form method="post" action="/users/login?from=<?=esc(request()->getGet("fromurl"))?>">
             <div class="card">
                 <div class="card-header">
-                    <h4>ログイン（既に会員の方）</h4>
+                    <h4>ログイン</h4>
                 </div>
                 <div class="card-body">
                     <div class="form-group">

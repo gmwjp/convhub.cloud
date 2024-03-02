@@ -153,7 +153,6 @@
                 </div>
             </div>
             <?=csrf()?>
-            
         </form>
     </div>
     <div class="col-md-4 col-sm-12">

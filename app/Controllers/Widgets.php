@@ -27,6 +27,7 @@ class Widgets extends _MyController {
 		$widget = $this->model("Widgets")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
 		if($widget){
 			$this->set("widget",$widget);
+			$this->set("form",$this->model("Forms")->find($widget->id));
 			return $this->view("/widgets/detail");
 		} else {
 			$this->redirect("/statics/error");
@@ -40,6 +41,7 @@ class Widgets extends _MyController {
 		}
 		$this->set("section",$section);
 		$this->hasUserSession();
+		$this->set("forms",$this->model("Teams")->getForms($this->my_user->team_id));
 		//実行フラグを確認
 		if(request()->getPost("execute")){
 			//バリデーションチェック
@@ -69,6 +71,7 @@ class Widgets extends _MyController {
 		$widget = $this->model("Widgets")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
 		if($widget){
 			$this->set("widget",$widget);
+			$this->set("forms",$this->model("Teams")->getForms($this->my_user->team_id));
 			if(request()->getPost("execute")){
 				if($this->model("Widgets")->validates("edit")){
 					//保存
@@ -91,13 +94,14 @@ class Widgets extends _MyController {
 		$widget = $this->model("Widgets")->where("team_id",$this->my_user->team_id)->where("id",$id)->delete();
 		//リダイレクト
 		session()->setFlashdata("message","ウィジェットを削除しました");
-		$this->redirect("/widgets/index");
+		$this->redirect("/widgets/index/".$widget->section);
 	}
 	function show($code){
 		
 		$widget = $this->model("Widgets")->where("code",$code)->last();
 		if($widget){
 			$this->set("widget",$widget);
+			$this->set("form",$this->model("Forms")->find($widget->id));
 			return $this->view("/widgets/show","widget");
 		} else {
 			print "widgetが見つかりません";

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <MailConfig>
-  <Subject>[OP-NET]会員登録のお知らせ</Subject>
+  <Subject>[ConvHUB]会員登録のお知らせ</Subject>
   <Body>
-メールアドレスを確認しました。まだOP-NET登録は完了していません。
+メールアドレスを確認しました。まだConvHUB登録は完了していません。
 以下のURLより登録を続けて下さい。
 URLが途中で改行されている場合は、一行にしてURLにアクセスして下さい。
 {url}
@@ -10,7 +10,7 @@ URLが途中で改行されている場合は、一行にしてURLにアクセ�
 ※このメールの内容に心当たりがない場合は、本メールの破棄をお願い致します。
 ※本メールは送信専用です。内容について疑問点などございましたら、下記URLをご確認ください。
 --
-OP-NET
+ConvHUB
 https://opnet.site
 </Body>
 </MailConfig>

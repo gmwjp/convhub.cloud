@@ -100,7 +100,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-md-3">
-						<?=date("Y")?> © <a href="/">OP-NET</a>
+						<?=date("Y")?> © <a href="/">ConvHUB</a>
 					</div>
 					<div class="col-md-9">
 						<div class="text-md-right footer-links d-none d-md-block">

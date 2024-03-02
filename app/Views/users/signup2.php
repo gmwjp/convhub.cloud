@@ -1,6 +1,6 @@
 <?=$this->element("page_title")?>
 <div class="alert">
-	OP-NETの会員登録を行います。<br>
+	ConvHUBの会員登録を行います。<br>
 	<a href="/statics/term">利用規約</a>の確認をお願いします。<br>
 </div>
 <div class="alert border" style="height:300px;overflow:scroll;">

@@ -10,7 +10,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="pinterest" content="nopin" />
 		<meta name="description" content="" />
-		<title><?if(!empty($page_title)){?><?=esc($page_title)?> | <?}?>GUIDES</title>
+		<title><?if(!empty($page_title)){?><?=esc($page_title)?> | <?}?>ConvHUB</title>
 		<link rel="shortcut icon" href="/assets/images/favicon.ico">
 		<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style" />
@@ -74,6 +74,9 @@
 			}
 		</script>
 		<style>
+			.modal-dialog.modal-custom {
+				max-width: 800px; /* 例として800pxに設定 */
+			}
 			.none {
 				display:none;
 			}
@@ -92,17 +95,6 @@
         <div class="wrapper">
 			<?$yet_place_num = 0?>
 			<?if(!empty($my_user)){?>
-				<?if(@$yet_place_nums){?>
-					<?foreach($yet_place_nums as $event_id => $num){?>
-						<?$yet_place_num += $num?>
-					<?}?>
-				<?}?>
-				<?if(!empty($reset_place_nums) && $reset_place_nums){?>
-					<?foreach($reset_place_nums as $event_id => $num){?>
-						<?@$r_place_num += $num?>
-					<?}?>
-				<?}?>
-
 			<!-- ========== Left Sidebar Start ========== -->
 			<div class="left-side-menu">
 				<a href="/" class="logo text-center logo-light">
@@ -161,7 +153,7 @@
 					<div class="h-100" id="left-side-menu-container" data-simplebar>
 						<!--- Sidemenu -->
 						<ul class="metismenu side-nav">
-							<li class="side-nav-title side-nav-item">GUIDESに参加する</li>
+							<li class="side-nav-title side-nav-item">ConvHUBに参加する</li>
 							<li class="side-nav-item">
 								<a href="/users/login" class="side-nav-link">
 									<i class="fal fa-user-plus mr-2"></i>
@@ -174,9 +166,6 @@
 									<span> GUIDESについて </span>
 								</a>
 								<ul class="side-nav-second-level" aria-expanded="false">
-									<li>
-										<a href="/statics/security">セキュリティの取り組み</a>
-									</li>
 									<li>
 										<a href="/statics/term">利用規約></a>
 									</li>
@@ -281,7 +270,6 @@
 	</body>
 </html>
 <script <?=csp_script_nonce_test()?>>
-lazyload();
 <?if(session()->getFlashdata('message')){?>
 	info("<?=session()->getFlashdata('message')?>");
 <?}?>

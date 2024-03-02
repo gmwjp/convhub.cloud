@@ -15,7 +15,7 @@ class Tickets extends _MyController {
 		checkId($ticket_id);
 		$ticket = $this->model("Tickets")->find($ticket_id);
 		if($ticket){
-
+			$this->set("templates",$this->model("Teams")->getTemplates($this->my_user->team_id));
 			$this->set("form",$form = $this->model("Forms")->find($ticket->form_id));	
 			if($ticket->subform_id){
 				$this->set("subform",$this->model("Subforms")->find($ticket->subform_id));	

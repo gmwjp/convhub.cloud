@@ -5,7 +5,8 @@
             <button type="submit" class="btn btn-dark" name="execute" value="on">保存する</button>
         </div>
         <div class="mt-2">
-            <a href="/widgets/index" class="btn btn-link">一覧に戻る</a>
+            <a href="/widgets/index/<?=esc($section)?>" class="btn btn-link">一覧に戻る</a>
         </div>
     </div>
+    <?=csrf()?>
 </form>

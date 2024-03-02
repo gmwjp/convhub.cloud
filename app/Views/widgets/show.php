@@ -11,6 +11,11 @@
         <span id="yes_count"><?=esc($widget->yes_count)?></span>人がこの記事が役に立ったと言っています
     </small>
 </div>
+<?if($form){?>
+<div class="mt-3">
+    <div><small>他に質問がございましたら、<a href="/forms/show/input/<?=esc($form->code)?>" target="_blank">お問い合わせ</a>ください</small></div>
+</div>
+<?}?>
 <script>
 $(function(){
     //閲覧数をカウント

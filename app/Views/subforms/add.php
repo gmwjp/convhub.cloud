@@ -8,5 +8,6 @@
             <a href="/forms/detail/<?=esc($form->id)?>" class="btn btn-link">一覧に戻る</a>
         </div>
     </div>
+    <?=csrf()?>
 </form>
 <?=$this->element("template/subform")?>

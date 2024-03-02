@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <MailConfig>
-  <Subject>[OP-NET]パスワード再設定</Subject>
+  <Subject>[ConvHUB]パスワード再設定</Subject>
   <Body>
-OP-NETよりお知らせです。
+ConvHUBよりお知らせです。
 
 パスワード再設定用URLを送信します。
 下記、再設定URLより、パスワードの再設定を行って下さい。
@@ -10,7 +10,7 @@ OP-NETよりお知らせです。
 
 ※このメールの内容に心当たりがない場合は、本メールの破棄をお願い致します。
 --
-OP-NET
+ConvHUB
 https://opnet.site
 </Body>
 </MailConfig>

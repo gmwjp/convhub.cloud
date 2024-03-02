@@ -18,13 +18,22 @@
         </div>
     </div>
 </div>
+<div class="form-group">
+    <div class="item-title">
+    問い合わせフォームへのリンク
+
+    </div>
+    <div>
+        <?if($form){?><?=esc($form->name)?><?}?>
+    </div>
+</div>
 <div class="text-center">
     <div class="mt-2">
         <button type="button" data-action="/widgets/edit/<?=esc($section)?>/<?=esc($widget->id)?>" class="btn btn-outline-secondary href">編集する</button>
         <button type="button" data-confirm="このデータを削除してよろしいですか？" data-action="/widgets/del/<?=esc($widget->id)?>" class="btn btn-outline-danger href">削除する</button>
     </div>
     <div class="mt-2">
-        <a href="/widgets/index" class="btn btn-link">一覧に戻る</a>
+        <a href="/widgets/index/<?=esc($widget->section)?>" class="btn btn-link">一覧に戻る</a>
     </div>
 </div>
 <script>

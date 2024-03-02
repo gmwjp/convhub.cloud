@@ -17,7 +17,7 @@ class App extends BaseConfig
      *
      *    http://example.com/
      */
-    public string $baseURL = 'https://opnet.site/';
+    public string $baseURL = 'https://convhub.cloud/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
