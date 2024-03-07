@@ -1,7 +1,7 @@
 <?
 namespace App\Libraries;
 class Notion {
-	function removeEmbed($api_key, $page_id, $embed_url_prefix) {
+	function removeWidget($api_key, $page_id, $embed_url_prefix) {
 		// ページのブロックをリストするNotion APIエンドポイント
 		$blocks_list_url = 'https://api.notion.com/v1/blocks/' . $page_id . '/children';
 		$ch = curl_init($blocks_list_url);
@@ -14,7 +14,7 @@ class Notion {
 		$blocks = json_decode($response, true)['results'];
 	
 		foreach ($blocks as $block) {
-			if ($block['type'] == 'embed' && strpos($block['embed']['url'], $embed_url_prefix) === 0) {
+			if ($block['type'] == 'embed' && strpos($block['embed']['url'], $embed_url_prefix) !== -1) {
 				// 一致するembedブロックが見つかった場合、そのブロックを削除
 				$delete_url = 'https://api.notion.com/v1/blocks/' . $block['id'];
 				$ch_delete = curl_init($delete_url);
@@ -29,7 +29,7 @@ class Notion {
 		}
 		curl_close($ch);
 	}
-	function pushEmbed($api_key,$page_id,$embed_url){
+	function pushWidget($api_key,$page_id,$embed_url){
 		$data = [
 			'parent' => ['type' => 'page_id', 'page_id' => $page_id],
 			'properties' => new \stdClass(), // Notion API requires an empty object for properties when creating a block
@@ -38,7 +38,7 @@ class Notion {
 					'object' => 'block',
 					'type' => 'embed',
 					'embed' => [
-						'url' => $embed_url
+						'url' => "https".$_SERVER["HTTP_HOST"].$embed_url
 					]
 				]
 			]

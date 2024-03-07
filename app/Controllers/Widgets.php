@@ -152,9 +152,9 @@ class Widgets extends _MyController {
 									];
 									$this->model("Widgets")->write($dat);
 									//ゴミがあったら削除
-									$this->library("Notion")->removeEmbed($form->notion_secret, $dat["notion_page_id"], "https://".$_SERVER["HTTP_HOST"]."/widgets/show/");
+									$this->library("Notion")->removeWidget($form->notion_secret, $dat["notion_page_id"], "/widgets/show/");
 									//ウィジェットを設置
-									$this->library("Notion")->pushEmbed($form->notion_secret, $dat["notion_page_id"], "https://".$_SERVER["HTTP_HOST"]."/widgets/show/".$dat["code"]);
+									$this->library("Notion")->pushWidget($form->notion_secret, $dat["notion_page_id"],"/widgets/show/".$dat["code"]);
 									$count++;    
 									sleep(1);
 								} else {
