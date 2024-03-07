@@ -6,13 +6,13 @@ class Templates extends _MyController {
 	}
 	function index(){
 		$this->title("テンプレート一覧");
-		$this->hasUserSession();
+		$this->hasPermission();
 		$this->set("templates",$templates = $this->model("Teams")->getTemplates($this->my_user->team_id));
 		return $this->view("/templates/index");
 	}
 	function detail($id){
 		$this->title("テンプレート詳細");
-		$this->hasUserSession();
+		$this->hasPermission();
 		checkId($id);
 		$template = $this->model("Templates")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
 		if($template){
@@ -24,7 +24,7 @@ class Templates extends _MyController {
 	}
 	function add(){
 		$this->title("テンプレート新規追加");
-		$this->hasUserSession();
+		$this->hasPermission();
 		//実行フラグを確認
 		if(request()->getPost("execute")){
 			//バリデーションチェック
@@ -42,7 +42,7 @@ class Templates extends _MyController {
 	}
 	function edit($id){
 		$this->title("テンプレート編集");
-		$this->hasUserSession();
+		$this->hasPermission();
 		checkId($id);
 		$template = $this->model("Templates")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
 		if($template){
@@ -64,7 +64,7 @@ class Templates extends _MyController {
 		}
 	}
 	function del($id){
-		$this->hasUserSession();
+		$this->hasPermission();
 		checkId($id);
 		$template = $this->model("Templates")->where("team_id",$this->my_user->team_id)->where("id",$id)->delete();
 		//リダイレクト

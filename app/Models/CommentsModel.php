@@ -6,6 +6,9 @@ class CommentsModel extends _MyModel {
 		"add" => [
             "body" => [
 				"rules" => 'required|max_length[10000]'
+			],
+			"files" => [
+				"rules" => 'file_size_multiple[10]'
 			]
         ]
 	];

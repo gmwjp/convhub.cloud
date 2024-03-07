@@ -32,6 +32,43 @@ class UsersModel extends _MyModel {
 			"password" => [
 				"rules" => 'required'
 			]			
+		],
+		"edit" => [
+			"nickname" => [
+				"rules" => 'required|max_length[32]'
+			]			
+		],
+		"edit_mail" => [
+			"mail" => [
+				"rules" => 'required|valid_email'
+			]			
+		],
+		"edit_pass" => [
+			"password" => [
+				"rules" => 'min_length[4]|max_length[32]|regex_match[/^[a-zA-Z0-9!#$%&()*+,.:;=?@^_|~ -]+$/]'
+			],
+			"password_confirm" => [
+				"rules" => 'required|matches[password]',
+				"matches" => [
+					"is_unique" => "パスワードに相違があります"
+				]
+			],			
+		],
+		"manage_edit" => [
+			"nickname" => [
+				"rules" => 'required|max_length[32]'
+			],
+			"mail" => [
+				"rules" => 'required|valid_email'
+			]
+		],
+		"invite" => [
+			"nickname" => [
+				"rules" => 'required|max_length[32]'
+			],
+			"mail" => [
+				"rules" => 'required|valid_email'
+			]
 		]
 	];
 }

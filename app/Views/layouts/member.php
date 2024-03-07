@@ -13,7 +13,7 @@
 			<?}?>
 			<?}?>
 		<?}?>
-		<title><?if(!empty($page_title)){?><?=$page_title?> | <?}?>GUIDES</title>
+		<title><?if(!empty($page_title)){?><?=$page_title?> | <?}?>ConvHUB</title>
 		<link rel="shortcut icon" href="/assets/images/favicon.ico">
 		<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style" />
@@ -22,8 +22,8 @@
 		<link href="/assets/css/pictsquare.css" rel="stylesheet" medit="screen">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
-		<script src="/assets/js/opnet.js"></script>
-		<script src="/assets/js/notifIt.min.js"></script>
+		<script <?=csp_script_nonce_test()?> src="/assets/js/convhub.js?d=20200510_6"></script>
+		<script <?=csp_script_nonce_test()?> src="/assets/js/notifIt.min.js"></script>
 		<script type="text/javascript" src="https://ajaxzip3.github.io/ajaxzip3.js" charset="utf-8"></script>
 		<script src="https://widget.univapay.com/client/checkout.js"></script>
 		<script>
@@ -119,7 +119,7 @@
         <script src="/assets/js/app.min.js"></script>
     </body>
 </html>
-<script>
+<script <?=csp_script_nonce_test()?>>
 <?if(session()->getFlashdata('message')){?>
 	info("<?=session()->getFlashdata('message')?>");
 <?}?>
@@ -127,6 +127,10 @@
 	success("<?=session()->getFlashdata('success')?>");
 <?}?>
 <?if(session()->getFlashdata('error')){?>
-	error("<?=session()->getFlashdata('error')?>");
+	if("<?=session()->getFlashdata('error')?>" == "The action you requested is not allowed."){
+		error("画面の有効期限が切れたか、再読み込みなどの許可されない操作が行われました。<br>大変お手数ですが再度実行してください。");
+	} else {
+		error("<?=esc(session()->getFlashdata('error'))?>");
+	}
 <?}?>
 </script>

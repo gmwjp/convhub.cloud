@@ -11,5 +11,8 @@ class TeamsModel extends _MyModel {
 	function getWidgets($team_id,$section){
 		return $this->model("Widgets")->where("team_id",$team_id)->where("section",$section)->orderBy("id","desc")->findAll();
 	}
+	function getUsers($team_id){
+		return $this->model("Users")->where("team_id",$team_id)->orderBy("id","asc")->findAll();
+	}
 }
 ?>

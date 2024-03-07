@@ -1,4 +1,4 @@
-<form method="post" action="/forms/add">
+<form method="post" action="/forms/add" enctype="multipart/form-data">
     <?=$this->element("forms/form")?>
     <div class="text-center">
         <div class="mt-2">

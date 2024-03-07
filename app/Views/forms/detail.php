@@ -1,4 +1,7 @@
 <?=$this->element("page_title")?>
+<div class="text-right">
+    <a href="/forms/show/input/<?=esc($form->code)?>" target="_blank" class="btn btn-outline-secondary">フォームを表示<i class="ml-1 fal fa-external-link"></i></a>
+</div>
 <div class="form-group">
     <div class="item-title">
         フォーム名
@@ -15,6 +18,25 @@
     <?=nl2br(esc($form->body))?>
     </div>
 </div>
+<div class="form-group">
+    <div class="item-title">
+        ロゴ画像
+    </div>
+    <div>
+        <?if(file_exists(dirname(__FILE__)."/../../../public/img/forms/".$form->code.".png")){?>
+            <img src="/img/forms/<?=esc($form->code)?>.png?d=<?=date("YmdHis")?>">
+        <?}?>
+    </div>
+</div>
+<div class="form-group">
+    <div class="item-title">
+        サイトURL
+    </div>
+    <div>
+        <?=setUrlLink($form->url)?>
+    </div>
+</div>
+
 <div class="form-group">
     <div class="item-title">
         設問項目
@@ -53,9 +75,19 @@
     <a href="/subforms/add/<?=esc($form->id)?>" class="btn btn-dark">新規追加</a>
 </div>
 <?if($subforms){?>
-    <?foreach($subforms as $subform){?>
-    <a class="list-group-item list-group-item-action" href="/subforms/detail/<?=esc($subform->id)?>">
-        <?=esc($subform->name)?>
-    </a>
-    <?}?>
+    <table class="mt-2 table" >
+        <tr>
+            <th>サブフォーム名</th>
+            <th></th>
+        </tr>
+        <?foreach($subforms as $subform){?>
+            <tr>
+                <td><a href="/subforms/detail/<?=esc($subform->id)?>"><?=esc($subform->name)?></a></td>
+                <td>
+                    <button type="button" class="btn btn-sm btn-light href" data-action="/subforms/up/<?=esc($subform->id)?>">上へ</button>
+                    <button type="button" class="btn btn-sm btn-light href" data-action="/subforms/down/<?=esc($subform->id)?>">下へ</button>
+                </td>
+            </tr>
+        <?}?>
+    </div>
 <?}?>

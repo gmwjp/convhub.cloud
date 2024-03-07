@@ -22,17 +22,19 @@ class SubformsModel extends _MyModel {
         ]
 	];
     function createValidation($section,$post){
-        if($post["names"]){            
+        if(!empty($post["names"])){            
             foreach($post["names"] as $key => $val){
                 ////POST値の組み立て
                 request()->addPost("names_".$key,$post["names"][$key]);
                 request()->addPost("select_".$key,$post["select"][$key]);
+                request()->addPost("abouts_".$key,$post["abouts"][$key]);
                 if($post["select"][$key] == "radio" || $post["select"][$key] == "checkbox"){
                     request()->addPost("bodies_".$key,$post["bodies"][$key]);
                 }
                 ////バリデーションの組み立て
                 //項目名
                 $this->validate[$section]["names_".$key]["rules"] = "required|max_length[64]";
+                $this->validate[$section]["abouts_".$key]["rules"] = "max_length[255]";
                 //選択肢
                 if($post["select"][$key] == "radio" || $post["select"][$key] == "checkbox"){
                     $this->validate[$section]["bodies_".$key]["rules"] = "required|max_length[1000]";

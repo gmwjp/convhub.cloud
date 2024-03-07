@@ -17,8 +17,6 @@ abstract class _MyController extends BaseController
 			];
 			stream_context_set_default($defaultContextOptions);			
 		}		
-		//APIアクセスの接続元確認
-		$this->checkApiRemoteAddress();
 		//ヘッダ自情報
 		if(session()->get("user")){
 			$my_user = $this->model("users")->find(session()->get("user")->id);
@@ -44,40 +42,20 @@ abstract class _MyController extends BaseController
 	function title($text){
 		$this->set("page_title",$text);
 	}
-	function hasUserSession(){
+	function hasPermission($str=""){
 		if(empty($this->my_user)){
 			$this->redirect("/users/login?fromurl=".$_SERVER["REQUEST_URI"]);
+		} else {
+			if($str != ""){
+				if(!in_array($str,explode(",",$this->my_user->auths))){
+					$this->redirect("/statics/auth_error");
+				}
+			}
 		}
 	}
 	public function view($view,$layout = "default"){
         $data['content'] = view($view.request()->getGet("view"), $this->data);
         return view("layouts/".$layout, $data);
     }
-	//アクセス元のREMOTE_ADDR確認
-	function checkApiRemoteAddress(){
-		if(strpos($_SERVER["REQUEST_URI"],"/api/") !== false){	//apiでのアクセス時のみチェックする
-			//キーを決定
-			$ip = "";
-			if (isset($_SERVER["HTTP_X_REAL_IP"])) {
-				$ip = $_SERVER["HTTP_X_REAL_IP"];
-			} else {
-				$ip = $_SERVER["REMOTE_ADDR"];
-			}
-			$ret = false;
-			for($i=1; $i<=7; $i++){
-				// 複数のプロダクトからアクセスされることを想定
-				if($ip != ""){
-					if(env('remote.addr.'.$i) === $ip || $ip == "::1"){	//自分自身も許可
-						$ret = true;
-						break;
-					}	
-				}
-			}
-			if(!$ret){
-				//API専用のエラー出力
-				$this->library("api")->error("アクセスエラー");
-				exit();	//エラーの場合はここで処理終了する
-			}			
-		}
-	}
+
 }

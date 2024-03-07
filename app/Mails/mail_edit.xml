@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<MailConfig>
+  <Subject>[ConvHUB]メールアドレス変更認証</Subject>
+  <Body>
+メールアドレスの変更認証を受け付けました。まだメールアドレス変更は完了していません。
+以下のURLより登録を続けて下さい。
+URLが途中で改行されている場合は、一行にしてURLにアクセスして下さい。
+{url}
+</Body>
+</MailConfig>

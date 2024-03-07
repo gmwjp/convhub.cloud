@@ -13,13 +13,12 @@
 			<?}?>
 			<?}?>
 		<?}?>
-		<title><?if(!empty($page_title)){?><?=$page_title?> | <?}?>GUIDES</title>
+		<title><?if(!empty($page_title)){?><?=$page_title?> | <?}?>ConvHUB</title>
 		<link rel="shortcut icon" href="/assets/images/favicon.ico">
 		<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style" />
 		<link href="/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style" />
 		<link href="/assets/css/notifIt.css" rel="stylesheet" media="screen">
-		<link href="/assets/css/pictsquare.css" rel="stylesheet" medit="screen">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
 		<script src="/assets/js/opnet.js"></script>
@@ -53,40 +52,38 @@
 				});
 			}
 		</script>
+		<style>
+			.modal-dialog.modal-custom {
+				max-width: 800px; /* 例として800pxに設定 */
+			}
+			.none {
+				display:none;
+			}
+			.item-title {
+				font-weight: bold;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+			.inline {
+				display:inline;
+			}
+		</style>
     </head>
     <body class="loading">
         <!-- NAVBAR START -->
-        <nav class="navbar navbar-expand-lg py-lg-3 navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg py-lg-3 navbar-light bg-light">
             <div class="container">
                 <!-- logo -->
-                <a href="/" class="navbar-brand mr-lg-5">
-                    <?=esc($page_title)?>
+                <a href="/forms/show/input/<?=esc($form->code)?>" class="navbar-brand mr-lg-5 p-0">
+					<?if(file_exists(dirname(__FILE__)."/../../../public/img/forms/".$form->code.".png")){?>
+						<img src="/img/forms/<?=esc($form->code)?>.png?d=<?=date("YmdHis")?>">
+					<?}?>
                 </a>
-				<?php
-				/*
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="mdi mdi-menu"></i>
-                </button>
-
-                <!-- menus -->
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-
-                    <!-- left menu -->
-                    <ul class="navbar-nav mr-auto align-items-center">
-						<li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="/statics/howto">申込方法</a>
-                        </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="/statics/price">料金</a>
-                        </li>
-						<li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="https://support.g-m-w.jp/products/qas/pictsquare" target="_blank">FAQ</a>
-                        </li>
-                    </ul>
-                </div>
-				*/
-				?>
+				<?if($form->url !=""){?>
+				<div class="float-right">
+					<a href="<?=esc($form->url)?>" class="btn btn-secondary btn-sm">サイトに戻る<i class="fal fa-arrow-from-left ml-1"></i></a>
+				</div>
+				<?}?>
             </div>
         </nav>
         <!-- NAVBAR END -->

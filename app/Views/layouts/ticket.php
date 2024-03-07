@@ -13,7 +13,7 @@
 			<?}?>
 			<?}?>
 		<?}?>
-		<title><?if(!empty($page_title)){?><?=$page_title?> | <?}?>GUIDES</title>
+		<title><?if(!empty($page_title)){?><?=$page_title?> | <?}?>ConvHUB</title>
 		<link rel="shortcut icon" href="/assets/images/favicon.ico">
 		<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style" />
@@ -24,7 +24,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="/assets/css/common.css?d=20230519_1" />
-		<script <?=csp_script_nonce_test()?> src="/assets/js/guides.js?d=20200510_6"></script>
+		<script <?=csp_script_nonce_test()?> src="/assets/js/convhub.js?d=20200510_6"></script>
 		<script src="/assets/js/notifIt.min.js"></script>
 		<script type="text/javascript" src="https://ajaxzip3.github.io/ajaxzip3.js" charset="utf-8"></script>
 		<script>
@@ -54,14 +54,32 @@
 				});
 			}
 		</script>
+		<style>
+			.modal-dialog.modal-custom {
+				max-width: 800px; /* 例として800pxに設定 */
+			}
+			.none {
+				display:none;
+			}
+			.item-title {
+				font-weight: bold;
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
+			.inline {
+				display:inline;
+			}
+		</style>
     </head>
     <body class="loading">
         <!-- NAVBAR START -->
         <nav class="navbar navbar-expand-lg py-lg-3 navbar-dark bg-dark">
             <div class="container">
                 <!-- logo -->
-                <a href="/" class="navbar-brand mr-lg-5">
-                    <?=esc($page_title)?>
+				<a href="/forms/show/input/<?=esc($form->code)?>" class="navbar-brand mr-lg-5 p-0">
+					<?if(file_exists(dirname(__FILE__)."/../../../public/img/forms/".$form->code.".png")){?>
+						<img src="/img/forms/<?=esc($form->code)?>.png?d=<?=date("YmdHis")?>">
+					<?}?>
                 </a>
 				<?php
 				/*

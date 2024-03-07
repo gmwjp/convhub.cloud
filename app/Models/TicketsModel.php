@@ -4,14 +4,9 @@ class TicketsModel extends _MyModel {
 	var $table = "tickets";
 	var $params = [
 		"status" => [
-			0 => [
-				"text" => "未対応",
-				"text_mini" => "未",
-				"color" => "danger"
-			],
 			1 => [
-				"text" => "対応中",
-				"text_mini" => "中",
+				"text" => "未解決",
+				"text_mini" => "未",
 				"color" => "warning"
 			],
 			2 => [
@@ -26,8 +21,28 @@ class TicketsModel extends _MyModel {
 			]
 		]
 	];
+	function getNum($param){
+		$this->createParam($param);
+		return $this->countAllResults();
+	}
 	function getIndex($param){
-		return $this->orderBy("id","desc")->findAll(0,100);
+		$this->createParam($param);
+		return $this->orderBy("id","desc")->findAll();
+	}
+	function createParam($param){
+		if(!empty($param["user_id"])){
+			if($param["user_id"] === "NULL"){
+				$this->where("user_id is null");
+			} else {
+				$this->where("user_id",$param["user_id"]);
+			}
+		}
+		if(!empty($param["status"])){
+			$this->where("status",$param["status"]);
+		}
+		if(!empty($param["status"])){
+			$this->where("status",$param["status"]);
+		}
 	}
 	function getFormItems($ticket_id){
 		return $this->model("TicketFormItems")->where("ticket_id",$ticket_id)->findAll();
@@ -37,7 +52,7 @@ class TicketsModel extends _MyModel {
 	}
 	function getOldTickets($ticket_id){
 		$ticket = $this->find($ticket_id);
-		return $this->where("mail",$ticket->mail)->findAll(10);
+		return $this->where("mail",$ticket->mail)->where("id !=",$ticket_id)->findAll(10);
 	}
 	function getAllComments($ticket_id){
 		return $this->model("Comments")->where("ticket_id",$ticket_id)->orderBy("id","asc")->findAll();

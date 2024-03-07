@@ -6,22 +6,25 @@
                     <h4>問い合わせ内容の確認</h4>
                 </div>
                 <div class="card-body">
-                    <?if($items->results){?>
+                    <?if($items && $items->results){?>
                         <div class="form-group" id="helps">
                             以下のヘルプ記事で解決できますか？
-                            <?foreach($items->results as $result){?>
+                            <?foreach($items->results as $key => $result){?>
                             <div class="mt-2">
-                                <a href="<?=esc($result->public_url)?>" target="_blank" class="fw-bold"><?=esc($result->properties->title->title[0]->plain_text)?></a><br>
+                                <a href="<?=esc($result->public_url)?>" target="_blank" data-target="read_<?=esc($key)?>" class="fw-bold notion_links"><?=esc($result->properties->title->title[0]->plain_text)?><i class="ml-1 fal fa-external-link"></i></a><br>
                                 <small class="text-muted"><?=esc(@$result->detail->results[0]->paragraph->rich_text[0]->plain_text)?></small>
+                                <input type="hidden" name="notion_title[]" value="<?=esc($result->properties->title->title[0]->plain_text)?>">
+                                <input type="hidden" name="notion_url[]" value="<?=esc($this->library("Crypt2")->encode($result->url))?>">
+                                <input type="hidden" name="notion_read[]" value="0" id="read_<?=esc($key)?>">
                             </div>
                             <?}?>
                             <div class="text-center mt-4">
-                                <button type="submit" class="btn btn-secondary">はい、解決しました</button>
-                                <button type="button" class="btn btn-secondary" id="no_button">解決できないので問い合わせを送信します</button>
+                                <button type="submit" class="btn btn-secondary mb-1" name="execute" value="answer">はい、解決しました</button>
+                                <button type="button" class="btn btn-secondary mb-1" id="no_button">いいえ、解決できないので問い合わせを送信します</button>
                             </div>
                         </div>
                     <?}?>
-                    <div <?if($items->results){?>class="none"<?}?> id="form">
+                    <div <?if($items && $items->results){?>class="none"<?}?> id="form">
                         <div class="form-group">
                             運営事務局に以下の内容で問い合わせを送信してよろしいですか？
                         </div>
@@ -110,9 +113,9 @@
                             <div class="form-group">
                                 <label>添付ファイル</label>
                                 <div>
-                                    <?foreach ($attaches as $attach){ ?>
-                                        <?//ひとまず表示はファイル名のみにしております?>
-                                        <?=$attach["fname"]?><input type="hidden" name="files[]" value="<?=$attach["path"]?>"><br>
+                                    <?foreach ($attaches as $key => $attach){ ?>
+                                        <?=esc($attach["fname"])?>
+                                        <input type="hidden" name="files[]" value="<?=esc($attach["fname"])?>"><br>
                                     <?}?>
                                 </div>
                             </div>
@@ -139,5 +142,11 @@ $(function(){
         $("#helps").hide();
         $("#form").fadeIn();
     })
+    $('.notion_links').click(function(e) {
+        e.preventDefault();
+        var targetId = $(this).data('target');
+        $('#' + targetId).val('1');
+        window.open($(this).attr('href'), '_blank');
+    });
 });
 </script>

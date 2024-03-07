@@ -7,10 +7,18 @@ class FormsModel extends _MyModel {
 			"name" => [
 				"rules" => 'required|max_length[64]'
             ],
+            "notion_secret" => [
+				"rules" => 'max_length[255]|alpha_numeric'
+            ],
             "body" => [
 				"rules" => 'required|max_length[10000]'
+			],
+            "image" => [
+				"rules" => 'file_size[10]|file_kind[jpg,jpeg,gif,png]'
+			],
+            "url" => [
+				"rules" => 'url'
 			]
-
         ],
         "edit" => [
             "name" => [
@@ -18,6 +26,12 @@ class FormsModel extends _MyModel {
             ],
             "body" => [
 				"rules" => 'required|max_length[10000]'
+			],
+            "image" => [
+				"rules" => 'file_size[10]|file_kind[jpg,jpeg,gif,png]'
+			],
+            "url" => [
+				"rules" => 'url'
 			]
         ],
         "input" => [
@@ -29,14 +43,18 @@ class FormsModel extends _MyModel {
             ],
             "body" => [
 				"rules" => 'required|max_length[10000]'
-			]
+			],
+            "files" => [
+                "rules" => "file_size_multiple[10]"
+            ]
         ]
 	];
     function createValidation($section,$post){
-        if($post["names"]){            
+        if(!empty($post["names"])){            
             foreach($post["names"] as $key => $val){
                 ////POST値の組み立て
                 request()->addPost("names_".$key,$post["names"][$key]);
+                request()->addPost("abouts_".$key,$post["abouts"][$key]);
                 request()->addPost("select_".$key,$post["select"][$key]);
                 if($post["select"][$key] == "radio" || $post["select"][$key] == "checkbox"){
                     request()->addPost("bodies_".$key,$post["bodies"][$key]);
@@ -44,6 +62,8 @@ class FormsModel extends _MyModel {
                 ////バリデーションの組み立て
                 //項目名
                 $this->validate[$section]["names_".$key]["rules"] = "required|max_length[64]";
+                //説明文
+                $this->validate[$section]["abouts_".$key]["rules"] = "max_length[255]";
                 //選択肢
                 if($post["select"][$key] == "radio" || $post["select"][$key] == "checkbox"){
                     $this->validate[$section]["bodies_".$key]["rules"] = "required|max_length[1000]";

@@ -60,13 +60,34 @@ class CustomRules
 		if($length == 0){
 			return true;
 		} else {
-			if($param < (filesize($string["tmp_name"]) / 1000)){
+			if($param < (filesize($string["tmp_name"]) / 1000 / 1000)){
 				return false;
 			} else {
 				return true;
 			}
 		}
 	}
+	function file_size_multiple($files, $maxSizeInKb) {
+		$totalSize = 0;
+		// ファイル情報が配列として渡されるため、それぞれのファイルサイズを合計する
+		if(@$files["name"]){
+			foreach ($files["name"] as $index => $name) {
+				// ファイルが正常にアップロードされたかをチェック
+				if ($files['error'][$index] == 0) {
+					$totalSize += filesize($files["tmp_name"][$index]);
+				}
+			}		
+			// 合計サイズが最大サイズを超えているかチェック（キロバイト単位）
+			if ($totalSize / 1000 / 1000 > $maxSizeInKb) {
+				return false; // 合計サイズが最大値を超えている場合はfalseを返す
+			} else {
+				return true; // 合計サイズが許容範囲内であればtrueを返す
+			}	
+		} else {
+			return true;
+		}
+	}
+
 	function file_required($string){
 		$length = @strlen($string["name"]);
 		if($length == 0){

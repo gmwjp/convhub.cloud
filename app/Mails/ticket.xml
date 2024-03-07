@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<MailConfig>
+  <Subject>[{form_name}]問い合わせ送信確認</Subject>
+  <Body>
+問い合わせを送信しました。
+
+送信いただいた内容は運営事務局で確認し、回答致します。
+内容によっては回答に時間がかかる場合や、回答できない可能性がありますことをご了承ください。
+
+■問い合わせ内容
+{info}
+</Body>
+</MailConfig>

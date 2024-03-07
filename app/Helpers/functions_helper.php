@@ -169,3 +169,12 @@ function writeLog($val,$level = "info"){
 function deploy_define($def_name){
 	return $def_name;
 }
+function cleanup($dirty_html) {
+    // HTMLPurifierを設定するためのクラスを生成する
+    $config =\HTMLPurifier_Config::createDefault();
+    $config->set('HTML.TargetBlank', true);// target="_blank" が使えるようにする
+    $config->set('Attr.EnableID', true);// id属性を許可する
+    $config->set('URI.AllowedSchemes', array('http' => true, 'https' => true));
+    $purifier = new \HTMLPurifier($config);
+    return $purifier->purify($dirty_html);
+}

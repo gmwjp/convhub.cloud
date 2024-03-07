@@ -21,7 +21,7 @@
 
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-IIED/eyOkM6ihtOiQsX2zizxFBphgnv1zbe1bKA+njdFzkr6cDNy16jfIKWu4FNH" crossorigin="anonymous">
 		<link rel="stylesheet" type="text/css" href="/assets/css/common.css?d=20230519_1" />
-		<script <?=csp_script_nonce_test()?> src="/assets/js/guides.js?d=20200510_6"></script>
+		<script <?=csp_script_nonce_test()?> src="/assets/js/convhub.js?d=20200510_6"></script>
 		<script <?=csp_script_nonce_test()?> src="/assets/js/notifIt.min.js"></script>
 		<script <?=csp_script_nonce_test()?> src="/assets/js/sortable.min.js"></script>
 		<script <?=csp_script_nonce_test()?>>
@@ -90,53 +90,50 @@
 			}
 		</style>
 	</head>
-	<body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":false, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": true}'>
+	<body class="loading" data-layout-config='{"leftSideBarTheme":"dark","layoutBoxed":false, "leftSidebarCondensed":true, "leftSidebarScrollable":false,"darkMode":false, "showRightSidebarOnStart": false}'>
 		<div class="follow-regist active" id="order-regist" style="line-height:0;background:rgba(0, 0, 0, 0.3);bottom: 0;"></div>
         <div class="wrapper">
-			<?$yet_place_num = 0?>
 			<?if(!empty($my_user)){?>
-			<!-- ========== Left Sidebar Start ========== -->
-			<div class="left-side-menu">
-				<a href="/" class="logo text-center logo-light">
-					<span class="logo-lg">
-						<img src="/assets/images/logo-beta/other/logo-pictSQUARE-beta-white.png" alt="" height="30">
-					</span>
-					<span class="logo-sm">
-						<img src="/assets/images/logo-beta/other/logo-pictSQUARE-beta-white.png" alt="" height="10">
-					</span>
-				</a>
+				<div class="left-side-menu">
+					<a href="/" class="logo text-center logo-light">
+						<span class="logo-lg">
+							<img src="/assets/images/logo-beta/other/logo-pictSQUARE-beta-white.png" alt="" height="30">
+						</span>
+						<span class="logo-sm">
+							<img src="/assets/images/logo-beta/other/logo-pictSQUARE-beta-white.png" alt="" height="10">
+						</span>
+					</a>
 
-				<div class="h-100" id="left-side-menu-container" data-simplebar>
-					<!--- Sidemenu -->
-					<ul class="metismenu side-nav">
-					<li class="side-nav-title side-nav-item">問い合わせ管理</li>
-						<li class="side-nav-item">
-							<a href="/tickets/index" class="side-nav-link">
-								<i class="fal fa-lock"></i>
-								<span> チケット </span>
-							</a>
-						</li>
-						<li class="side-nav-item">
-							<a href="/templates/index" class="side-nav-link">
-								<i class="fal fa-lock"></i>
-								<span> テンプレート </span>
-							</a>
-						</li>
-						<li class="side-nav-item">
-							<a href="/forms/index" class="side-nav-link">
-								<i class="fal fa-lock"></i>
-								<span> フォーム </span>
-							</a>
-						</li>
-						<li class="side-nav-title side-nav-item">ウィジェット設定</li>
-						<li class="side-nav-item">
-							<a href="/widgets/index/feedback" class="side-nav-link">
-								<i class="fal fa-lock"></i>
-								<span> フィードバック </span>
-							</a>
-						</li>
-						<li class="side-nav-title side-nav-item">システム設定</li>
-					</ul>
+					<div class="h-100" id="left-side-menu-container" data-simplebar>
+						<ul class="metismenu side-nav">
+							<li class="side-nav-title side-nav-item">問い合わせ管理</li>
+							<li class="side-nav-item">
+								<a href="/tickets/index/my" class="side-nav-link">
+									<i class="fal fa-tag"></i>
+									<span> チケット </span>
+								</a>
+							</li>
+							<li class="side-nav-item">
+								<a href="/templates/index" class="side-nav-link">
+									<i class="fal fa-comment-alt-lines"></i>
+									<span> テンプレート </span>
+								</a>
+							</li>
+							<li class="side-nav-item">
+								<a href="/forms/index" class="side-nav-link">
+									<i class="fal fa-code"></i>
+									<span> フォーム </span>
+								</a>
+							</li>
+							<li class="side-nav-title side-nav-item">ウィジェット設定</li>
+							<li class="side-nav-item">
+								<a href="/widgets/index/feedback" class="side-nav-link">
+								<i class="fal fa-thumbs-up"></i>
+									<span> ウィジェット </span>
+								</a>
+							</li>
+							<li class="side-nav-title side-nav-item">システム設定</li>
+						</ul>
 					</div>
 				</div>
 			<?} else {?>
@@ -149,7 +146,6 @@
 							<img src="/assets/images/logo-beta/other/logo-pictSQUARE-beta-white.png" alt="" height="10">
 						</span>
 					</a>
-
 					<div class="h-100" id="left-side-menu-container" data-simplebar>
 						<!--- Sidemenu -->
 						<ul class="metismenu side-nav">
@@ -163,7 +159,7 @@
 							<li class="side-nav-item">
 								<a href="javascript: void(0);" class="side-nav-link">
 									<i class="fal fa-info-square"></i>
-									<span> GUIDESについて </span>
+									<span> ConvHUBについて </span>
 								</a>
 								<ul class="side-nav-second-level" aria-expanded="false">
 									<li>
@@ -180,9 +176,9 @@
 									</li>
 								</ul>
 							</li>
-							<div class="clearfix"></div>
-						</div>
+						</ul>
 					</div>
+				</div>
 			<?}?>
 			<div class="content-page" style="padding-bottom:0px;">
 				<div class="content">
@@ -203,7 +199,7 @@
 								<a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="false"
 								aria-expanded="false">
 									<span class="account-user-avatar">
-										<img src="<?=$this->library("Aws")->s3url("users/".$my_user->id.".jpg")?>?d=<?=strtotime($my_user->modified)?>" alt="user-image" class="rounded-circle">
+									<img src="/assets/images/user.png">
 									</span>
 									<span>
 										<span class="account-user-name" style="margin-top:10px;">
@@ -216,8 +212,8 @@
 										<i class="fal fa-cog mr-1"></i>
 										<span>アカウント設定</span>
 									</a>
-									<a href="/teams/edit" class="dropdown-item notify-item">
-										<i class="fal fa-cog mr-1"></i>
+									<a href="/teams/index" class="dropdown-item notify-item">
+										<i class="fal fa-users mr-1"></i>
 										<span>チーム設定</span>
 									</a>
 									<a href="/users/logout" class="dropdown-item notify-item">
@@ -242,26 +238,6 @@
 						</div>
 					</div>
 				</div>
-				<footer class="footer">
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-md-3">
-								<?=date("Y")?> © <a href="/"><img src="/assets/images/logo.png" style="width:100px;"></a>
-							</div>
-							<div class="col-md-9">
-								<div class="text-md-right footer-links d-none d-md-block">
-									<small>
-										<a href="https://pictsquare-support.zendesk.com/" target="_blank">サポート</a>
-										<a href="/statics/term">利用規約</a>
-										<a href="/statics/policy">プライバシーポリシー</a>
-										<a href="/statics/toku">特商法取引法</a>
-										<a href="/statics/company">運営会社</a>
-									</small>
-								</div>
-							</div>
-						</div>
-					</div>
-				</footer>
 			</div>
 		</div>
 		<!-- bundle -->

@@ -6,13 +6,13 @@ class Forms extends _MyController {
 	}
 	function index(){
 		$this->title("フォーム一覧");
-		$this->hasUserSession();
+		$this->hasPermission();
 		$this->set("forms",$forms = $this->model("Teams")->getForms($this->my_user->team_id));
 		return $this->view("/forms/index");
 	}
 	function detail($id){
 		$this->title("フォーム詳細");
-		$this->hasUserSession();
+		$this->hasPermission();
 		checkId($id);
 		$form = $this->model("Forms")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
 		if($form){
@@ -27,7 +27,7 @@ class Forms extends _MyController {
 	}
 	function add(){
 		$this->title("フォーム新規追加");
-		$this->hasUserSession();
+		$this->hasPermission();
 		//実行フラグを確認
 		if(request()->getPost("execute")){
 			//バリデーションの組み立て
@@ -35,7 +35,7 @@ class Forms extends _MyController {
 			//バリデーションチェック
 			if($this->model("Forms")->validates("add")){
 				//保存
-				request()->addPost("code",$this->model("Forms")->createCode());
+				request()->addPost("code",$code = $this->model("Forms")->createCode());
 				request()->addPost("team_id",$this->my_user->team_id);
 				request()->addPost("user_id",$this->my_user->id);
 				$form_id = $this->model("Forms")->write(request()->getPost());
@@ -48,6 +48,7 @@ class Forms extends _MyController {
 						$dat["form_id"] = $form_id;
 						$dat["user_id"] = $this->my_user->id;
 						$dat["section"] = request()->getPost("select")[$key];
+						$dat["about"] = request()->getPost("abouts")[$key];
 						if(!empty(request()->getPost("required")[$key])){
 							$dat["required"] = 1;
 						} else {
@@ -61,6 +62,14 @@ class Forms extends _MyController {
 						$this->model("Form_items")->write($dat);
 					}
 				}
+				//画像の保存
+				if(request()->getPost("image")["name"] !=""){
+					$this->model("Forms")->image_resize(
+						dirname(__FILE__)."/../../public/img/forms/".$code.".png",
+						request()->getPost("image")["tmp_name"],
+						null,30
+					);
+				}
 				//リダイレクト
 				session()->setFlashdata("message","フォームを追加しました");
 				$this->redirect("/forms/index");
@@ -70,7 +79,7 @@ class Forms extends _MyController {
 	}
 	function edit($id){
 		$this->title("フォーム編集");
-		$this->hasUserSession();
+		$this->hasPermission();
 		checkId($id);
 		$form = $this->model("Forms")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
 		if($form){
@@ -93,6 +102,7 @@ class Forms extends _MyController {
 							$dat["form_id"] = $form->id;
 							$dat["user_id"] = $this->my_user->id;
 							$dat["section"] = request()->getPost("select")[$key];
+							$dat["about"] = request()->getPost("abouts")[$key];
 							if(!empty(request()->getPost("required")[$key])){
 								$dat["required"] = 1;
 							} else {
@@ -106,22 +116,35 @@ class Forms extends _MyController {
 							$this->model("Form_items")->write($dat);
 						}
 					}
+					if(request()->getPost("image")["name"] !=""){
+						$this->model("Forms")->image_resize(
+							dirname(__FILE__)."/../../public/img/forms/".$form->code.".png",
+							request()->getPost("image")["tmp_name"],
+							null,30
+						);
+					}
+	
 					session()->setFlashdata("message","フォームを編集しました");
 					$this->redirect("/forms/index");
 				}
 			} else {
 				request()->addPosts($form);
 				unset($data);
-				foreach($form_items as $key => $items){
-					$data["required"][$key] = $items->required;
-					$data["name"][$key] = $items->name;
-					$data["section"][$key] = $items->section;
-					$data["bodies"][$key] = $items->body;
+				if($form_items){
+					foreach($form_items as $key => $items){
+						$data["required"][$key] = $items->required;
+						$data["name"][$key] = $items->name;
+						$data["section"][$key] = $items->section;
+						$data["bodies"][$key] = $items->body;
+						$data["abouts"][$key] = $items->about;
+					}
+					request()->addPost("names",$data["name"]);
+					request()->addPost("select",$data["section"]);
+					request()->addPost("required",$data["required"]);
+					request()->addPost("bodies",$data["bodies"]);
+					request()->addPost("abouts",$data["abouts"]);
 				}
-				request()->addPost("names",$data["name"]);
-				request()->addPost("select",$data["section"]);
-				request()->addPost("required",$data["required"]);
-				request()->addPost("bodies",$data["bodies"]);
+
 			}
 			return $this->view("/forms/edit");
 		} else {
@@ -129,7 +152,7 @@ class Forms extends _MyController {
 		}
 	}
 	function del($id){
-		$this->hasUserSession();
+		$this->hasPermission();
 		checkId($id);
 		$form = $this->model("Forms")->where("team_id",$this->my_user->team_id)->where("id",$id)->delete();
 		//リダイレクト
@@ -159,21 +182,31 @@ class Forms extends _MyController {
 					request()->addPost("subform",request()->getGet("subform"));
 					//バリデーション組み立て
 					$this->createInputValidation($code,request()->getPost());
+					//dbug($this->model("Forms")->validate);exit();
 					//バリデーションチェック
 					if($this->model("Forms")->validates("input")){
 						//バリデーションOK
-						$items_temp = $this->library("Notion")->search($form->notion_secret,request()->getPost("title"));
-						foreach($items_temp->results as $key => $item){
-							$items_temp->results[$key]->detail = $this->library("Notion")->get_data($form->notion_secret,$item->id);
+						$meishi = $this->library("Yahoo")->getMeishi(request()->getPost("title"));
+						$items_temp = false;
+						if($meishi){
+							//dbug($meishi);
+							if($form->notion_secret !=""){
+								$items_temp = $this->library("Notion")->search($form->notion_secret,implode(" ",$meishi));
+							}
+							// foreach($items_temp->results as $key => $item){
+							// 	$items_temp->results[$key]->detail = $this->library("Notion")->get_data($form->notion_secret,$item->id);
+							// }
 						}
 						$this->set("items",$items_temp);
 						//ファイルをTEMPフォルダへ移動
-						$attaches = [];
-						foreach (request()->getPost("files")["name"] as $key=>$file) {
-							$path_parts = pathinfo($file);
-							$temp_path = FCPATH."temp/files/".session_id()."file_".$key.".".$path_parts["extension"];	//FCPATHは「publicフォルダのパス」
-							rename(request()->getPost("files")["tmp_name"][$key],$temp_path);
-							$attaches[] = ["fname"=>$file,"path"=>$temp_path];
+						$attaches = false;
+						if(request()->getPost("files")["name"][0] != ""){
+							foreach (request()->getPost("files")["name"] as $key=>$file) {
+								$path_parts = pathinfo($file);
+								$temp_path = WRITEPATH."files/attach_temp/".session_id()."_".$key;
+								rename(request()->getPost("files")["tmp_name"][$key],$temp_path);
+								$attaches[] = ["fname"=>$file,"path"=>$temp_path];
+							}
 						}
 						$this->set("attaches",$attaches);
 						return $this->view("/forms/show/confirm","form");
@@ -197,6 +230,17 @@ class Forms extends _MyController {
 						request()->addPost("subform_id",request()->getGet("subform"));
 						request()->addPost("form_id",$form->id);
 						request()->addPost("token",$this->model("forms")->createCode());
+						if(request()->getPost("notion_title")){
+							$notions = [];
+							foreach(request()->getPost("notion_title") as $key => $val){
+								$notions[$key] = [
+									"title" => request()->getPost("notion_title")[$key],
+									"url" => request()->getPost("notion_url")[$key],
+									"read" =>request()->getPost("notion_read")[$key],
+								];
+							}	
+							request()->addPost("notions",json_encode($notions));
+						}
 						//基本データ
 						$ticket_id = $this->model("Tickets")->write(request()->getPost());
 						//追加項目
@@ -205,6 +249,7 @@ class Forms extends _MyController {
 								unset($dat);
 								$dat["ticket_id"] = $ticket_id;
 								$dat["form_item_id"] = $item->id;
+								$dat["title"] = $item->name;
 								if($item->section == "checkbox"){
 									$dat["value"] = implode("\n",request()->getPost("form_item_".$item->id));
 								} else {
@@ -223,6 +268,7 @@ class Forms extends _MyController {
 												unset($dat);
 												$dat["ticket_id"] = $ticket_id;
 												$dat["subform_item_id"] = $item->id;
+												$dat["title"] = $item->name;
 												if($item->section == "checkbox"){
 													$dat["value"] = implode("\n",request()->getPost("subform_item_".$item->id));
 												} else {
@@ -238,11 +284,15 @@ class Forms extends _MyController {
 						//添付ファイル処理
 						if(request()->getPost("files")){
 							$attaches = [];
-							foreach (request()->getPost("files") as $file) {
-								$path_parts = pathinfo($file);	//元ファイルから拡張子を取得
-								$token = $this->model("Forms")->createCode();	//ファイル名は生成したトークンとする
-								rename($file, WRITEPATH."file/attach/".$token.".".$path_parts["extension"]);	//tempからwritableフォルダへ移動
-								$attaches[] = $token.".".$path_parts["extension"];
+							foreach (request()->getPost("files") as $key => $file) {
+								$temp_path = WRITEPATH."files/attach_temp/".session_id()."_".$key;
+								$save_path = WRITEPATH."files/attach/ticket_".$ticket_id."_".$key;
+								rename($temp_path, $save_path);
+								$attaches[$key] = [
+									"name" => $file,
+									"mime" => mime_content_type($save_path)
+								]; 
+								@unlink($temp_path);
 							}
 							//基本データに添付ファイル情報を反映
 							unset($dat);
@@ -250,8 +300,26 @@ class Forms extends _MyController {
 							$dat["attaches"] = json_encode($attaches);
 							$this->model("Tickets")->write($dat);
 						}
-						//リダイレクトして完了画面を表示
-						$this->redirect("/forms/show/complate/".$code);
+						if(request()->getPost("execute") == "on"){
+							//自動返信メールを送信
+							unset($text);
+							$text["form_name"] = esc($form->name);
+							$text["info"] = "";
+							$text["info"] .= "件名：".esc(request()->getPost("title"))."\n";
+							$text["info"] .= "問い合わせ内容：".esc(request()->getPost("body"))."\n";
+							$this->library("SmtpMailer")->send("ticket",$text,request()->getPost("mail"));
+							//リダイレクトして完了画面を表示
+							$this->redirect("/forms/show/complate/".$code);							
+						}
+						if(request()->getPost("execute") == "answer"){
+							//解決した
+							unset($dat);
+							$dat["id"] = $ticket_id;
+							$dat["status"] = 2;
+							$dat["user_id"] = -1;
+							$this->model("Tickets")->write($dat);
+							$this->redirect("/forms/show/complate2/".$code);
+						}
 					} else {
 						//バリデーションエラー
 						return $this->view("/forms/show/input","form");
@@ -259,6 +327,9 @@ class Forms extends _MyController {
 				} else {
 					return $this->view("/forms/show/complate","form");
 				}
+			}
+			if($section == "complate2"){
+				return $this->view("/forms/show/complate2","form");
 			}
 		} else {
 			$this->redirect("/statics/error");
@@ -277,7 +348,7 @@ class Forms extends _MyController {
 			//基本フォームのバリデーション作成
 			if($form_items){
 				foreach($form_items as $item){
-					$rules = [];
+					$rules = false;
 					if($item->required == 1){
 						$rules[] = "required";
 					}
@@ -287,9 +358,11 @@ class Forms extends _MyController {
 					if($item->section == "textarea"){
 						$rules[] = "max_length[10000]";
 					}
-					$this->model("Forms")->validate["input"]["form_item_".$item->id] = [
-						"rules" => implode("|",$rules)
-					];
+					if($rules){
+						$this->model("Forms")->validate["input"]["form_item_".$item->id] = [
+							"rules" => implode("|",$rules)
+						];	
+					}
 				}
 			}
 			if(!empty($post["subform"])){
@@ -298,7 +371,7 @@ class Forms extends _MyController {
 						if($subform->id == $post["subform"]){
 							if($subforms[$key]->items){
 								foreach($subforms[$key]->items as $item){
-									$rules = [];
+									$rules = false;
 									if($item->required == 1){
 										$rules[] = "required";
 									}
@@ -308,9 +381,11 @@ class Forms extends _MyController {
 									if($item->section == "textarea"){
 										$rules[] = "max_length[10000]";
 									}
-									$this->model("Forms")->validate["input"]["subform_item_".$item->id] = [
-										"rules" => implode("|",$rules)
-									];			
+									if($rules){
+										$this->model("Forms")->validate["input"]["subform_item_".$item->id] = [
+											"rules" => implode("|",$rules)
+										];				
+									}
 								}
 							}
 						}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<MailConfig>
+  <Subject>ConvHUBへ招待されました</Subject>
+  <Body>
+ConvHUBへ招待されました。
+以下のURLにアクセスし、会員登録を完了するとチームに参加できます。
+{url}
+
+※このメールの内容に心当たりがない場合は、本メールの破棄をお願い致します。
+※本メールは送信専用です。内容について疑問点などございましたら、下記URLをご確認ください。
+</Body>
+</MailConfig>

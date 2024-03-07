@@ -6,7 +6,7 @@ class Subforms extends _MyController {
 	}
 	function detail($id){
 		$this->title("サブフォーム詳細");
-		$this->hasUserSession();
+		$this->hasPermission();
 		checkId($id);
 		$subform = $this->model("Subforms")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
 		if($subform){
@@ -20,7 +20,7 @@ class Subforms extends _MyController {
 	}
 	function add($form_id){
 		$this->title("サブフォーム新規追加");
-		$this->hasUserSession();
+		$this->hasPermission("form");
 		checkId($form_id);
 		$form = $this->model("Forms")->where("team_id",$this->my_user->team_id)->where("id",$form_id)->last();
 		if($form){
@@ -50,6 +50,7 @@ class Subforms extends _MyController {
 							$dat["subform_id"] = $subform_id;
 							$dat["user_id"] = $this->my_user->id;
 							$dat["section"] = request()->getPost("select")[$key];
+							$dat["about"] = request()->getPost("abouts")[$key];
 							if(!empty(request()->getPost("required")[$key])){
 								$dat["required"] = 1;
 							} else {
@@ -73,9 +74,60 @@ class Subforms extends _MyController {
 			$this->redirect("/statics/error");
 		}
 	}
+	function up($id){
+		$this->hasPermission("form");
+		checkId($id);
+		$subform = $this->model("Subforms")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
+		if($subform){
+			$subforms = $this->model("Subforms")->where("team_id",$this->my_user->team_id)->orderBy("order_no","asc")->findAll();
+			foreach($subforms as $key => $sf){
+				if($sf->id == $subform->id){
+					if(!empty($subforms[$key-1])){
+						unset($dat);
+						$dat["id"] = $subform->id;
+						$dat["order_no"] = $subforms[$key-1]->order_no;
+						$this->model("Subforms")->write($dat);
+						unset($dat);
+						$dat["id"] = $subforms[$key-1]->id;
+						$dat["order_no"] = $subform->order_no;
+						$this->model("Subforms")->write($dat);
+					}
+				}
+			}
+			$this->redirect("/forms/detail/".$subform->form_id);
+		} else {
+			$this->redirect("/statics/error");
+		}
+	}
+	function down($id){
+		$this->hasPermission("form");
+		checkId($id);
+		$subform = $this->model("Subforms")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
+		if($subform){
+			$subforms = $this->model("Subforms")->where("team_id",$this->my_user->team_id)->orderBy("order_no","asc")->findAll();
+			foreach($subforms as $key => $sf){
+				if($sf->id == $subform->id){
+					if(!empty($subforms[$key+1])){
+						unset($dat);
+						$dat["id"] = $subform->id;
+						$dat["order_no"] = $subforms[$key+1]->order_no;
+						$this->model("Subforms")->write($dat);
+						unset($dat);
+						$dat["id"] = $subforms[$key+1]->id;
+						$dat["order_no"] = $subform->order_no;
+						$this->model("Subforms")->write($dat);
+					}
+				}
+			}
+			$this->redirect("/forms/detail/".$subform->form_id);
+		} else {
+			$this->redirect("/statics/error");
+		}
+
+	}
 	function edit($id){
 		$this->title("フォーム編集");
-		$this->hasUserSession();
+		$this->hasPermission("form");
 		checkId($id);
 		$subform = $this->model("Subforms")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
 		if($subform){
@@ -99,6 +151,7 @@ class Subforms extends _MyController {
 							$dat["subform_id"] = $subform->id;
 							$dat["user_id"] = $this->my_user->id;
 							$dat["section"] = request()->getPost("select")[$key];
+							$dat["about"] = request()->getPost("abouts")[$key];
 							if(!empty(request()->getPost("required")[$key])){
 								$dat["required"] = 1;
 							} else {
@@ -118,16 +171,20 @@ class Subforms extends _MyController {
 			} else {
 				request()->addPosts($subform);
 				unset($data);
-				foreach($subform_items as $key => $items){
-					$data["required"][$key] = $items->required;
-					$data["name"][$key] = $items->name;
-					$data["section"][$key] = $items->section;
-					$data["bodies"][$key] = $items->body;
+				if($subform_items){
+					foreach($subform_items as $key => $items){
+						$data["required"][$key] = $items->required;
+						$data["name"][$key] = $items->name;
+						$data["section"][$key] = $items->section;
+						$data["bodies"][$key] = $items->body;
+						$data["abouts"][$key] = $items->about;
+					}
+					request()->addPost("names",$data["name"]);
+					request()->addPost("select",$data["section"]);
+					request()->addPost("required",$data["required"]);
+					request()->addPost("bodies",$data["bodies"]);	
+					request()->addPost("abouts",$data["abouts"]);	
 				}
-				request()->addPost("names",$data["name"]);
-				request()->addPost("select",$data["section"]);
-				request()->addPost("required",$data["required"]);
-				request()->addPost("bodies",$data["bodies"]);
 			}
 			return $this->view("/subforms/edit");
 		} else {
@@ -135,11 +192,16 @@ class Subforms extends _MyController {
 		}
 	}
 	function del($id){
-		$this->hasUserSession();
+		$this->hasPermission("form");
 		checkId($id);
-		$subform = $this->model("Subforms")->where("team_id",$this->my_user->team_id)->where("id",$id)->delete();
-		//リダイレクト
-		session()->setFlashdata("message","サブフォームを削除しました");
-		$this->redirect("/forms/detail/".$subform->form_id);
+		$subform = $this->model("Subforms")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
+		if($subform){
+			$this->model("Subforms")->where("id",$subform->id)->delete();
+			//リダイレクト
+			session()->setFlashdata("message","サブフォームを削除しました");
+			$this->redirect("/forms/detail/".$subform->form_id);			
+		} else {
+			$this->redirect("/statics/error");
+		}
 	}
 }
