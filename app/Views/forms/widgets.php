@@ -2,6 +2,7 @@
 <div class="text-right">
     <form action="/widgets/sync_data/<?=esc($form->id)?>" method="post">
         <button type="submit" class="btn btn-dark" name="execute" value="on">同期を実行する</button>
+        <?=csrf()?>
     </form>
 </div>
 <?if($widgets){?>
