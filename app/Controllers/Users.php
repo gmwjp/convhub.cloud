@@ -16,7 +16,7 @@ class Users extends _MyController {
 					if(password_verify(request()->getPost("password"), $user->password)) {
 						session()->regenerate();
 						session()->set("user",$user);
-						$this->redirect("/users/dashboard");
+						$this->redirect("/tickets/index/my_yet");
 					} else {
 						// パスワードが間違っている
 						$this->set("login_error",true);
@@ -104,11 +104,6 @@ class Users extends _MyController {
 		} else {
 			$this->redirect("/statics/error");
 		}
-	}
-	function dashboard(){
-		$this->title("top");
-		$this->hasPermission();
-		return $this->view("/users/dashboard");
 	}
 	function get_token(){
 		helper('form');

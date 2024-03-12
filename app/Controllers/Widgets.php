@@ -4,24 +4,8 @@ class Widgets extends _MyController {
 	function initSystem() {
 		parent::initSystem();
 	}
-	function index($section){
-		if($section == "feedback"){
-			$this->title("ウィジェット一覧：フィードバック");
-		} else {
-			$this->redirect("/statics/error");
-		}
-		$this->set("section",$section);
-		$this->hasPermission();
-		$this->set("widgets",$this->model("Teams")->getWidgets($this->my_user->team_id,$section));
-		return $this->view("/widgets/index");
-	}
-	function detail($section,$id){
-		if($section == "feedback"){
-			$this->title("ウィジェット詳細：フィードバック");
-		} else {
-			$this->redirect("/statics/error");
-		}
-		$this->set("section",$section);
+	function detail($id){
+		$this->title("ウィジェット詳細");
 		$this->hasPermission();
 		checkId($id);
 		$widget = $this->model("Widgets")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
@@ -34,21 +18,16 @@ class Widgets extends _MyController {
 		}
 	}
 	
-	function sync_data($section){
+	function sync_data($form_id){
 		set_time_limit(0);
-		if($section == "feedback"){
-			$this->title("Notionと同期を行う");
-		} else {
-			$this->redirect("/statics/error");
-		}
-		$this->set("section",$section);
+		checkId($form_id);
 		$this->hasPermission("widget");
-		$this->set("forms",$this->model("Teams")->getForms($this->my_user->team_id));
-		$this->set("ignores",$ignores = $this->model("Teams")->getIgnores($this->my_user->team_id));
-		//実行フラグを確認
-		if(request()->getPost("execute")){
-			$form = $this->model("Forms")->where("id",request()->getPost("form_id"))->where("team_id",$this->my_user->team_id)->last();
-			if($form){
+		$form = $this->model("Forms")->where("team_id",$this->my_user->team_id)->where("id",$form_id)->last();
+		if($form){
+			$this->set("form",$form);
+			$this->set("ignores",$ignores = $this->model("Teams")->getIgnores($this->my_user->team_id));
+			//実行フラグを確認
+			if(true){
 				//更新フラグをOFFに
 				$widgets = $this->model("Widgets")->where("form_id", $form->id)->where("team_id", $this->my_user->team_id)->findAll();
 				foreach($widgets as $w){
@@ -57,30 +36,16 @@ class Widgets extends _MyController {
 						"sync_temp_flg" => 0
 					]);
 				}
-				//$this->model("Widgets")->where("form_id", $form->id)->where("team_id", $this->my_user->team_id)->set(["sync_temp_flg" => 0])->update();
 				$cursor = null;
 				$count = 0;
 				do {
-					$page_data = $this->library("Notion")->search($form->notion_secret, $cursor);
+					$page_data = $this->library("Notion")->search($form->notion_secret, "" ,$cursor);
 					if($page_data->results){
 						foreach($page_data->results as $ret){
 							if($ret->object == "page"){
-								//除外ページかを確認
-								$ig = false;
-								foreach($ignores as $ignore){
-									if($ignore->url == $ret->url){
-										$ig = true;
-									}
-								}
-								if($ig == false){
-									//除外ページではないので実行
-									$name = "";
-									if(!empty($ret->properties->title)){
-										$name = $ret->properties->title->title[0]->plain_text;
-									}
-									if(!empty($ret->properties->Name)){
-										$name = $ret->properties->Name->title[0]->plain_text;
-									}
+								//ウィジェットを設置するのは最下の記事ページのみ
+								if(!empty($ret->properties->title)){
+									$name = $ret->properties->title->title[0]->plain_text;
 									//このページに作成されているウィジェットはあるか
 									$widget = $this->model("Widgets")->where("notion_page_id", $ret->id)->where("team_id", $this->my_user->team_id)->last();
 									if(!$widget){
@@ -111,23 +76,24 @@ class Widgets extends _MyController {
 										];
 										$this->model("Widgets")->write($dat);
 									}
-								} else {
-									//除外ページのembedを念の為削除しておく
-									$this->library("Notion")->removeWidget($form->notion_secret, $ret->id, "/widgets/show/");
+									sleep(1);
 								}
-								sleep(1);
 							}
 						}
 					}
 					$cursor = $page_data->has_more ? $page_data->next_cursor : null;
+					sleep(1);
 				} while ($page_data->has_more);
 				//更新フラグがOFFのものを削除
 				$this->model("Widgets")->where("sync_temp_flg",0)->where("team_id",$this->my_user->team_id)->delete();
+				session()->setFlashdata("message","{$count}件のウィジェットを同期しました");
+				$this->redirect("/forms/widgets/".$form->id);
 			}
-			session()->setFlashdata("message","{$count}件のウィジェットを同期しました");
-			$this->redirect("/widgets/index/$section");
+			// return $this->view("/widgets/sync_data");
+		} else {
+			$this->redirect("/statics/error");
 		}
-		return $this->view("/widgets/sync_data");
+
 	}
 	function add($section){
 		if($section == "feedback"){
@@ -193,7 +159,6 @@ class Widgets extends _MyController {
 		$this->redirect("/widgets/index/".$widget->section);
 	}
 	function show($code){
-		
 		$widget = $this->model("Widgets")->where("code",$code)->last();
 		if($widget){
 			$this->set("widget",$widget);

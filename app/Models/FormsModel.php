@@ -98,6 +98,9 @@ class FormsModel extends _MyModel {
 	function getSubforms($form_id){
 		return $this->model("Subforms")->where("form_id",$form_id)->orderBy("order_no","asc")->findAll();
 	}
+    function getWidgets($form_id){
+        return $this->model("Widgets")->where("form_id",$form_id)->orderBy("id","asc")->findAll();
+    }
     function createCode(){
 		while(true){
 			$temp =  bin2hex(random_bytes(64 / 2));

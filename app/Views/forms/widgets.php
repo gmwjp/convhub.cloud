@@ -1,7 +1,6 @@
 <?=$this->element("page_title")?>
 <div class="text-right">
-    <a href="/ignores/index" class="btn btn-secondary">除外設定</a>
-    <a href="/widgets/sync_data/<?=esc($section)?>" class="btn btn-dark">Notionと同期</a>
+    <a href="/widgets/sync_data/<?=esc($form->id)?>" class="btn btn-dark">同期を実行する</a>
 </div>
 <?if($widgets){?>
     <table class="table mt-2" id="table">
@@ -18,7 +17,7 @@
             <tr>
                 <td>
                     <div>
-                        <a href="/widgets/detail/<?=esc($section)?>/<?=esc($widget->id)?>"><?=esc($widget->name)?></a>
+                        <a href="/widgets/detail/<?=esc($widget->id)?>"><?=esc($widget->name)?></a>
                         <sapn class="ml-2"><button type="button" data-toggle="tooltip" data-placement="top" title="ウィジェットURLをコピー" class="btn btn-light btn-sm copy_button" data-widget-url="<?=$_SERVER["SITE_URL"]?>/widgets/show/<?=esc($widget->code)?>"><span class="fal fa-copy"></span></button></span>
                         <?if($widget->notion_url !=""){?>
                             <sapn class="ml-1"><a href="<?=esc($widget->notion_url)?>" target="_blank" data-toggle="tooltip" data-placement="top" title="Notion記事を開く" class="btn btn-light btn-sm"><span class="fal fa-external-link"></span></a></span>

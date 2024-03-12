@@ -57,15 +57,15 @@ class Notion {
 		curl_close($ch);
 		return json_decode($response);
 	}
-    function search($secret,$body = ""){
+    function search($secret,$body = "",$cursor = ""){
 		// cURLセッションを初期化
 		$ch = curl_init();
 		// cURLオプションを設定
 		curl_setopt($ch, CURLOPT_URL, 'https://api.notion.com/v1/search');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POST, true);
-		if($body){
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['query' => $body]));
+		if($body || $cursor){
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['query' => $body,"start_cursor"=>$cursor]));
 		}
 		curl_setopt($ch, CURLOPT_HTTPHEADER, [
 			'Authorization: Bearer ' . $secret,

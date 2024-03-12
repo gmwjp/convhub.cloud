@@ -125,14 +125,6 @@
 									<span> フォーム </span>
 								</a>
 							</li>
-							<li class="side-nav-title side-nav-item">ウィジェット設定</li>
-							<li class="side-nav-item">
-								<a href="/widgets/index/feedback" class="side-nav-link">
-								<i class="fal fa-thumbs-up"></i>
-									<span> ウィジェット </span>
-								</a>
-							</li>
-							<li class="side-nav-title side-nav-item">システム設定</li>
 						</ul>
 					</div>
 				</div>
