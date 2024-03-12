@@ -148,8 +148,20 @@ $(function(){
         var targetId = $(this).data('target');
         $('#' + targetId).val('1');
     });
-    $("form").submit(function(){
-        alert("submit");
+    $("form").submit(function(e){
+        // デフォルトのフォーム送信を停止
+        e.preventDefault();
+
+        // formのaction属性の値を取得
+        var actionUrl = $(this).attr("action");
+
+        // action属性の値をアラートで表示
+        alert("Form action URL: " + actionUrl);
+
+        // 必要に応じてフォーム送信を再開
+        // ここでフォームをプログラム的に送信する場合は、無限ループを避けるためにsubmitイベントハンドラをunbindするか、
+        // あるいはform要素のsubmit()メソッドを直接使用してください。
+        // 例: this.submit(); // jQueryの外でのネイティブsubmitメソッドの呼び出し
     });
 });
 </script>
