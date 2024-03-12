@@ -27,7 +27,7 @@ class Widgets extends _MyController {
 			$this->set("form",$form);
 			$this->set("ignores",$ignores = $this->model("Teams")->getIgnores($this->my_user->team_id));
 			//実行フラグを確認
-			if(true){
+			if(request->getPost("execute")){
 				//更新フラグをOFFに
 				$widgets = $this->model("Widgets")->where("form_id", $form->id)->where("team_id", $this->my_user->team_id)->findAll();
 				foreach($widgets as $w){

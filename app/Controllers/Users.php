@@ -8,6 +8,9 @@ class Users extends _MyController {
 	}
 	function login(){
 		$this->title("ログイン");
+		if(!empty($this->my_user)){
+			$this->redirect("/tickets/index/my_yet");
+		}
 		if(request()->getPost("execute")){
 			if($this->model("Users")->validates("login")){
 				//ログイン処理
