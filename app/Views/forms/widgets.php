@@ -10,7 +10,6 @@
         <thead>
         <tr>
             <th>ウィジェット名</th>
-            <th>同期日時</th>
             <th>表示数</th>
             <th>はい</th>
             <th>いいえ</th>
@@ -29,7 +28,6 @@
                         <input type="hidden" id="widget_url_<?=esc($widget->id)?>" class="form-control" readonly="true" value="<?=$_SERVER["SITE_URL"]?>/widgets/show/<?=esc($widget->code)?>">
                     </div>
                 </td>
-                <td><?=esc($widget->modified)?></td>
                 <td><?=esc($widget->view_count)?></td>
                 <td><?=esc($widget->yes_count)?></td>
                 <td><?=esc($widget->no_count)?></td>
