@@ -1,6 +1,8 @@
 <?=$this->element("page_title")?>
 <div class="text-right">
-    <a href="/widgets/sync_data/<?=esc($form->id)?>" class="btn btn-dark">同期を実行する</a>
+    <form action="/widgets/sync_data/<?=esc($form->id)?>" method="post">
+        <button type="submit" class="btn btn-dark" name="execute" value="on">同期を実行する</button>
+    </form>
 </div>
 <?if($widgets){?>
     <table class="table mt-2" id="table">
