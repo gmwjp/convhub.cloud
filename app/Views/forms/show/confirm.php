@@ -1,6 +1,6 @@
 <div class="row mt-4">
     <div class="col-md-8 col-sm-12">
-        <form method="post" action="/forms/show/complate/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>">
+        <form method="post" id="form" action="/forms/show/complate/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>">
             <div class="card">
                 <div class="card-header">
                     <h4>問い合わせ内容の確認</h4>
@@ -19,8 +19,9 @@
                             </div>
                             <?}?>
                             <div class="text-center mt-4">
-                                <button type="submit" class="btn btn-secondary mb-1" name="execute" value="answer">はい、解決しました</button>
+                                <button type="button" class="btn btn-secondary mb-1 submit_button" data-value="answer">はい、解決しました</button>
                                 <button type="button" class="btn btn-secondary mb-1" id="no_button">いいえ、解決できないので問い合わせを送信します</button>
+                                <input type="hidden" name="execute" value="" id="execute">
                             </div>
                         </div>
                     <?}?>
@@ -123,7 +124,7 @@
                         <div class="form-group">
                             <div class="text-center">
                                 <div class="text-muted my-2"><small>問い合わせを送信すると「<?=esc(env("smtp.from"))?>」から自動返信メールを送信します</small></div>
-                                <button type="submit" class="btn btn-dark" name="execute" value="on">問い合わせを送信する</button>
+                                <button type="button" class="btn btn-dark submit_button"  data-value="on">問い合わせを送信する</button>
                                 <div class="mt-2"><button type="button" class="btn btn-light submit" data-action="/forms/show/input/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>">戻る</button></div>
                             </div>
                         </div>
@@ -147,6 +148,11 @@ $(function(){
     $('.notion_links').click(function(e) {
         var targetId = $(this).data('target');
         $('#' + targetId).val('1');
+    });
+    $(".submit_button").click(function(){
+        $("#form").attr("action","/forms/show/complate/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>");
+        $("#execute").val($(this).data("value"));
+        $("#form").submit();
     });
 });
 </script>
