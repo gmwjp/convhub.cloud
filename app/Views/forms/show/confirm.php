@@ -1,6 +1,6 @@
 <div class="row mt-4">
     <div class="col-md-8 col-sm-12">
-        <form method="post" id="form" action="/forms/show/complate/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>">
+        <form method="post" id="submit_form" action="/forms/show/complate/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>">
             <div class="card">
                 <div class="card-header">
                     <h4>問い合わせ内容の確認</h4>
@@ -150,9 +150,9 @@ $(function(){
         $('#' + targetId).val('1');
     });
     $(".submit_button").click(function(){
-        $("#form").attr("action","/forms/show/complate/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>");
+        $("#submit_form").attr("action","/forms/show/complate/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>");
         $("#execute").val($(this).data("value"));
-        $("#form").submit();
+        $("#submit_form").submit();
     });
 });
 </script>
