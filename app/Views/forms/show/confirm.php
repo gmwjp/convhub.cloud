@@ -6,7 +6,7 @@
                     <h4>問い合わせ内容の確認</h4>
                 </div>
                 <div class="card-body">
-                    <?if($items && $items->results){?>
+                    <?if($items && !empty($items->results)){?>
                         <div class="form-group" id="helps">
                             以下のヘルプ記事で解決できますか？
                             <?foreach($items->results as $key => $result){?>
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                     <?}?>
-                    <div <?if($items && $items->results){?>class="none"<?}?> id="form">
+                    <div <?if($items && !empty($items->results)){?>class="none"<?}?> id="form">
                         <div class="form-group">
                             運営事務局に以下の内容で問い合わせを送信してよろしいですか？
                         </div>
