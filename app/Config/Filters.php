@@ -44,10 +44,10 @@ class Filters extends BaseConfig
     */
     // �O���[�o���t�B���^�̐��`
     public array $globals = [
-        //  'before' => [
-        //      'csrf' => ['except' => []]
-        //  ],
-        //  'after'  => []
+         'before' => [
+             'csrf' => ['except' => []]
+         ],
+         'after'  => []
     ];
 
 

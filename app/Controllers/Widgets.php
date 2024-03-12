@@ -27,7 +27,7 @@ class Widgets extends _MyController {
 			$this->set("form",$form);
 			$this->set("ignores",$ignores = $this->model("Teams")->getIgnores($this->my_user->team_id));
 			//実行フラグを確認
-			if(request->getPost("execute")){
+			if(request()->getPost("execute")){
 				//更新フラグをOFFに
 				$widgets = $this->model("Widgets")->where("form_id", $form->id)->where("team_id", $this->my_user->team_id)->findAll();
 				foreach($widgets as $w){
@@ -88,8 +88,10 @@ class Widgets extends _MyController {
 				$this->model("Widgets")->where("sync_temp_flg",0)->where("team_id",$this->my_user->team_id)->delete();
 				session()->setFlashdata("message","{$count}件のウィジェットを同期しました");
 				$this->redirect("/forms/widgets/".$form->id);
+			} else {
+				session()->setFlashdata("error","不正なリクエスト");
+				$this->redirect("/statics/error");
 			}
-			// return $this->view("/widgets/sync_data");
 		} else {
 			$this->redirect("/statics/error");
 		}
