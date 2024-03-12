@@ -8,7 +8,7 @@ class FormsModel extends _MyModel {
 				"rules" => 'required|max_length[64]'
             ],
             "notion_secret" => [
-				"rules" => 'max_length[255]|alpha_numeric'
+				"rules" => 'max_length[255]'
             ],
             "body" => [
 				"rules" => 'required|max_length[10000]'
@@ -26,6 +26,9 @@ class FormsModel extends _MyModel {
         "edit" => [
             "name" => [
                 "rules" => 'required|max_length[64]'
+            ],
+            "notion_secret" => [
+				"rules" => 'max_length[255]'
             ],
             "body" => [
 				"rules" => 'required|max_length[10000]'
