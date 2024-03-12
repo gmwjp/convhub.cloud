@@ -173,8 +173,6 @@ class Forms extends _MyController {
 				$subforms[$key]->items = $this->model("Subforms")->getItems($subform->id);
 			}
 			$this->set("subforms",$subforms);
-			dbug(request()->getPost());
-			exit();
 			if($section == "input"){
 				//入力画面
 				return $this->view("/forms/show/$section","form");
