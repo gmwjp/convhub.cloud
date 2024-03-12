@@ -6,7 +6,7 @@
             </div>
             <div class="card-body">
                 問い合わせを送信しました。<br>
-                入力いただいたメールアドレスに自動返信メールを送信いたしました。<br>
+                入力いただいたメールアドレスに「<?=esc(env("smtp.from"))?>」から自動返信メールを送信いたしました。<br>
                 メールが受診できているかご確認ください。<br>
                 <div class="mt-2">
                 送信いただいた内容は運営事務局で確認し、回答致します。<br>
@@ -16,6 +16,6 @@
         </div>
     </div>
     <div class="col-md-4 col-sm-12">
-        <?=nl2br($form->contents_body)?>
+        <?=$this->element("most_widget")?>
     </div>
 </div>

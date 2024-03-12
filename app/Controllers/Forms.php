@@ -163,6 +163,7 @@ class Forms extends _MyController {
 		$form = $this->model("Forms")->where("code",$code)->last();
 		if($form){
 			$this->set("form",$form);
+			$this->set("widgets",$this->model("Forms")->getMostWidgets($form->id));
 			$this->title($form->name);
 			//項目データを取得
 			$this->set("form_items" ,$form_items = $this->model("Forms")->getItems($form->id));
@@ -229,6 +230,7 @@ class Forms extends _MyController {
 						//バリデーションOK・データ保存
 						request()->addPost("subform_id",request()->getGet("subform"));
 						request()->addPost("form_id",$form->id);
+						request()->addPost("team_id",$form->team_id);
 						request()->addPost("token",$this->model("forms")->createCode());
 						if(request()->getPost("notion_title")){
 							$notions = [];

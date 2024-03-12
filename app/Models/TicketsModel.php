@@ -21,28 +21,41 @@ class TicketsModel extends _MyModel {
 			]
 		]
 	];
-	function getNum($param){
-		$this->createParam($param);
+	function getNum($team_id,$param){
+		$this->createParam($team_id,$param);
 		return $this->countAllResults();
 	}
-	function getIndex($param){
-		$this->createParam($param);
+	function getIndex($team_id,$param){
+		$this->createParam($team_id,$param);
 		return $this->orderBy("id","desc")->findAll();
 	}
-	function createParam($param){
+	function createParam($team_id,$param){
+		$this->select("tickets.*,forms.name forms_name");
+		$this->where("tickets.team_id",$team_id);
 		if(!empty($param["user_id"])){
 			if($param["user_id"] === "NULL"){
-				$this->where("user_id is null");
+				$this->where("tickets.user_id is null");
 			} else {
-				$this->where("user_id",$param["user_id"]);
+				$this->where("tickets.user_id",$param["user_id"]);
 			}
 		}
 		if(!empty($param["status"])){
-			$this->where("status",$param["status"]);
+			$this->where("tickets.status",$param["status"]);
 		}
-		if(!empty($param["status"])){
-			$this->where("status",$param["status"]);
+		if(!empty($param["form_id"])){
+			$this->where("tickets.form_id",$param["form_id"]);
 		}
+		if(!empty($param["keyword"])){
+			$param["keyword"] = str_replace("　"," ",$param["keyword"]);
+			foreach(explode(" ",$param["keyword"]) as $word){
+				$this->groupStart();
+				$this->like("tickets.body",$word,"both");
+				$this->orLike("tickets.title",$word,"both");
+				$this->orLike("tickets.mail",$word,"both");
+				$this->groupEnd();
+			}
+		}
+		$this->join("forms","tickets.form_id = forms.id","left");
 	}
 	function getFormItems($ticket_id){
 		return $this->model("TicketFormItems")->where("ticket_id",$ticket_id)->findAll();

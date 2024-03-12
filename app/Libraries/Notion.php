@@ -38,7 +38,7 @@ class Notion {
 					'object' => 'block',
 					'type' => 'embed',
 					'embed' => [
-						'url' => "https://".$_SERVER["HTTP_HOST"].$embed_url
+						'url' => $_SERVER["SITE_URL"].$embed_url
 					]
 				]
 			]

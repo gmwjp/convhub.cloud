@@ -52,6 +52,15 @@
 </div>
 <div class="form-group">
     <div class="item-title">
+        NotionヘルプセンターURL
+    </div>
+    <div>
+        <input type="text" name="notion_url" class="form-control" value="<?=esc(request()->getPost("notion_url"))?>">
+        <?=err($errors->getError("notion_url"))?>
+    </div>
+</div>
+<div class="form-group">
+    <div class="item-title">
         Notion記事Secret
     </div>
     <div>

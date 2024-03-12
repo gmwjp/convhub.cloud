@@ -13,7 +13,7 @@
     </div>
     <div>
         <div class="input-group">
-            <input type="text" class="form-control" readonly="true" value="https://<?=$_SERVER["HTTP_HOST"]?>/widgets/show/<?=esc($widget->code)?>">
+            <input type="text" class="form-control" readonly="true" value="<?=$_SERVER["SITE_URL"]?>/widgets/show/<?=esc($widget->code)?>">
             <button class="btn btn-light" type="button" id="copy_button"><span class="fal fa-copy"></span></button>
         </div>
     </div>

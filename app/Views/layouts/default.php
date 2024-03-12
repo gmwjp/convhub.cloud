@@ -108,7 +108,7 @@
 						<ul class="metismenu side-nav">
 							<li class="side-nav-title side-nav-item">問い合わせ管理</li>
 							<li class="side-nav-item">
-								<a href="/tickets/index/my" class="side-nav-link">
+								<a href="/tickets/index/my_yet" class="side-nav-link">
 									<i class="fal fa-tag"></i>
 									<span> チケット </span>
 								</a>

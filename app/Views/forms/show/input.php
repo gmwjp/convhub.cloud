@@ -105,7 +105,7 @@
                                                 <?foreach(explode("\n",$item->body) as $key => $body){?>
                                                     <?if(trim($body) != ""){?>
                                                         <?$body = trim($body)?>
-                                                        <div><input type="radio" name="subform_item_<?=esc($item->id)?>" value="<?=esc($body)?>" id="form_item_<?=esc($item->id)?>_<?=esc($key)?>" <?if(request()->getPost("form_item_".esc($item->id)) == $body){?>checked<?}?>>&nbsp;<label for="form_item_<?=esc($item->id)?>_<?=esc($key)?>"><?=esc($body)?></label></div>
+                                                        <div><input type="radio" name="subform_item_<?=esc($item->id)?>" value="<?=esc($body)?>" id="subform_item_<?=esc($item->id)?>_<?=esc($key)?>" <?if(request()->getPost("subform_item_".esc($item->id)) == $body){?>checked<?}?>>&nbsp;<label for="subform_item_<?=esc($item->id)?>_<?=esc($key)?>"><?=esc($body)?></label></div>
                                                     <?}?>
                                                 <?}?>
                                             <?}?>
@@ -123,7 +123,7 @@
                                                             }
                                                         }
                                                         ?>
-                                                        <div><input type="checkbox" name="subform_item_<?=esc($item->id)?>[]"  value="<?=esc($body)?>"  id="form_item_<?=esc($item->id)?>_<?=esc($key)?>" <?if($checked){?>checked<?}?>>&nbsp;<label for="form_item_<?=esc($item->id)?>_<?=esc($key)?>"><?=esc($body)?></label></div>
+                                                        <div><input type="checkbox" name="subform_item_<?=esc($item->id)?>[]"  value="<?=esc($body)?>"  id="subform_item_<?=esc($item->id)?>_<?=esc($key)?>" <?if($checked){?>checked<?}?>>&nbsp;<label for="subform_item_<?=esc($item->id)?>_<?=esc($key)?>"><?=esc($body)?></label></div>
                                                     <?}?>
                                                 <?}?>
                                             <?}?>
@@ -156,7 +156,7 @@
         </form>
     </div>
     <div class="col-md-4 col-sm-12">
-        <?=cleanup(nl2br($form->contents_body))?>
+        <?=$this->element("most_widget")?>
     </div>
 </div>
 <script>

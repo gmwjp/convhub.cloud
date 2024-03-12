@@ -8,25 +8,49 @@ class Tickets extends _MyController {
 		$this->title("チケット一覧");
 		$this->hasPermission();
 		$this->set("section",$section);
-		$ticket_nums["yet"] = $this->model("Tickets")->getNum(["user_id"=>"NULL"]);
-		$ticket_nums["my"] = $this->model("Tickets")->getNum(["user_id"=>$this->my_user->id,"status"=>1]);
-		$ticket_nums["not_end"] = $this->model("Tickets")->getNum(["status"=>1]);
-		$ticket_nums["is_end"] = $this->model("Tickets")->getNum(["status"=>2]);
+		//none,my_yet,my_end,all_yet,all_end,auto_end,all
+		$params = [
+			"none" => [
+				"user_id" => "NULL",
+				"status" => 1
+			],
+			"my_yet" => [
+				"user_id" => $this->my_user->id,
+				"status" => 1
+			],
+			"my_end" => [
+				"user_id" => $this->my_user->id,
+				"status" => 2
+			],
+			"all_yet" => [
+				"status" => 1
+			],
+			"all_end" => [
+				"status" => 2
+			],
+			"auto_end" => [
+				"user_id" => -1,
+				"status" => 2
+			],
+			"all" => []
+		];
+		$this->set("params",$params);
+		foreach($params as $key => $val){
+			$ticket_nums[$key] = $this->model("Tickets")->getNum($this->my_user->team_id,$val);
+			if($key == $section){
+				foreach($val as $key2 => $val2){
+					request()->addGet($key2,$val2);
+				}
+			}
+		}
 		$this->set("ticket_nums",$ticket_nums);
-		if($section == "yet"){
-			request()->addGet("user_id","NULL");
-		}
-		if($section == "my"){
-			request()->addGet("user_id",$this->my_user->id);
-			request()->addGet("status",1);
-		}
-		if($section == "not_end"){
-			request()->addGet("status",1);
-		}
-		if($section == "is_end"){
-			request()->addGet("status",2);
-		}
-		$tickets = $this->model("Tickets")->getIndex(request()->getGet());
+		$this->set("users",$this->model("Teams")->getUsers($this->my_user->team_id));
+		$this->set("forms",$this->model("Teams")->getForms($this->my_user->team_id));
+
+		$tickets_all = $this->model("Tickets")->getIndex($this->my_user->team_id,request()->getGet());
+		$tickets = $this->library("pagenate")->getPageData($tickets_all,_def_page_num,$this->library("pagenate")->getPage());
+		$this->set("page",$this->library("pagenate")->getPage());
+		$this->set("total", count($tickets_all));
 		$this->set("tickets",$tickets);
 		return $this->view("/tickets/index");
 	}
@@ -78,7 +102,7 @@ class Tickets extends _MyController {
 					if(request()->getPost("public_flg") == 1){
 						unset($text);
 						$text["form_name"] = esc($form->name);
-						$text["url"] = "https://".$_SERVER["HTTP_HOST"]."/tickets/show/".$this->library("Crypt2")->encode($ticket->id);
+						$text["url"] = $_SERVER["SITE_URL"]."/tickets/show/".$this->library("Crypt2")->encode($ticket->id);
 						$this->library("SmtpMailer")->send("send_by_user",$text,$ticket->mail);
 					}
 					//チケットの状態を変更

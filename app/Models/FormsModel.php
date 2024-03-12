@@ -18,7 +18,10 @@ class FormsModel extends _MyModel {
 			],
             "url" => [
 				"rules" => 'url'
-			]
+			],
+            "notion_url" => [
+                "rules" => "url"
+            ]
         ],
         "edit" => [
             "name" => [
@@ -32,7 +35,10 @@ class FormsModel extends _MyModel {
 			],
             "url" => [
 				"rules" => 'url'
-			]
+			],
+            "notion_url" => [
+                "rules" => "url"
+            ]
         ],
         "input" => [
             "mail" => [
@@ -97,6 +103,10 @@ class FormsModel extends _MyModel {
 			}
 		}
 	}
+    //よく読まれているウィジェット記事
+    function getMostWidgets($form_id){
+        return $this->model("widgets")->where("form_id",$form_id)->where("section","feedback")->orderBy("view_count","desc")->findAll(10);
+    }
 
 }
 ?>

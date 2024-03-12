@@ -122,7 +122,8 @@
                        <?}?>
                         <div class="form-group">
                             <div class="text-center">
-                                <button type="submit" class="btn btn-dark" name="execute" value="on">送信する</button>
+                                <div class="text-muted my-2"><small>問い合わせを送信すると「<?=esc(env("smtp.from"))?>」から自動返信メールを送信します</small></div>
+                                <button type="submit" class="btn btn-dark" name="execute" value="on">問い合わせを送信する</button>
                                 <div class="mt-2"><button type="button" class="btn btn-light submit" data-action="/forms/show/input/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>">戻る</button></div>
                             </div>
                         </div>
@@ -133,8 +134,9 @@
         </form>
     </div>
     <div class="col-md-4 col-sm-12">
-        <?=nl2br($form->contents_body)?>
-    </div>
+        <?=$this->element("most_widget")?>
+                                    
+</div>
 </div>
 <script>
 $(function(){

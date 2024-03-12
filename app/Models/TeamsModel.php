@@ -14,5 +14,8 @@ class TeamsModel extends _MyModel {
 	function getUsers($team_id){
 		return $this->model("Users")->where("team_id",$team_id)->orderBy("id","asc")->findAll();
 	}
+	function getIgnores($team_id){
+		return $this->model("Ignores")->where("team_id",$team_id)->orderBy("id","asc")->findAll();
+	}
 }
 ?>

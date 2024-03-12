@@ -1,3 +1,4 @@
+<?=$this->element("page_title")?>
 <form method="post" action="/templates/add">
     <?=$this->element("forms/template")?>
     <div class="text-center">

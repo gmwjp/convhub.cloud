@@ -101,10 +101,10 @@ class Pagenate {
 	}
 	//現在のページを取得する
 	function getPage(){
-		if(empty(request()->getGet("page"))){
+		if(empty($_GET["page"])){
 			$page = 1;
 		} else {
-			$page = request()->getGet("page");
+			$page = $_GET["page"];
 		}
 		return $page;
 
@@ -338,323 +338,72 @@ class Pagenate {
         }
         return $tag;
     }
-	function header($maxnum,$page,$onepage_num,$data){
-		if(count($data)!=0){
-			if($this->language == "japanese"){
-				return number_format($maxnum)."件中 ".number_format(((string)(($page-1)*$onepage_num)+1))."～".number_format(((string)($page-1)*$onepage_num+count($data)))."件を表示";
-			} else {
-				return "Display items ".number_format(((string)(($page-1)*$onepage_num)+1))." to ".number_format(((string)($page-1)*$onepage_num+count($data)))." out of all ".number_format($maxnum)." items ";
-			}
-		} else {
-			return "データ件数は０です";
-		}
-	}
-  function paginateSend($page, $total, $link, $limit = 10, $adjacents = 1) {
-    $prev = $page - 1;
-    $next = $page + 1;
-    $lastpage = ceil($total / $limit);
-    $lpm1 = $lastpage - 1;
-    $out = "\n";
-    if ($lastpage > 1) {
-      $out .= ($page > 1) ? $this->link('前', "javascript:Send('{$link}?page="."{$prev}')", array('title' => 'View the previous index page', 'class' => 'diggpager_prev_link')) : '前';
-      $out .= "\n";
-      if ($lastpage < 7 + ($adjacents * 2)) {
-        for ($counter = 1; $counter <= $lastpage; $counter++) {
-          $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, "javascript:Send('{$link}?page="."{$counter}')", array('title' => 'View indexpage ' . $counter));
-          $out .= "\n";
-        }
-      } else if ($lastpage >= 7 + ($adjacents * 2)) {
-        if ($page < 1 + ($adjacents * 3)) {
-          for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
-            $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, "javascript:Send('{$link}?page="."{$counter}')", array('title' => 'View index page ' . $counter));
-            $out .= "\n";
-          }
-          $out .= " ･･･ ";
-          $out .= $this->link($lpm1, "javascript:Send('{$link}"."{$lpm1}')", array('title' => 'View index page ' . $lpm1));
-          $out .= "\n";
-          $out .= $this->link($lastpage, "javascript:Send('{$link}"."{$lastpage}')", array('title' => 'View index page ' . $lastpage));
-          $out .= "\n";
-        } else if ($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
-          $out .= $this->link('1', "javascript:Send('{$link}"."1')", array('title' => 'View index page 1'));
-          $out .= "\n";
-          $out .= $this->link('2', "javascript:Send('{$link}"."2')", array('title' => 'View index page 2'));
-          $out .= "\n";
-          $out .= " ･･･ ";
-          for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++) {
-            $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, $link . $counter, array('title' => 'View index page ' . $counter));
-            $out .= "\n";
-          }
-          $out .= " ･･･ ";
-          $out .= $this->link($lpm1, "javascript:Send('{$link}?page="."{$lpm1}')", array('title' => 'View index page ' . $lpm1));
-          $out .= "\n";
-          $out .= $this->link($lastpage, "javascript:Send('{$link}?page="."{$lastpage}')", array('title' => 'View index page ' . $lastpage));
-          $out .= "\n";
-        } else {
-          $out .= $this->link('1',"javascript:Send('{$link}?page="."1')", array('title' => 'View index page 1'));
-          $out .= "\n";
-          $out .= $this->link('2',"javascript:Send('{$link}?page="."2')", array('title' => 'View index page 2'));
-          $out .= "\n";
-          $out .= " ･･･ ";
-          for ($counter = $lastpage - (1 + ($adjacents * 3)); $counter <= $lastpage; $counter++) {
-            $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, "javascript:Send('{$link}?page="."{$counter}')", array('title' => 'View index page ' . $counter));
-            $out .= "\n";
-          }
-        }
-      }
-      $out .= ($page < $counter - 1) ? $this->link('次', "javascript:Send('{$link}?page="."{$next}')" , array('title' => 'View index page ' . $next)) : '次';
-      $out .= "\n";
-    }
-    return $out;
-  }
-
-/*
-                    <div class="pagination pagination-centered">
-                      <ul>
-                        <li><a href="#">Prev</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">Next</a></li>
-                      </ul>
-                    </div>
-
-*/
 
   function paginate($page, $total, $link, $limit = 10, $adjacents = 1) {
     $prev = $page - 1;
     $next = $page + 1;
 
-	$param = "";
-	foreach(request()->getGet() as $key => $val){
-		if($key != "page"){
-      if(is_array($val)){
-        foreach ($val as $val2) {
-          $param .= "&".$key."[]=".$val2;
+    $param = "";
+    $find = false;
+    foreach(request()->getGet() as $key => $val){
+      if($key != "page"){
+        if($param == ""){
+          $param .= "?".$key."=".$val;
+        } else {
+          $param .= "&".$key."=".$val;
         }
-      }else{
-        $param .= "&".$key."=".$val;
+      } else{
+        $find =true;
       }
-		}
-	}
+    }
+    if($param !=""){
+      $param.= "&page=";
+    } else {
+      $param.= "?page=";
+    }
     $lastpage = ceil($total / $limit);
     $lpm1 = $lastpage - 1;
     if ($lastpage > 1) {
-    $out = '<div class="mt-3"><ul class="pagination  justify-content-center">';
-  		$out .= ($page > 1) ? "<li class='page-item'><a  class='page-link' href={$link}{$prev}{$param}>前へ</a></li>" : '';
+      $out = '<div class="mt-3"><ul class="pagination  justify-content-center">';
+      $out .= ($page > 1) ? "<li class='page-item'><a  class='page-link' href={$link}{$param}{$prev}>前へ</a></li>" : '';
       if ($lastpage < 7 + ($adjacents * 2)) {
         for ($counter = 1; $counter <= $lastpage; $counter++) {
-          $out .= ($counter == $page) ? '<li class="active page-item"><a  class="page-link" href="'.$link.$counter.$param.'">' . $counter . '</a></li>' : '<li class="page-item"><a  class="page-link" href="'.$link.$counter.$param.'">'.$counter.'</a></li>';
+          $out .= ($counter == $page) ? '<li class="active page-item"><a  class="page-link" href="'.$link.$param.$counter.'">' . $counter . '</a></li>' : '<li class="page-item"><a  class="page-link" href="'.$link.$param.$counter.'">'.$counter.'</a></li>';
         }
       } else if ($lastpage >= 7 + ($adjacents * 2)) {
         if ($page < 1 + ($adjacents * 3)) {
           for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
-            $out .= ($counter == $page) ? '<li class="active page-item"><a class="page-link" href="'.$link.$counter.$param.'">' . $counter . '</a></li>' : '<li class="page-item"><a  class="page-link" href="'.$link.$counter.$param.'">'.$counter.'</a></li>';
+            $out .= ($counter == $page) ? '<li class="active page-item"><a class="page-link" href="'.$link.$param.$counter.'">' . $counter . '</a></li>' : '<li class="page-item"><a  class="page-link" href="'.$link.$param.$counter.'">'.$counter.'</a></li>';
           }
-          $out .= '<li class="page-item active"><a  class="page-link" href="#" >･･･</a></li>';
-          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$lpm1.$param.'">'.$lpm1.'</a></li>';
-          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$lastpage.$param.'">'.$lastpage.'</a></li>';
+          $out .= '<li class="page-item disabled"><a  class="page-link" href="#" >･･･</a></li>';
+          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$param.$lpm1.'">'.$lpm1.'</a></li>';
+          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$param.$lastpage.'">'.$lastpage.'</a></li>';
         } else if ($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
-          $out .= '<li class="page-item"><a class="page-link" href="'.$link.'1'.$param.'">1</a></li>';
-          $out .= '<li class="page-item"><a class="page-link" href="'.$link.'2'.$param.'">2</a></li>';
-          $out .= '<li class="page-item active"><a class="page-link" href="#">･･･</a></li>';
-
+          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$param.'1'.'">1</a></li>';
+          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$param.'2'.'">2</a></li>';
+          $out .= '<li class="page-item disabled"><a class="page-link" href="#">･･･</a></li>';
           for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++) {
-            $out .= ($counter == $page) ? '<li  class="page-ite active"><a class="page-link" href="'.$link.$counter.$param.'">' . $counter . '</a></li>' : '<li class="page-item"><a class="page-link" href="'.$link.$counter.$param.'">'.$counter.'</a></li>';
+            $out .= ($counter == $page) ? '<li  class="page-item active"><a class="page-link" href="'.$link.$param.$counter.'">' . $counter . '</a></li>' : '<li class="page-item"><a class="page-link" href="'.$link.$param.$counter.'">'.$counter.'</a></li>';
           }
-          $out .= '<li class="page-item active"><a class="page-link" href="#">･･･</a></li>';
-
-          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$lpm1.$param.'">'.$lpm1.'</a></li>';
-          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$lastpage.$param.'">'.$lastpage.'</a></li>';
+          $out .= '<li class="page-item disabled"><a class="page-link" href="#">･･･</a></li>';
+          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$param.$lpm1.'">'.$lpm1.'</a></li>';
+          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$param.$lastpage.'">'.$lastpage.'</a></li>';
         } else {
-          $out .= '<li class="page-item"><a class="page-link" href="'.$link.'1'.$param.'">1</a></li>';
-          $out .= '<li class="page-item"><a class="page-link" href="'.$link.'2'.$param.'">2</a></li>';
-          $out .= '<li class="page-item active"><a class="page-link" href="#">･･･</a></li>';
+          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$param.'1'.'">1</a></li>';
+          $out .= '<li class="page-item"><a class="page-link" href="'.$link.$param.'2'.'">2</a></li>';
+          $out .= '<li class="page-item adisabledctive"><a class="page-link" href="#">･･･</a></li>';
           for ($counter = $lastpage - (1 + ($adjacents * 3)); $counter <= $lastpage; $counter++) {
-            $out .= ($counter == $page) ? '<li class="page-item active"><a class="page-link" href="'.$link.$counter.$param.'">' . $counter . '</a></li>' : '<li class="page-itme"><a class="page-link" href="'.$link.$counter.$param.'">'.$counter.'</a></li>';
+            $out .= ($counter == $page) ? '<li class="page-item active"><a class="page-link" href="'.$link.$param.$counter.'">' . $counter . '</a></li>' : '<li class="page-itme"><a class="page-link" href="'.$link.$param.$counter.'">'.$counter.'</a></li>';
           }
         }
-    }
-	      $out .= ($page < $counter - 1) ? '<li class="page-item" ><a class="page-link" href="'.$link.$next.$param.'">次へ</a></li>' : '';
+      }
+      $out .= ($page < $counter - 1) ? '<li class="page-item" ><a class="page-link" href="'.$link.$param.$next.'">次へ</a></li>' : '';
       $out .= "</ul></div>";
     }
-	if($total <=  $limit){
-		$out = "";
-	}
-
+    if($total <=  $limit){
+      $out = "";
+    }
     return @$out;
   }
-/*
-    <div class="pagination-wrap first">
-        <ul class="pagination pagination-lg centered">
-          <li class="disabled"><a href="#">&laquo;</a></li>
-          <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-          <li><a href="#">2</a></li>
-          <li><a href="#">3</a></li>
-          <li><a href="#">4</a></li>
-          <li><a href="#">5</a></li>
-          <li><a href="#">&raquo;</a></li>
-        </ul>
-    </div>
-
-*/
-
-  function paginateMobile($page, $total, $link, $limit = 10, $section = "top",$adjacents = 1) {
-    $prev = $page - 1;
-    $next = $page + 1;
-    $lastpage = ceil($total / $limit);
-    $lpm1 = $lastpage - 1;
-	if($section == "top"){
-		$style="margin-bottom:20px;";
-	} else {
-		$style="margin-top:20px;";
-	}
-    if ($lastpage > 1) {
-	    $out = '<div style="text-align:center;'.$style.'"><div data-role="controlgroup" data-type="horizontal">';
-  		$out .= ($page > 1) ? "<a href={$link}{$prev} data-role='button' data-role='button' data-mini='true' data-icon='arrow-l' data-iconpos='left'>前へ</a>" : '';
-	      if ($lastpage < 7 + ($adjacents * 2)) {
-	        for ($counter = 1; $counter <= $lastpage; $counter++) {
-	        }
-	      } else if ($lastpage >= 7 + ($adjacents * 2)) {
-	        if ($page < 1 + ($adjacents * 3)) {
-	          for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
-	          }
-	        } else if ($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
-	          for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++) {
-	          }
-	        } else {
-	          for ($counter = $lastpage - (1 + ($adjacents * 3)); $counter <= $lastpage; $counter++) {
-	          }
-	       }
-	    }
-	      $out .= ($page < $counter - 1) ? '<a href="'.$link.$next.'"  data-role="button" data-mini="true" data-icon="arrow-r" data-iconpos="right">次へ</a>' : '';
-	$out.="</div></div>";
-    }
-	return @$out;
-/*
-    return '
-<div style="text-align:center;">
-<div data-role="controlgroup" data-type="horizontal">
-	<a href="/doc/jquery_mobile/" data-role="button" data-mini="true" data-icon="arrow-l" data-iconpos="left">前へ</a>
-	<a href="/doc/jquery_mobile/" data-role="button" data-mini="true" data-icon="arrow-r" data-iconpos="right">次へ</a>
-</div></div>';
-*/
-  }
-  function paginateUser($page, $total, $link, $limit = 10, $adjacents = 1) {
-    $prev = $page - 1;
-    $next = $page + 1;
-    $lastpage = ceil($total / $limit);
-    $lpm1 = $lastpage - 1;
-    $out = "\n";
-    if ($lastpage > 1) {
-      $out .= ($page > 1) ? $this->link('前を見る', $link . $prev, array('title' => 'View the previous index page', 'class' => 'prevBtn',"accesskey"=>"4"))."&nbsp;&nbsp;&nbsp;&nbsp;" : '';
-      $out .= "\n";
-      if ($lastpage < 7 + ($adjacents * 2)) {
-        for ($counter = 1; $counter <= $lastpage; $counter++) {
-          $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, $link . $counter, array('title' => 'View indexpage ' . $counter));
-          $out .= "\n";
-        }
-      } else if ($lastpage >= 7 + ($adjacents * 2)) {
-        if ($page < 1 + ($adjacents * 3)) {
-          for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
-            $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, $link . $counter, array('title' => 'View index page ' . $counter));
-            $out .= "\n";
-          }
-          $out .= " ･･･ ";
-          $out .= $this->link($lpm1, $link . $lpm1, array('title' => 'View index page ' . $lpm1));
-          $out .= "\n";
-          $out .= $this->link($lastpage, $link . $lastpage, array('title' => 'View index page ' . $lastpage));
-          $out .= "\n";
-        } else if ($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
-          $out .= $this->link('1', $link . '1', array('title' => 'View index page 1'));
-          $out .= "\n";
-          $out .= $this->link('2', $link . '2', array('title' => 'View index page 2'));
-          $out .= "\n";
-          $out .= " ･･･ ";
-          for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++) {
-           $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, $link . $counter, array('title' => 'View index page ' . $counter));
-            $out .= "\n";
-          }
-          $out .= " ･･･ ";
-          $out .= $this->link($lpm1, $link . $lpm1, array('title' => 'View index page ' . $lpm1));
-          $out .= "\n";
-          $out .= $this->link($lastpage, $link . $lastpage, array('title' => 'View index page ' . $lastpage));
-          $out .= "\n";
-        } else {
-         $out .= $this->link('1', $link . '1', array('title' => 'View index page 1'));
-          $out .= "\n";
-          $out .= $this->link('2', $link . '2', array('title' => 'View index page 2'));
-          $out .= "\n";
-          $out .= " ･･･ ";
-          for ($counter = $lastpage - (1 + ($adjacents * 3)); $counter <= $lastpage; $counter++) {
-            $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, $link . $counter, array('title' => 'View index page ' . $counter));
-            $out .= "\n";
-          }
-        }
-    }
-      $out .= ($page < $counter - 1) ? "&nbsp;&nbsp;&nbsp;&nbsp;".$this->link('次を見る', $link . $next, array('title' => 'View index page ' . $next,"class"=>"nextBtn","accesskey"=>"6")) : '';
-      $out .= "\n";
-    }
-    return $out;
-  }
-  function paginateSendUser($page, $total, $link, $limit = 10, $adjacents = 1) {
-    $prev = $page - 1;
-    $next = $page + 1;
-    $lastpage = ceil($total / $limit);
-    $lpm1 = $lastpage - 1;
-    $out = "\n";
-    if ($lastpage > 1) {
-      $out .= ($page > 1) ? $this->link('前を見る', "javascript:Send('{$link}?page="."{$prev}')", array('title' => 'View the previous index page', 'class' => 'prevBtn',"accesskey"=>"4"))."&nbsp;&nbsp;&nbsp;&nbsp;" : '';
-      $out .= "\n";
-      if ($lastpage < 7 + ($adjacents * 2)) {
-        for ($counter = 1; $counter <= $lastpage; $counter++) {
-          $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, "javascript:Send('{$link}?page="."{$counter}')", array('title' => 'View indexpage ' . $counter));
-          $out .= "\n";
-        }
-      } else if ($lastpage >= 7 + ($adjacents * 2)) {
-        if ($page < 1 + ($adjacents * 3)) {
-          for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
-            $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, "javascript:Send('{$link}?page="."{$counter}')", array('title' => 'View index page ' . $counter));
-            $out .= "\n";
-          }
-          $out .= " ･･･ ";
-          $out .= $this->link($lpm1, "javascript:Send('{$link}?page="."{$lpm1}')", array('title' => 'View index page ' . $lpm1));
-          $out .= "\n";
-          $out .= $this->link($lastpage, "javascript:Send('{$link}?page="."{$lastpage}')", array('title' => 'View index page ' . $lastpage));
-          $out .= "\n";
-        } else if ($lastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
-          $out .= $this->link('1', "javascript:Send('{$link}?page="."1')", array('title' => 'View index page 1'));
-          $out .= "\n";
-          $out .= $this->link('2', "javascript:Send('{$link}?page="."2')", array('title' => 'View index page 2'));
-          $out .= "\n";
-          $out .= " ･･･ ";
-          for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++) {
-            $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, $link . $counter, array('title' => 'View index page ' . $counter));
-            $out .= "\n";
-          }
-          $out .= " ･･･ ";
-          $out .= $this->link($lpm1, "javascript:Send('{$link}?page="."{$lpm1}')", array('title' => 'View index page ' . $lpm1));
-          $out .= "\n";
-          $out .= $this->link($lastpage, "javascript:Send('{$link}?page="."{$lastpage}')", array('title' => 'View index page ' . $lastpage));
-          $out .= "\n";
-        } else {
-          $out .= $this->link('1',"javascript:Send('{$link}?page="."1')", array('title' => 'View index page 1'));
-          $out .= "\n";
-          $out .= $this->link('2',"javascript:Send('{$link}?page="."2')", array('title' => 'View index page 2'));
-          $out .= "\n";
-          $out .= " ･･･ ";
-          for ($counter = $lastpage - (1 + ($adjacents * 3)); $counter <= $lastpage; $counter++) {
-            $out .= ($counter == $page) ? '' . $counter . '' : $this->link($counter, "javascript:Send('{$link}?page="."{$counter}')", array('title' => 'View index page ' . $counter));
-            $out .= "\n";
-          }
-        }
-      }
-      $out .= ($page < $counter - 1) ? "&nbsp;&nbsp;&nbsp;&nbsp;".$this->link('次を見る', "javascript:Send('{$link}?page="."{$next}')" , array('title' => 'View index page ' . $next,'class' => 'nextBtn')) : '';
-      $out .= "\n";
-    }
-    return $out;
-  }
-
 }
 ?>

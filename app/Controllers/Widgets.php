@@ -33,71 +33,7 @@ class Widgets extends _MyController {
 			$this->redirect("/statics/error");
 		}
 	}
-	// function exec_sync_data($seciton){
-	// 	//実行フラグを確認
-	// 	if(request()->getPost("execute")){
-	// 		$form = $this->model("Forms")->where("id",request()->getPost("form_id"))->where("team_id",$this->my_user->team_id)->last();
-	// 		if($form){
-	// 			//更新フラグをOFFに
-	// 			$this->model("Widgets")->where("form_id",$form->id)->where("team_id",$this->my_user->team_id)->update(["sync_temp_flg",0]);
-	// 			$cursor = null;
-	// 			$count = 0;
-	// 			do {
-	// 				$page_data = $this->library("Notion")->search($form->notion_secret, $cursor);
-	// 				if($page_data->results){
-	// 					foreach($page_data->results as $ret){
-	// 						if($ret->object == "page"){
-	// 							$name = "";
-	// 							if(!empty($ret->properties->title)){
-	// 								$name = $ret->properties->title->title[0]->plain_text;
-	// 							}
-	// 							if(!empty($ret->properties->Name)){
-	// 								$name = $ret->properties->Name->title[0]->plain_text;
-	// 							}
-	// 							//このページに作成されているウィジェットはあるか
-	// 							$widget = $this->model("Widgets")->where("notion_page_id", $ret->id)->where("team_id", $this->my_user->team_id)->last();
-	// 							if(!$widget){
-	// 								//ない場合は新規作成
-	// 								$dat = [
-	// 									"team_id" => $this->my_user->team_id,
-	// 									"user_id" => $this->my_user->id,
-	// 									"section" => "feedback",
-	// 									"code" => $this->model("Widgets")->createCode(),
-	// 									"form_id" => $form->id,
-	// 									"notion_page_id" => $ret->id,
-	// 									"notion_url" => $ret->url,
-	// 									"name" => $name,
-	// 									"sync_temp_flg" => 1	//更新したフラグをONに
-	// 								];
-	// 								$this->model("Widgets")->write($dat);
-	// 								//ゴミがあったら削除
-	// 								$this->library("Notion")->removeEmbed($form->notion_secret, $dat["notion_page_id"], "https://".$_SERVER["HTTP_HOST"]."/widgets/show/");
-	// 								//ウィジェットを設置
-	// 								$this->library("Notion")->pushEmbed($form->notion_secret, $dat["notion_page_id"], "https://".$_SERVER["HTTP_HOST"]."/widgets/show/".$dat["code"]);
-	// 								$count++;    
-	// 								sleep(1);
-	// 							} else {
-	// 								//ページ名を更新しておく
-	// 								$dat = [
-	// 									"id" => $widget->id,
-	// 									"name" => $name,
-	// 									"sync_temp_flg" => 1	//更新したフラグをONに
-	// 								];
-	// 								$this->model("Widgets")->write($dat);
-	// 							}
-	// 						}
-	// 					}
-	// 				}
-	// 				$cursor = $page_data->has_more ? $page_data->next_cursor : null;
-	// 			} while ($page_data->has_more);
-	// 			//更新フラグがOFFのものを削除
-	// 			$this->model("Widgets")->where("sync_temp_flg",0)->where("team_id",$this->my_user->team_id)->delete();
-	// 		}
-	// 		session()->setFlashdata("message","{$count}件のウィジェットを同期しました");
-	// 		$this->redirect("/widgets/index/$section");
-
-	// 	}
-	// }
+	
 	function sync_data($section){
 		set_time_limit(0);
 		if($section == "feedback"){
@@ -108,6 +44,7 @@ class Widgets extends _MyController {
 		$this->set("section",$section);
 		$this->hasPermission("widget");
 		$this->set("forms",$this->model("Teams")->getForms($this->my_user->team_id));
+		$this->set("ignores",$ignores = $this->model("Teams")->getIgnores($this->my_user->team_id));
 		//実行フラグを確認
 		if(request()->getPost("execute")){
 			$form = $this->model("Forms")->where("id",request()->getPost("form_id"))->where("team_id",$this->my_user->team_id)->last();
@@ -128,44 +65,57 @@ class Widgets extends _MyController {
 					if($page_data->results){
 						foreach($page_data->results as $ret){
 							if($ret->object == "page"){
-								$name = "";
-								if(!empty($ret->properties->title)){
-									$name = $ret->properties->title->title[0]->plain_text;
+								//除外ページかを確認
+								$ig = false;
+								foreach($ignores as $ignore){
+									if($ignore->url == $ret->url){
+										$ig = true;
+									}
 								}
-								if(!empty($ret->properties->Name)){
-									$name = $ret->properties->Name->title[0]->plain_text;
-								}
-								//このページに作成されているウィジェットはあるか
-								$widget = $this->model("Widgets")->where("notion_page_id", $ret->id)->where("team_id", $this->my_user->team_id)->last();
-								if(!$widget){
-									//ない場合は新規作成
-									$dat = [
-										"team_id" => $this->my_user->team_id,
-										"user_id" => $this->my_user->id,
-										"section" => "feedback",
-										"code" => $this->model("Widgets")->createCode(),
-										"form_id" => $form->id,
-										"notion_page_id" => $ret->id,
-										"notion_url" => $ret->url,
-										"name" => $name,
-										"sync_temp_flg" => 1	//更新したフラグをONに
-									];
-									$this->model("Widgets")->write($dat);
-									//ゴミがあったら削除
-									$this->library("Notion")->removeWidget($form->notion_secret, $dat["notion_page_id"], "/widgets/show/");
-									//ウィジェットを設置
-									$this->library("Notion")->pushWidget($form->notion_secret, $dat["notion_page_id"],"/widgets/show/".$dat["code"]);
-									$count++;    
-									sleep(1);
+								if($ig == false){
+									//除外ページではないので実行
+									$name = "";
+									if(!empty($ret->properties->title)){
+										$name = $ret->properties->title->title[0]->plain_text;
+									}
+									if(!empty($ret->properties->Name)){
+										$name = $ret->properties->Name->title[0]->plain_text;
+									}
+									//このページに作成されているウィジェットはあるか
+									$widget = $this->model("Widgets")->where("notion_page_id", $ret->id)->where("team_id", $this->my_user->team_id)->last();
+									if(!$widget){
+										//ない場合は新規作成
+										$dat = [
+											"team_id" => $this->my_user->team_id,
+											"user_id" => $this->my_user->id,
+											"section" => "feedback",
+											"code" => $this->model("Widgets")->createCode(),
+											"form_id" => $form->id,
+											"notion_page_id" => $ret->id,
+											"notion_url" => $ret->url,
+											"name" => $name,
+											"sync_temp_flg" => 1	//更新したフラグをONに
+										];
+										$this->model("Widgets")->write($dat);
+										//ゴミがあったら削除
+										$this->library("Notion")->removeWidget($form->notion_secret, $dat["notion_page_id"], "/widgets/show/");
+										//ウィジェットを設置
+										$this->library("Notion")->pushWidget($form->notion_secret, $dat["notion_page_id"],"/widgets/show/".$dat["code"]);
+										$count++;    
+									} else {
+										//ページ名を更新しておく
+										$dat = [
+											"id" => $widget->id,
+											"name" => $name,
+											"sync_temp_flg" => 1	//更新したフラグをONに
+										];
+										$this->model("Widgets")->write($dat);
+									}
 								} else {
-									//ページ名を更新しておく
-									$dat = [
-										"id" => $widget->id,
-										"name" => $name,
-										"sync_temp_flg" => 1	//更新したフラグをONに
-									];
-									$this->model("Widgets")->write($dat);
+									//除外ページのembedを念の為削除しておく
+									$this->library("Notion")->removeWidget($form->notion_secret, $ret->id, "/widgets/show/");
 								}
+								sleep(1);
 							}
 						}
 					}

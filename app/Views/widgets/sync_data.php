@@ -28,3 +28,9 @@
     </div>
     <?=csrf()?>
 </form>
+<?=$this->element("page_title",["title"=>"除外URL"])?>
+<?if($ignores){?>
+    <?foreach($ignores as $ignore){?>
+        <div class="mt-1"><a href="<?=esc($ignore->url)?>" target="_blank"><?=esc($ignore->url)?><i class="ml-1 fal fa-external-link"></i></a></div>
+    <?}?>
+<?}?>
