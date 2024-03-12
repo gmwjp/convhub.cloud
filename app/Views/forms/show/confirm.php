@@ -145,10 +145,8 @@ $(function(){
         $("#form").fadeIn();
     })
     $('.notion_links').click(function(e) {
-        e.preventDefault();
         var targetId = $(this).data('target');
         $('#' + targetId).val('1');
-        window.open($(this).attr('href'), '_blank');
     });
 });
 </script>
