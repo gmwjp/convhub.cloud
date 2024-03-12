@@ -65,7 +65,14 @@ class Notion {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POST, true);
 		if($body || $cursor){
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['query' => $body,"start_cursor"=>$cursor]));
+			$post = false;
+			if($body !=""){
+				$post["query"] = $body;
+			}
+			if($cursor !=""){
+				$post["start_cursor"] = $cursor;
+			}
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post));
 		}
 		curl_setopt($ch, CURLOPT_HTTPHEADER, [
 			'Authorization: Bearer ' . $secret,

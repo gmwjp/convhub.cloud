@@ -190,7 +190,6 @@ class Forms extends _MyController {
 						$meishi = $this->library("Yahoo")->getMeishi(request()->getPost("title"));
 						$items_temp = false;
 						if($meishi){
-							//dbug($meishi);
 							if($form->notion_secret !=""){
 								$items_temp = $this->library("Notion")->search($form->notion_secret,implode(" ",$meishi));
 							}
