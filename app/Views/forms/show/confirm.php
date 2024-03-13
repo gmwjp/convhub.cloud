@@ -158,7 +158,7 @@ $(function(){
                 csrf_token_value = data.value;
                 console.log("token:"+csrf_token_value);
                 $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
-                $("form").submit();
+                //$("form").submit();
             },
             error: function() {
                 console.error('CSRF取得エラー');
