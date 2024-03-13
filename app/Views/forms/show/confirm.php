@@ -139,6 +139,7 @@
 </div>
 </div>
 <script>
+var send_flg = false;
 $(function(){
     $("#no_button").click(function(){
         $("#helps").hide();
@@ -149,21 +150,24 @@ $(function(){
         $('#' + targetId).val('1');
     });
     $("form").submit(function(e){
-        e.preventDefault();
-        $.ajax({
-            url: '/widgets/get_token',
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                csrf_token_value = data.value;
-                console.log("token:"+csrf_token_value);
-                $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
-                $("form").submit();
-            },
-            error: function() {
-                console.error('CSRF取得エラー');
-            }
-        });
+        if(send_flg == false){
+            e.preventDefault();
+            $.ajax({
+                url: '/widgets/get_token',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    csrf_token_value = data.value;
+                    console.log("token:"+csrf_token_value);
+                    $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
+                    send_flg=true;
+                    $("form").submit();
+                },
+                error: function() {
+                    console.error('CSRF取得エラー');
+                }
+            });
+        }
     });
 });
 </script>
