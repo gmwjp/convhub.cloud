@@ -202,17 +202,17 @@
             <h4 class="mt-3">過去の問い合わせ</h4>
             <div>
                 <ul class="list-group">
-                    <?foreach($old_tickets as $ticket){?>
-                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($ticket->id)?>">
+                    <?foreach($old_tickets as $t){?>
+                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>">
                             <div class="clearfix">
                                 <div class="float-left text-muted">
-                                    <small><?=changeDate(esc($ticket->created))?></small>
+                                    <small><?=changeDate(esc($t->created))?></small>
                                 </div>
                                 <div class="float-right">
-                                    <span class="badge badge-<?=esc($this->model("Tickets")->params["status"][$ticket->status]["color"])?> p-1"><?=esc($this->model("Tickets")->params["status"][$ticket->status]["text_mini"])?></span>
+                                    <span class="badge badge-<?=esc($this->model("Tickets")->params["status"][$t->status]["color"])?> p-1"><?=esc($this->model("Tickets")->params["status"][$ticket->status]["text_mini"])?></span>
                                 </div>
                             </div>
-                            <?=esc($ticket->title)?>
+                            <?=esc($t->title)?>
                         </a>
                     <?}?>
                 </ul>
