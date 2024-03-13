@@ -139,7 +139,7 @@
 </div>
 </div>
 <script>
-var send_flg = false;
+var refresh = false;
 $(function(){
     $("#no_button").click(function(){
         $("#helps").hide();
@@ -150,7 +150,7 @@ $(function(){
         $('#' + targetId).val('1');
     });
     $("form").submit(function(e){
-        if(send_flg == false){
+        if(refresh == false){
             e.preventDefault();
             $.ajax({
                 url: '/widgets/get_token',
@@ -158,9 +158,8 @@ $(function(){
                 dataType: 'json',
                 success: function(data) {
                     csrf_token_value = data.value;
-                    console.log("token:"+csrf_token_value);
                     $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
-                    send_flg=true;
+                    refresh = true;
                     $("form").submit();
                 },
                 error: function() {

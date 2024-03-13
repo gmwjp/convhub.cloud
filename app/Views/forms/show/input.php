@@ -161,8 +161,28 @@
 </div>
 <script>
 $(function(){
+    var refresh = false;
     $("#select_subform").change(function(){
         location.href = "/forms/show/input/<?=esc($form->code)?>?subform="+$(this).val();
+    });
+    $("form").submit(function(e){
+        if(refresh == false){
+            e.preventDefault();
+            $.ajax({
+                url: '/widgets/get_token',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    csrf_token_value = data.value;
+                    $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
+                    refresh = true;
+                    $("form").submit();
+                },
+                error: function() {
+                    console.error('CSRF取得エラー');
+                }
+            });
+        }
     });
 });
 </script>
