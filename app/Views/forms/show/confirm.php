@@ -164,7 +164,6 @@ $(function(){
                 console.error('CSRF取得エラー');
             }
         });
-		}
     });
 });
 </script>
