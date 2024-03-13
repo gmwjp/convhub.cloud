@@ -11,6 +11,6 @@
         </div>
     </div>
     <div class="col-md-4 col-sm-12">
-        <?=nl2br($form->contents_body)?>
+        <?=$this->element("most_widget")?>
     </div>
 </div>
