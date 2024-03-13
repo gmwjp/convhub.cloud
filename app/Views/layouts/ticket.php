@@ -73,7 +73,7 @@
     </head>
     <body class="loading">
         <!-- NAVBAR START -->
-        <nav class="navbar navbar-expand-lg py-lg-3 navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-lg py-lg-3 navbar-light bg-light">
             <div class="container">
                 <!-- logo -->
 				<a href="/forms/show/input/<?=esc($form->code)?>" class="navbar-brand mr-lg-5 p-0">
@@ -81,31 +81,11 @@
 						<img src="/img/forms/<?=esc($form->code)?>.png?d=<?=date("YmdHis")?>">
 					<?}?>
                 </a>
-				<?php
-				/*
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="mdi mdi-menu"></i>
-                </button>
-
-                <!-- menus -->
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-
-                    <!-- left menu -->
-                    <ul class="navbar-nav mr-auto align-items-center">
-						<li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="/statics/howto">申込方法</a>
-                        </li>
-                        <li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="/statics/price">料金</a>
-                        </li>
-						<li class="nav-item mx-lg-1">
-                            <a class="nav-link" href="https://support.g-m-w.jp/products/qas/pictsquare" target="_blank">FAQ</a>
-                        </li>
-                    </ul>
-                </div>
-				*/
-				?>
+				<?if($form->url !=""){?>
+				<div class="float-right">
+					<a href="<?=esc($form->url)?>" class="btn btn-secondary btn-sm">サイトに戻る<i class="fal fa-arrow-from-left ml-1"></i></a>
+				</div>
+				<?}?>
             </div>
         </nav>
         <!-- NAVBAR END -->
