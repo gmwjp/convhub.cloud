@@ -200,12 +200,14 @@ class Forms extends _MyController {
 						$this->set("items",$items_temp);
 						//ファイルをTEMPフォルダへ移動
 						$attaches = false;
+						$count = 0;
 						if(request()->getPost("files")["name"][0] != ""){
 							foreach (request()->getPost("files")["name"] as $key=>$file) {
 								$path_parts = pathinfo($file);
-								$temp_path = WRITEPATH."files/attach_temp/".session_id()."_".$key;
-								rename(request()->getPost("files")["tmp_name"][$key],$temp_path);
-								$attaches[] = ["fname"=>$file,"path"=>$temp_path];
+								$temp_path = WRITEPATH."files/attach_temp/".basename(session_id()."_".$count);
+								rename(request()->getPost("files")["tmp_name"][$count],$temp_path);
+								$attaches[] = ["fname"=>basename($file)];
+								$count++;
 							}
 						}
 						$this->set("attaches",$attaches);
@@ -285,15 +287,17 @@ class Forms extends _MyController {
 						//添付ファイル処理
 						if(request()->getPost("files")){
 							$attaches = [];
+							$count = 0;
 							foreach (request()->getPost("files") as $key => $file) {
-								$temp_path = WRITEPATH."files/attach_temp/".session_id()."_".$key;
-								$save_path = WRITEPATH."files/attach/ticket_".$ticket_id."_".$key;
+								$temp_path = WRITEPATH."files/attach_temp/".basename(session_id()."_".$count);
+								$save_path = WRITEPATH."files/attach/ticket_".$ticket_id."_".$count;
 								rename($temp_path, $save_path);
-								$attaches[$key] = [
-									"name" => $file,
+								$attaches[$count] = [
+									"name" => basename($file),
 									"mime" => mime_content_type($save_path)
 								]; 
 								@unlink($temp_path);
+								$count++;
 							}
 							//基本データに添付ファイル情報を反映
 							unset($dat);
