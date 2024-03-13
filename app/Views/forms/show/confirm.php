@@ -19,7 +19,7 @@
                             </div>
                             <?}?>
                             <div class="text-center mt-4">
-                                <button type="submit" class="btn btn-secondary mb-1" name="execute" value="answer">はい、解決しました</button>
+                                <button type="button" class="btn btn-secondary mb-1 execute_button" data-value="answer">はい、解決しました</button>
                                 <button type="button" class="btn btn-secondary mb-1" id="no_button">いいえ、解決できないので問い合わせを送信します</button>
                             </div>
                         </div>
@@ -123,7 +123,7 @@
                         <div class="form-group">
                             <div class="text-center">
                                 <div class="text-muted my-2"><small>問い合わせを送信すると「<?=esc(env("smtp.from"))?>」から自動返信メールを送信します</small></div>
-                                <button type="submit" class="btn btn-dark" name="execute" value="on">問い合わせを送信する</button>
+                                <button type="button" class="btn btn-dark execute_button" data-value="on">問い合わせを送信する</button>
                                 <div class="mt-2"><button type="button" class="btn btn-light submit" data-action="/forms/show/input/<?=esc($form->code)?><?if(request()->getGet("subform")){?>?subform=<?=esc(request()->getGet("subform"))?><?}?>">戻る</button></div>
                             </div>
                         </div>
@@ -131,6 +131,7 @@
                 </div>
             </div>
             <?=csrf()?>
+            <input type="hidden" name="execute" value="on" id="execute">
         </form>
     </div>
     <div class="col-md-4 col-sm-12">
@@ -149,24 +150,22 @@ $(function(){
         var targetId = $(this).data('target');
         $('#' + targetId).val('1');
     });
-    $("form").submit(function(e){
-        if(refresh == false){
-            e.preventDefault();
-            $.ajax({
-                url: '/widgets/get_token',
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    csrf_token_value = data.value;
-                    $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
-                    refresh = true;
-                    $("form").submit();
-                },
-                error: function() {
-                    console.error('CSRF取得エラー');
-                }
-            });
-        }
+    $(".execute_button").click(function(e){
+        var self = this;
+        $.ajax({
+            url: '/widgets/get_token',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                csrf_token_value = data.value;
+                $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
+                $("#execute").val($(self).data("value"));
+                $("form").submit();
+            },
+            error: function() {
+                console.error('CSRF取得エラー');
+            }
+        });
     });
 });
 </script>

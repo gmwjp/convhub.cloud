@@ -147,11 +147,12 @@
                             <div class="text-muted mt-1"><small>複数ファイルを選択できます。合計10MBまで。</small></div>
                         </div>
                         <div class="form-group">
-                            <div class="text-center"><button type="submit" class="btn btn-dark" name="execute" value="on">確認画面へ</button></div>
+                            <div class="text-center"><button type="button" class="btn btn-dark execute_button">確認画面へ</button></div>
                         </div>
                     </div>
                 </div>
             </div>
+            <input type="hidden" name="execute" value="on">
             <?=csrf()?>
         </form>
     </div>
@@ -165,24 +166,20 @@ $(function(){
     $("#select_subform").change(function(){
         location.href = "/forms/show/input/<?=esc($form->code)?>?subform="+$(this).val();
     });
-    $("form").submit(function(e){
-        if(refresh == false){
-            e.preventDefault();
-            $.ajax({
-                url: '/widgets/get_token',
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                    csrf_token_value = data.value;
-                    $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
-                    refresh = true;
-                    $("form").submit();
-                },
-                error: function() {
-                    console.error('CSRF取得エラー');
-                }
-            });
-        }
+    $(".execute_button").click(function(e){
+        $.ajax({
+            url: '/widgets/get_token',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                csrf_token_value = data.value;
+                $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
+                $("form").submit();
+            },
+            error: function() {
+                console.error('CSRF取得エラー');
+            }
+        });
     });
 });
 </script>
