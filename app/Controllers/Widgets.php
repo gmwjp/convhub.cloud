@@ -53,11 +53,11 @@ class Widgets extends _MyController {
 										$dat = [
 											"team_id" => $this->my_user->team_id,
 											"user_id" => $this->my_user->id,
-											"section" => "feedback",
 											"code" => $this->model("Widgets")->createCode(),
 											"form_id" => $form->id,
 											"notion_page_id" => $ret->id,
 											"notion_url" => $ret->url,
+											"notion_public_url" => $ret->public_url,
 											"name" => $name,
 											"sync_temp_flg" => 1	//更新したフラグをONに
 										];
@@ -72,6 +72,9 @@ class Widgets extends _MyController {
 										$dat = [
 											"id" => $widget->id,
 											"name" => $name,
+											"notion_page_id" => $ret->id,
+											"notion_url" => $ret->url,
+											"notion_public_url" => $ret->public_url,
 											"sync_temp_flg" => 1	//更新したフラグをONに
 										];
 										$this->model("Widgets")->write($dat);
