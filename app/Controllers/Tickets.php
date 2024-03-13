@@ -152,9 +152,13 @@ class Tickets extends _MyController {
 				request()->addPost("user_section","customer");
 				request()->addPost("ticket_id",$ticket->id);
 				request()->addPost("public_flg",1);
-				request()->addPost("status",1);	//対応中に強制切り替え
 				if($this->model("Comments")->validates("add")){
 					$comment_id = $this->model("Comments")->write(request()->getPost());
+					//未対応に切り替え
+					unset($dat);
+					$dat["id"] = $ticket->id;
+					$dat["status"] = 1;
+					$this->model("Tickets")->write($dat);
 					//添付ファイルを処理
 					if(request()->getPost("files")["name"][0] !=""){
 						$attaches = [];
