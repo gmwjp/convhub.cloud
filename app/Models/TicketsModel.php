@@ -13,11 +13,6 @@ class TicketsModel extends _MyModel {
 				"text" => "解決済",
 				"text_mini" => "済",
 				"color" => "light"
-			],
-			9 => [
-				"text" => "保留",
-				"text_mini" => "保",
-				"color" => "secondary"
 			]
 		]
 	];
@@ -68,7 +63,7 @@ class TicketsModel extends _MyModel {
 		return $this->where("mail",$ticket->mail)->where("id !=",$ticket_id)->findAll(10);
 	}
 	function getAllComments($ticket_id){
-		return $this->model("Comments")->where("ticket_id",$ticket_id)->orderBy("id","asc")->findAll();
+		return $this->model("Comments")->select("comments.*,users.nickname users_nickname")->join("users","users.id = comments.user_id","left")->where("ticket_id",$ticket_id)->orderBy("id","asc")->findAll();
 	}
 	function getComments($ticket_id){
 		return $this->model("Comments")->where("ticket_id",$ticket_id)->where("public_flg",1)->orderBy("id","asc")->findAll();

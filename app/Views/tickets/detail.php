@@ -74,7 +74,7 @@
                     <?}?>
                 </div>
                 <?if($ticket->user_id == -1){?>
-                    <div class="text-center">このチケットはユーザー自身が解決しました</div>
+                    <div class="text-center my-2">このチケットはユーザー自身が解決しました</div>
                 <?}?>
             </div>
             <?foreach($comments as $comment){?>
@@ -84,7 +84,7 @@
                         <div class="alert <?if($comment->public_flg == 1){?>alert-success<?} else {?>alert-secondary<?}?>">
                             <div class="clearfix">
                                 <div class="float-left">
-                                    <label>回答者<?if($comment->public_flg == 0){?>&nbsp;<small>[社内メモ]</small><?}?></label>
+                                    <label>回答者&nbsp;<small>[<?=esc($comment->users_nickname)?>]</small><?if($comment->public_flg == 0){?>&nbsp;<small class="text-muted">社内メモ</small><?}?></label>
                                 </div>
                                 <div class="float-right">
                                     <div><small><?=changeDate($ticket->created)?></small></div>
