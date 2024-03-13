@@ -92,26 +92,6 @@
 	        <?=$content?>
 			</div>
 		</div>
-
-		<footer class="footer" style="left:0px;">
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-md-3">
-						<?=date("Y")?> © <a href="/">ConvHUB</a>
-					</div>
-					<div class="col-md-9">
-						<div class="text-md-right footer-links d-none d-md-block">
-							<small>
-							<a href="/statics/term">利用規約</a>
-							<a href="/statics/policy">プライバイシーポリシー</a>
-							<a href="/statics/toku">特定商取引法に関する表記</a>
-							<a href="/statics/company">運営会社</a>
-						</small>
-						</div>
-					</div>
-				</div>
-			</div>
-		</footer>
         <script src="/assets/js/vendor.min.js"></script>
         <script src="/assets/js/app.min.js"></script>
     </body>
