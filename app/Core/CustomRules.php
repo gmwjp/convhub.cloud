@@ -67,16 +67,34 @@ class CustomRules
 			}
 		}
 	}
+	function file_kind_multiple($files,$param){
+		if(@$files){
+			foreach ($files as $index => $file) {
+				if($file["file_name"] != ""){
+					// ファイルが正常にアップロードされたかをチェック
+					$find = false;
+					foreach(explode(",",$param) as $header){
+						if($header == $file["mime_type"]){
+							$find = true;
+						}
+					}
+					if($find == false){
+						return false;
+					}
+				}
+			}
+		} else {
+			return true;
+		}
+		return true;
+	}
 	function file_size_multiple($files, $maxSizeInKb) {
 		$totalSize = 0;
 		// ファイル情報が配列として渡されるため、それぞれのファイルサイズを合計する
-		if(@$files["name"]){
-			foreach ($files["name"] as $index => $name) {
-				// ファイルが正常にアップロードされたかをチェック
-				if ($files['error'][$index] == 0) {
-					$totalSize += filesize($files["tmp_name"][$index]);
-				}
-			}		
+		if(@$files){
+			foreach ($files as $index => $file) {
+				$totalSize += $file["file_size"];
+			}
 			// 合計サイズが最大サイズを超えているかチェック（キロバイト単位）
 			if ($totalSize / 1000 / 1000 > $maxSizeInKb) {
 				return false; // 合計サイズが最大値を超えている場合はfalseを返す

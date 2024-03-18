@@ -175,16 +175,18 @@ class Forms extends _MyController {
 			$this->set("subforms",$subforms);
 			if($section == "input"){
 				//入力画面
+				session()->remove("files");
 				return $this->view("/forms/show/$section","form");
 			}
 			if($section == "confirm"){
 				//確認画面
 				if(request()->getPost("execute")){
 					request()->addPost("subform",request()->getGet("subform"));
+					request()->addPostFiles("files",WRITEPATH."files/attach");
+					session()->set("files",request()->getPost("files"));	//ファイル情報をセッションに書き込み
 					//バリデーション組み立て
 					$this->createInputValidation($code,request()->getPost());
-					//dbug($this->model("Forms")->validate);exit();
-					//バリデーションチェック
+					
 					if($this->model("Forms")->validates("input")){
 						//バリデーションOK
 						$meishi = $this->library("Yahoo")->getMeishi(request()->getPost("title"));
@@ -193,24 +195,8 @@ class Forms extends _MyController {
 							if($form->notion_secret !=""){
 								$items_temp = $this->library("Notion")->search($form->notion_secret,implode(" ",$meishi));
 							}
-							// foreach($items_temp->results as $key => $item){
-							// 	$items_temp->results[$key]->detail = $this->library("Notion")->get_data($form->notion_secret,$item->id);
-							// }
 						}
 						$this->set("items",$items_temp);
-						//ファイルをTEMPフォルダへ移動
-						$attaches = false;
-						$count = 0;
-						if(request()->getPost("files")["name"][0] != ""){
-							foreach (request()->getPost("files")["name"] as $key=>$file) {
-								$path_parts = pathinfo($file);
-								$temp_path = WRITEPATH."files/attach_temp/".basename(session_id()."_".$count);
-								rename(request()->getPost("files")["tmp_name"][$count],$temp_path);
-								$attaches[] = ["fname"=>basename($file)];
-								$count++;
-							}
-						}
-						$this->set("attaches",$attaches);
 						return $this->view("/forms/show/confirm","form");
 					} else {
 						//バリデーションエラー
@@ -285,25 +271,13 @@ class Forms extends _MyController {
 							}
 						}
 						//添付ファイル処理
-						if(request()->getPost("files")){
-							$attaches = [];
-							$count = 0;
-							foreach (request()->getPost("files") as $key => $file) {
-								$temp_path = WRITEPATH."files/attach_temp/".basename(session_id()."_".$count);
-								$save_path = WRITEPATH."files/attach/ticket_".$ticket_id."_".$count;
-								rename($temp_path, $save_path);
-								$attaches[$count] = [
-									"name" => basename($file),
-									"mime" => mime_content_type($save_path)
-								]; 
-								@unlink($temp_path);
-								$count++;
-							}
+						if(session()->get("files")){
 							//基本データに添付ファイル情報を反映
 							unset($dat);
 							$dat["id"] = $ticket_id;
-							$dat["attaches"] = json_encode($attaches);
+							$dat["attaches"] = json_encode(session()->get("files"));
 							$this->model("Tickets")->write($dat);
+							session()->remove("files");
 						}
 						if(request()->getPost("execute") == "on"){
 							//自動返信メールを送信

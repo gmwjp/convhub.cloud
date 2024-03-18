@@ -4,9 +4,9 @@
         <div class="card">
             <div class="card-body">
                 <?if($form){?>
-                    <h4 class="page-title"><?=esc($form->name)?></h4>
+                    <a href="/forms/show/input/<?=esc($form->code)?>" target="_blank"><h4 class="page-title"><?=esc($form->name)?></h4></a>
                 <?}?>
-                <?if($ticket->subform_id){?>
+                <?if(!empty($subform)){?>
                 <label><?=esc($subform->name)?></label>
                 <?}?>
                 <div class="group-item">
@@ -155,7 +155,7 @@
                         <label for="upload" class="btn btn-light" id="file_num_button"><span class="fal fa-paperclip mr-1"></span><span id="file_num">添付ファイル</span></label>
                         <input type="file" id="upload" name="files[]" class="none" multiple>
                         <?=err($errors->getError("files"))?>
-                        <span class="text-muted ml-2"><small>複数ファイルを選択できます。合計10MBまで。</small></span>
+                        <span class="text-muted ml-2"><small>複数ファイルを選択できます。PNG,JPG,GIFのみ。</small></span>
                     </div>
                     <div class="float-right">
                         <?=err($errors->getError("body"))?>

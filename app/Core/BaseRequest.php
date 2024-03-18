@@ -11,6 +11,23 @@ class BaseRequest extends IncomingRequest
         unset($currentPostData[$key]);
         $this->setGlobal("post", $currentPostData);
     }
+    function addPostFiles($key_name,$save_path = WRITEPATH."uploads"){
+        $files_data = false;
+        foreach($this->getFileMultiple($key_name) as $key => $file){
+            if($file->getSize() != 0 && $file->isValid()){
+                //ファイル情報の配列を作成
+                $files_data[$key]["file_name"] = $file->getName();
+                $files_data[$key]["file_size"] = $file->getSize();
+                $files_data[$key]["mime_type"] = $file->getMimeType();
+                $new_name = $file->getRandomName();
+                $file->move($save_path,$new_name);
+                $files_data[$key]["save_name"] = $new_name;
+            }
+        }
+        if($files_data){
+            $this->addPost($key_name,$files_data);
+        }    
+    }
     function addPost($key,$value){
         $this->addPosts([$key => $value]);
     }

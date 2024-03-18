@@ -8,7 +8,7 @@ class CommentsModel extends _MyModel {
 				"rules" => 'required|max_length[10000]'
 			],
 			"files" => [
-				"rules" => 'file_size_multiple[10]'
+				"rules" => 'file_size_multiple[10]|file_kind_multiple[image/jpeg,image/png,image/gif]'
 			]
         ]
 	];

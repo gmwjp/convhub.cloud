@@ -93,7 +93,7 @@
                         <label for="upload" class="btn btn-light" id="file_num_button"><span class="fal fa-paperclip mr-1"></span><span id="file_num">添付ファイル</span></label>
                         <input type="file" id="upload" name="files[]" class="d-none" multiple>
                         <?=err($errors->getError("files"))?>
-                        <span class="text-muted ml-1"><small>複数ファイルを選択可</small></span>
+                        <span class="text-muted ml-1"><small>複数ファイルを選択できます。PNG,JPG,GIFのみ</small></span>
                     </div>
                     <div class="float-right">
                         <button type="button" class="btn btn-sm btn-dark submit" data-confirm="送信してよろしいですか？">送信<span class="fal fa-send"></span></button>
@@ -108,7 +108,7 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="page-title"><?=esc($form->name)?></h4>
-                <?if($ticket->subform_id){?>
+                <?if(!empty($subform)){?>
                 <label><?=esc($subform->name)?></label>
                 <?}?>
                 <?if($ticket_form_items){?>
@@ -129,6 +129,7 @@
                 <?}?>
             </div>
         </div>
+        <?=$this->element("most_widget")?>
     </div>
 </div>
 <script>

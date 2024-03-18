@@ -144,7 +144,7 @@
                             <label>添付ファイル&nbsp;<span class="badge badge-light font-weight-normal">任意</span></label>
                             <div><input type="file" name="files[]" multiple></div>
                             <?=err($errors->getError("files"))?>
-                            <div class="text-muted mt-1"><small>複数ファイルを選択できます。合計10MBまで。</small></div>
+                            <div class="text-muted mt-1"><small>複数ファイルを選択できます。PNG,JPG,GIFのみ。</small></div>
                         </div>
                         <div class="form-group">
                             <div class="text-center"><button type="button" class="btn btn-dark execute_button">確認画面へ</button></div>

@@ -12,6 +12,7 @@
         "codeigniter4/framework": ">=4.3 <4.4.0",
         "elasticsearch/elasticsearch": "^6.0",
         "ezyang/htmlpurifier": "^4.17",
+        "league/oauth2-google": "^4.0",
         "php-ffmpeg/php-ffmpeg": "^1.1",
         "phpmailer/phpmailer": "^6.8",
         "phpseclib/mcrypt_compat": "^2.0",

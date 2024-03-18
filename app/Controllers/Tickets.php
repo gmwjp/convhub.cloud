@@ -63,7 +63,7 @@ class Tickets extends _MyController {
 			$this->set("templates",$this->model("Teams")->getTemplates($this->my_user->team_id));
 			$this->set("form",$form = $this->model("Forms")->find($ticket->form_id));	
 			if($ticket->subform_id){
-				$this->set("subform",$this->model("Subforms")->find($ticket->subform_id));	
+				$this->set("subform",$subform = $this->model("Subforms")->find($ticket->subform_id));	
 			}
 			$this->set("ticket",$ticket);
 			$this->set("ticket_form_items",$this->model("Tickets")->getFormItems($ticket->id));
@@ -74,6 +74,7 @@ class Tickets extends _MyController {
 			$this->set("comments",$this->model("Tickets")->getAllComments($ticket->id));
 
 			if(request()->getPost("execute")){
+				request()->addPostFiles("files",WRITEPATH."files/attach");
 				//バリデーションチェック
 				if($this->model("Comments")->validates("add")){
 					//データ保存
@@ -81,23 +82,14 @@ class Tickets extends _MyController {
 					request()->addPost("user_id",$this->my_user->id);
 					request()->addPost("ticket_id",$ticket->id);
 					$comment_id = $this->model("Comments")->write(request()->getPost());
-					//添付ファイルを処理
-					if(request()->getPost("files")["name"][0] !=""){
-						$attaches = [];						
-						foreach (request()->getPost("files")["name"] as $key=>$file) {
-							$save_path = WRITEPATH."files/attach/comment_".$comment_id."_".$key;
-							rename(request()->getPost("files")["tmp_name"][$key], $save_path);
-							$attaches[$key] = [
-								"name" => $file,
-								"mime" => mime_content_type($save_path)
-							]; 	
-						}
+					if(request()->getPost("files")){
 						//基本データに添付ファイル情報を反映
 						unset($dat);
 						$dat["id"] = $comment_id;
-						$dat["attaches"] = json_encode($attaches);
+						$dat["attaches"] = json_encode(request()->getPost("files"));
 						$this->model("Comments")->write($dat);
 					}
+
 					//問い合わせ主にメール送信
 					if(request()->getPost("public_flg") == 1){
 						unset($text);
@@ -135,9 +127,11 @@ class Tickets extends _MyController {
 		$ticket_id = $this->library("Crypt2")->decode($crypt_ticket_id);
 		checkId($ticket_id);
 		$ticket = $this->model("Tickets")->find($ticket_id);
+		
 		if($ticket){
 			$this->set("crypt_ticket_id",$crypt_ticket_id);
 			$this->set("form",$form = $this->model("Forms")->find($ticket->form_id));	
+			$this->set("widgets",$this->model("Forms")->getMostWidgets($form->id));
 			$this->title($form->name);
 			if($ticket->subform_id){
 				$this->set("subform",$this->model("Subforms")->find($ticket->subform_id));	
@@ -152,6 +146,7 @@ class Tickets extends _MyController {
 				request()->addPost("user_section","customer");
 				request()->addPost("ticket_id",$ticket->id);
 				request()->addPost("public_flg",1);
+				request()->addPostFiles("files",WRITEPATH."files/attach");
 				if($this->model("Comments")->validates("add")){
 					$comment_id = $this->model("Comments")->write(request()->getPost());
 					//未対応に切り替え
@@ -160,23 +155,15 @@ class Tickets extends _MyController {
 					$dat["status"] = 1;
 					$this->model("Tickets")->write($dat);
 					//添付ファイルを処理
-					if(request()->getPost("files")["name"][0] !=""){
-						$attaches = [];
-						foreach (request()->getPost("files")["name"] as $key=>$file) {
-							$save_path = WRITEPATH."files/attach/comment_".$comment_id."_".$key;
-							rename(request()->getPost("files")["tmp_name"][$key], $save_path);
-							$attaches[$key] = [
-								"name" => $file,
-								"mime" => mime_content_type($save_path)
-							]; 
-						}
+					if(request()->getPost("files")){
 						//基本データに添付ファイル情報を反映
 						unset($dat);
 						$dat["id"] = $comment_id;
-						$dat["attaches"] = json_encode($attaches);
+						$dat["attaches"] = json_encode(request()->getPost("files"));
 						$this->model("Comments")->write($dat);
 					}
 					//リダイレクト
+					session()->setFlashdata("message","コメントを送信しました。事務局からの回答をお待ち下さい。");
 					$this->redirect("/tickets/show/".$crypt_ticket_id);
 				}
 			}
@@ -221,17 +208,11 @@ class Tickets extends _MyController {
 		}
 		if($data){
 			$attaches = json_decode($data->attaches);
-			if(file_exists(WRITEPATH."files/attach/{$section}_{$id}_{$no}")){
+			if(file_exists(WRITEPATH."files/attach/".$attaches[$no]->save_name)){
 				if($view == "output"){
-					header('Content-Type: '.$attaches[$no]->mime);
-					readfile(WRITEPATH."files/attach/{$section}_{$id}_{$no}");	
+					header('Content-Type: '.$attaches[$no]->mime_type);
+					readfile(WRITEPATH."files/attach/".$attaches[$no]->save_name);	
 					exit();
-				}
-				if($view == "view"){
-					$this->set("section",$section);
-					$this->set("data",$data);
-					$this->set("file",$attaches[$no]);
-					$this->view("/tickets/attach","ajax");
 				}
 			} else {
 				$this->redirect("/statics/error");

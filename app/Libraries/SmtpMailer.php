@@ -1,6 +1,8 @@
 <?php
 namespace App\Libraries;
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\OAuth;
+use League\OAuth2\Client\Provider\Google;
 class SmtpMailer {
 	var $language = "ja";
 	function send($template_file,$texts,$address,$from_address = null,$from_name = null,$from_subject = null){
@@ -47,6 +49,57 @@ class SmtpMailer {
 		$mail->Body  = mb_convert_encoding($data->Body ,"JIS","UTF-8");
 		$ret = $mail->Send();
 		return $ret;
+	}
+	function gmail_send(){
+		//
+		//
+
+		//refresh 1//049M8bGxo04xeCgYIARAAGAQSNwF-L9IrUblFGiDCHIjFOG5PIZeIfWw_lqc0ex1NUKnglRuc4ICDzUW_0Yp3ySUAZ-9SyJQrJB8
+		//access ya29.a0Ad52N38Iwvt-9NuY8XGaKBmsdlV54R8t3_CUxoMb9vo6YHLojOcGs5KG4EJXb4N06faeeaU2pVARtsQVothuLznrXXexA1hA2lQXoEM04gYcgPEY7CgHXoGmfSZujbUx2Xup4XyIkyFAjfiv3-jmEWv04_reBxOUkjfHaCgYKAaISARESFQHGX2MiYEu9YQGXMqSGzjq52GD66Q0171
+		$mail = new PHPMailer();
+		$mail->isSMTP();
+		$mail->SMTPDebug = true;
+		$mail->Host = 'smtp.gmail.com';
+		$mail->Port = 465;
+		$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+		$mail->SMTPAuth = true;
+		$mail->AuthType = 'XOAUTH2';
+		$provider = new Google(
+			[
+			  'clientId' => "50183193864-5n1umca4kjpicjv6ajk4in7luhqt9p19.apps.googleusercontent.com",
+			  'clientSecret' => "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",
+			]
+		  );
+		
+		  $mail->setOAuth(
+			new OAuth(
+			  [
+				'provider' => $provider,
+				'clientId' => "50183193864-5n1umca4kjpicjv6ajk4in7luhqt9p19.apps.googleusercontent.com",
+				'clientSecret' => "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",
+				'refreshToken' => "1//049M8bGxo04xeCgYIARAAGAQSNwF-L9IrUblFGiDCHIjFOG5PIZeIfWw_lqc0ex1NUKnglRuc4ICDzUW_0Yp3ySUAZ-9SyJQrJB8",
+				'userName' => "pictbland@g-m-w.jp",
+			  ]
+			)
+		  );
+		  $data = [
+			"name" => "test",
+			"mail" => "rhara@g-m-w.jp",
+			"content" => "テストメールです"
+		  ];
+		  $mail->setFrom("pictbland@g-m-w.jp", 'site title');
+  $mail->addAddress($data["mail"], $data["name"]);
+  $mailBody = "
+    お名前: {$data['name']}
+    メールアドレス: {$data['mail']}
+    お問い合わせ内容: {$data['content']}
+  ";
+  $mail->Subject = 'お問い合わせありがとうございます。';
+
+  $mail->CharSet = PHPMailer::CHARSET_UTF8;
+  $mail->Body = $mailBody;
+		  $mail->send();
+
 	}
 	function sendData($title,$body,$attach = false,$address){
 		//言語設定、内部エンコーディングを指定する

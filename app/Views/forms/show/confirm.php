@@ -109,13 +109,12 @@
                             <div><?=nl2br(esc(request()->getPost("body")))?></div>
                             <input type="hidden" name="body" value="<?=esc(request()->getPost("body"))?>">
                         </div>
-                        <?if($attaches){?>
+                        <?if(request()->getPost("files")){?>
                             <div class="form-group">
                                 <label>添付ファイル</label>
                                 <div>
-                                    <?foreach ($attaches as $key => $attach){ ?>
-                                        <?=esc($attach["fname"])?>
-                                        <input type="hidden" name="files[]" value="<?=esc($attach["fname"])?>"><br>
+                                    <?foreach (request()->getPost("files") as $key => $attach){ ?>
+                                        <div><?=esc($attach["file_name"])?></div>
                                     <?}?>
                                 </div>
                             </div>
