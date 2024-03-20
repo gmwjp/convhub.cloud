@@ -146,20 +146,19 @@
                     </div>
                     <div class="float-right">
 
-                        <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#exampleModal">テンプレート選択<span class="fal fa-chevron-down ml-1"></span></button>
+                        <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#exampleModal">テンプレート選択<span class="fal fa-chevron-up ml-1"></span></button>
                     </div>
                 </div>
                 <textarea id="body" name="body" rows="4" class="form-control mt-1"><?=esc(request()->getPost("body"))?></textarea>
                 <div class="clearfix mt-1">
-                    <div class="float-left">
-                        <label for="upload" class="btn btn-light" id="file_num_button"><span class="fal fa-paperclip mr-1"></span><span id="file_num">添付ファイル</span></label>
+                    <div class="float-left" >
+                        <label for="upload" class="btn btn-light" id="file_num_button"  data-toggle="tooltip" data-placement="top" title="複数ファイルを選択可。PNG,JPG,GIFのみ。"><span class="fal fa-paperclip mr-1"></span><span id="file_num">添付ファイル</span></label>
                         <input type="file" id="upload" name="files[]" class="none" multiple>
                         <?=err($errors->getError("files"))?>
-                        <span class="text-muted ml-2"><small>複数ファイルを選択できます。PNG,JPG,GIFのみ。</small></span>
                     </div>
                     <div class="float-right">
                         <?=err($errors->getError("body"))?>
-                        <button type="button" class="btn btn-sm btn-dark submit" data-confirm="送信してよろしいですか？">送信<span class="fal fa-send"></span></button>
+                        <button type="button" class="btn btn-dark submit" id="submit_button" data-confirm="送信してよろしいですか？">送信<span class="fal fa-send"></span></button>
                     </div>
                 </div>
                 <input type="hidden" name="execute" value="on">
@@ -209,7 +208,7 @@
                                     <small><?=changeDate(esc($t->created))?></small>
                                 </div>
                                 <div class="float-right">
-                                    <span class="badge badge-<?=esc($this->model("Tickets")->params["status"][$t->status]["color"])?> p-1"><?=esc($this->model("Tickets")->params["status"][$ticket->status]["text_mini"])?></span>
+                                    <span class="badge badge-<?=esc($this->model("Tickets")->params["status"][$t->status]["color"])?> p-1"><?=esc($this->model("Tickets")->params["status"][$t->status]["text_mini"])?></span>
                                 </div>
                             </div>
                             <?=esc($t->title)?>
@@ -275,11 +274,17 @@ function setTextform(){
             backgroundColor:"#fff"
         });
         $("#body").attr("placeholder","問い合わせユーザーに送信されます");
+        $("#submit_button").removeClass("btn-secondary").addClass("btn-dark");
+        $("#submit_button").html("パブリック送信");
+        $("#submit_button").data("confirm","この問い合わせユーザーに返信します。\nメールが送信されますがよろしいですか？");
     } else {
         $("#body").css({
             backgroundColor:"#fffacd"
         });
         $("#body").attr("placeholder","問い合わせユーザーには閲覧できないコメントを記述できます");
+        $("#submit_button").addClass("btn-secondary").removeClass("btn-dark");
+        $("#submit_button").data("confirm","送信してよろしいですか？");
+        $("#submit_button").html("社内メモ送信");
     }
 }
 $("#public_flg").change(function(){
