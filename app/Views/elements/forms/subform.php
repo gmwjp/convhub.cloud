@@ -17,6 +17,12 @@
     </div>
 </div>
 <div class="form-group">
+    <input type="hidden" name="copy_flg" value="0">
+    <input type="checkbox" name="copy_flg" value="1" id="copy_flg" <?if(request()->getPost("copy_flg") == 1){?>checked<?}?>>
+    <label for="copy_flg">問い合わせフォームにて、サブフォーム名を件名にコピーする</label>
+</div>
+
+<div class="form-group">
     <div class="item-title">
         設問項目
     </div>

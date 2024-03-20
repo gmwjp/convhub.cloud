@@ -9,6 +9,9 @@ class SubformsModel extends _MyModel {
             ],
             "body" => [
 				"rules" => 'max_length[10000]'
+			],
+            "copy_flg" => [
+				"rules" => 'numeric'
 			]
 
         ],
@@ -18,7 +21,11 @@ class SubformsModel extends _MyModel {
             ],
             "body" => [
 				"rules" => 'max_length[10000]'
+			],
+            "copy_flg" => [
+				"rules" => 'numeric'
 			]
+
         ]
 	];
     function createValidation($section,$post){

@@ -174,6 +174,17 @@ class Forms extends _MyController {
 			}
 			$this->set("subforms",$subforms);
 			if($section == "input"){
+				if(!request()->getPost("execute")){
+					if(request()->getGet("subform")){
+						foreach($subforms as $key => $subform){
+							if($subform->id == request()->getGet("subform")){
+								if($subform->copy_flg == 1){
+									request()->addPost("title",$subform->name);
+								}
+							}
+						}
+					}
+				}
 				//入力画面
 				session()->remove("files");
 				return $this->view("/forms/show/$section","form");
