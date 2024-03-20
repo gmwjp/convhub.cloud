@@ -10,13 +10,15 @@
                         <div class="form-group" id="helps">
                             以下のヘルプ記事で解決できますか？
                             <?foreach($items->results as $key => $result){?>
-                            <div class="mt-2">
-                                <a href="<?=esc($result->public_url)?>" target="_blank" data-target="read_<?=esc($key)?>" class="fw-bold notion_links"><?=esc($result->properties->title->title[0]->plain_text)?><i class="ml-1 fal fa-external-link"></i></a><br>
-                                <small class="text-muted"><?=esc(@$result->detail->results[0]->paragraph->rich_text[0]->plain_text)?></small>
-                                <input type="hidden" name="notion_title[]" value="<?=esc($result->properties->title->title[0]->plain_text)?>">
-                                <input type="hidden" name="notion_url[]" value="<?=esc($this->library("Crypt2")->encode($result->url))?>">
-                                <input type="hidden" name="notion_read[]" value="0" id="read_<?=esc($key)?>">
-                            </div>
+                                <?if(!empty($result->properties->title)){?>
+                                    <div class="mt-2">
+                                        <a href="<?=esc($result->public_url)?>" target="_blank" data-target="read_<?=esc($key)?>" class="fw-bold notion_links"><?=esc($result->properties->title->title[0]->plain_text)?><i class="ml-1 fal fa-external-link"></i></a><br>
+                                        <small class="text-muted"><?=esc(@$result->detail->results[0]->paragraph->rich_text[0]->plain_text)?></small>
+                                        <input type="hidden" name="notion_title[]" value="<?=esc($result->properties->title->title[0]->plain_text)?>">
+                                        <input type="hidden" name="notion_url[]" value="<?=esc($this->library("Crypt2")->encode($result->url))?>">
+                                        <input type="hidden" name="notion_read[]" value="0" id="read_<?=esc($key)?>">
+                                    </div>
+                                <?}?>
                             <?}?>
                             <div class="text-center mt-4">
                                 <button type="button" class="btn btn-secondary mb-1 execute_button" data-value="answer">はい、解決しました</button>
@@ -109,7 +111,7 @@
                             <div><?=nl2br(esc(request()->getPost("body")))?></div>
                             <input type="hidden" name="body" value="<?=esc(request()->getPost("body"))?>">
                         </div>
-                        <?if(request()->getPost("files")){?>
+                        <?if(request    ()->getPost("files")){?>
                             <div class="form-group">
                                 <label>添付ファイル</label>
                                 <div>
