@@ -42,7 +42,7 @@
     <div class="col-sm-12 col-md-6">
         <div class="clearfix">
             <div class="float-left">
-                <h3><?=esc($ticket->title)?></h3>
+                <h3><?=esc($ticket->title)?>&nbsp;<small>#<?=esc($ticket->id)?></small></h3>
             </div>
             <div class="float-right">
                 <span class="p-1 badge badge-<?=esc($this->model("Tickets")->params["status"][$ticket->status]["color"])?>">
@@ -91,7 +91,11 @@
                                 </div>
                             </div>
                             <div>
-                                <?=nl2br(esc($comment->body))?>
+                                <?if($comment->public_flg == 0){?>
+                                    <?=setTicketLink(nl2br(esc($comment->body)))?>
+                                <?} else {?>
+                                    <?=nl2br(esc($comment->body))?>
+                                <?}?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
                                         <hr>
@@ -205,7 +209,7 @@
                         <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>">
                             <div class="clearfix">
                                 <div class="float-left text-muted">
-                                    <small><?=changeDate(esc($t->created))?></small>
+                                    <small>#<?=esc($t->id)?>&nbsp;<?=changeDate(esc($t->created))?></small>
                                 </div>
                                 <div class="float-right">
                                     <span class="badge badge-<?=esc($this->model("Tickets")->params["status"][$t->status]["color"])?> p-1"><?=esc($this->model("Tickets")->params["status"][$t->status]["text_mini"])?></span>

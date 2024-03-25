@@ -52,6 +52,11 @@ function setUrlLink($value){
     $text = preg_replace("{[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]}","<a href=\"\\0\" target=\"_blank\" style=\"text-decoration:underline;\" class=\"noaction\">\\0</a>", $value);
     return $text;
 }
+//$value内に#numberがあれば、リンクを設定する
+function setTicketLink($value){
+    $text = preg_replace("{#([0-9]+)}","<a href=\"/tickets/detail/\\1\" target=\"_blank\" style=\"text-decoration:underline;\" class=\"noaction\">#\\1</a>", $value);
+    return $text;
+}
 function checkId($id = null){
     if($id==null){
         header("Location:/static/error");

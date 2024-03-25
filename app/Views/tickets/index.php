@@ -74,7 +74,7 @@
                         </div>
                         <div class="float-left">
                             <div class="">
-                                <small><?=changeDate($ticket->created)?></small>
+                                <small>#<?=esc($ticket->id)?>&nbsp;<?=changeDate($ticket->created)?></small>
                                 <?if($ticket->last_comment_user_id != ""){?>
                                 <small class="ml-2">更新：<?=changeDate($ticket->last_comment_datetime)?></small>
                                 <?}?>
