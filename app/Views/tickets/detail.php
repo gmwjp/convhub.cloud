@@ -206,7 +206,7 @@
             <div>
                 <ul class="list-group">
                     <?foreach($old_tickets as $t){?>
-                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>">
+                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>" target="_blank">
                             <div class="clearfix">
                                 <div class="float-left text-muted">
                                     <small>#<?=esc($t->id)?>&nbsp;<?=changeDate(esc($t->created))?></small>
