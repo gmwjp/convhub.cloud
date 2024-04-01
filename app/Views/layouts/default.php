@@ -22,7 +22,6 @@
 		<link rel="stylesheet" type="text/css" href="/assets/css/common.css?d=20230519_1" />
 		<script <?=csp_script_nonce_test()?> src="/assets/js/convhub.js?d=20200510_6"></script>
 		<script <?=csp_script_nonce_test()?> src="/assets/js/notifIt.min.js"></script>
-		<script <?=csp_script_nonce_test()?> src="/assets/js/sortable.min.js"></script>
 		<script <?=csp_script_nonce_test()?>>
 			var csrf_token_name = '<?=csrf_token()?>';
 			var csrf_token_value = '<?=csrf_hash()?>';

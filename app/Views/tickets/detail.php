@@ -202,7 +202,7 @@
             <div>
                 <ul class="list-group">
                     <?foreach($old_tickets as $t){?>
-                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>" target="_blank">
+                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>" target="_blank"  data-placement="top" data-trigger="hover" tabindex="0" data-toggle="popover" title="<?=esc($t->title)?>" data-content="<?=esc($t->body)?>">
                             <div class="clearfix">
                                 <div class="float-left text-muted">
                                     <small>#<?=esc($t->id)?>&nbsp;<?=changeDate(esc($t->created))?></small>
