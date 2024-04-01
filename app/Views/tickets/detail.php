@@ -148,10 +148,6 @@
                             <option value="1">パブリック返信</option>
                         </select>
                     </div>
-                    <div class="float-right">
-
-                        <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#exampleModal">テンプレート選択<span class="fal fa-chevron-up ml-1"></span></button>
-                    </div>
                 </div>
                 <textarea id="body" name="body" rows="4" class="form-control mt-1"><?=esc(request()->getPost("body"))?></textarea>
                 <div class="clearfix mt-1">
@@ -223,37 +219,6 @@
         <?}?>
     </div>
 </div>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-custom" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">テンプレート選択</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <?if($templates){?>
-            <div class="list-group">
-            <?foreach($templates as $template){?>
-                <div class="list-group-item">
-                    <div class="clearfix">
-                        <div class="float-left">
-                            <?=esc($template->name)?>
-                        </div>
-                        <div class="float-right">
-                            <button type="button" class="btn btn-dark btn-sm template_select_button" data-id="<?=esc($template->id)?>">選択</button>
-                        </div>
-                    </div>
-                    <div class="text-muted"><small id="template_<?=esc($template->id)?>"><?=esc($template->body)?></small></div>
-                </div>
-            <?}?>
-            </div>
-        <?}?>
-      </div>
-    </div>
-  </div>
-</div>
 <script>
 function resizeForm(){
     $("body").css({
@@ -294,13 +259,6 @@ function setTextform(){
 $("#public_flg").change(function(){
     setTextform();
 });
-$(".template_select_button").click(function(){
-    var id = $(this).data("id");
-    var body = $("#template_"+id).html();
-    $("#body").val(body);
-    $("#exampleModal").modal("hide");
-    $("#body").focus();
-})
 $(window).resize(function() {
     resizeForm();
 });

@@ -114,12 +114,6 @@
 								</a>
 							</li>
 							<li class="side-nav-item">
-								<a href="/templates/index" class="side-nav-link">
-									<i class="fal fa-comment-alt-lines"></i>
-									<span> テンプレート </span>
-								</a>
-							</li>
-							<li class="side-nav-item">
 								<a href="/forms/index" class="side-nav-link">
 									<i class="fal fa-code"></i>
 									<span> フォーム </span>
