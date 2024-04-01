@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
 	<head>
-		<!--アイモバ広告 head -->
-		<!-- Google tag (gtag.js) -->
-				<meta charset="UTF-8">
+		<?=$this->element("analytics")?>
+		<meta charset="UTF-8">
 		<meta name="facebook-domain-verification" content="evz23atrugsbqrfg3q0gxluz58e5pv" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="keywords" content="" />
