@@ -87,7 +87,7 @@
                                     <label>回答者&nbsp;<small>[<?=esc($comment->users_nickname)?>]</small><?if($comment->public_flg == 0){?>&nbsp;<small class="text-muted">社内メモ</small><?}?></label>
                                 </div>
                                 <div class="float-right">
-                                    <div><small><?=changeDate($cpmment->created)?></small></div>
+                                    <div><small><?=changeDate($comment->created)?></small></div>
                                 </div>
                             </div>
                             <div>
