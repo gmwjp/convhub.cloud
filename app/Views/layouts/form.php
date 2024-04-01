@@ -13,7 +13,7 @@
 			<?}?>
 			<?}?>
 		<?}?>
-		<title><?if(!empty($page_title)){?><?=$page_title?> | <?}?>ConvHUB</title>
+		<title><?if(!empty($page_title)){?><?=$page_title?> | <?}?>お問い合わせ</title>
 		<link rel="shortcut icon" href="/assets/images/favicon.ico">
 		<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style" />
