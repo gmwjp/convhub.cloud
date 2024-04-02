@@ -14,7 +14,7 @@
     <div>
         <div class="input-group">
             <input type="text" class="form-control" readonly="true" value="<?=$_SERVER["SITE_URL"]?>/widgets/show/<?=esc($widget->code)?>">
-            <button class="btn btn-light" type="button" id="copy_button"><span class="fal fa-copy"></span></button>
+            <button class="btn btn-light copy_button" data-value="<?=$_SERVER["SITE_URL"]?>/widgets/show/<?=esc($widget->code)?>" type="button"><span class="fal fa-copy"></span></button>
         </div>
     </div>
 </div>
@@ -35,15 +35,3 @@
         <a href="/forms/widgets/<?=esc($widget->form_id)?>" class="btn btn-link">一覧に戻る</a>
     </div>
 </div>
-<script>
-$(document).ready(function(){
-    $('#copy_button').click(function(){
-        var copyText = $(this).closest('.input-group').find('input').val();
-        var temp = $("<input>");
-        $('body').append(temp);
-        temp.val(copyText).select();
-        document.execCommand("copy");
-        temp.remove();
-    });
-});
-</script>

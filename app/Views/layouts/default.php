@@ -244,3 +244,18 @@
 	}
 <?}?>
 </script>
+<script>
+$(document).ready(function(){
+    $('.copy_button').click(function(){
+        var copyText = $(this).data("value");
+		if(copyText !=""){
+			var temp = $("<input>");
+			$('body').append(temp);
+			temp.val(copyText).select();
+			document.execCommand("copy");
+			temp.remove();
+			info("コピーしました");
+		}
+    });
+});
+</script>

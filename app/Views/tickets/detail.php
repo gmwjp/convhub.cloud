@@ -11,13 +11,31 @@
                 <?}?>
                 <div class="group-item">
                     <div class="item-title">問い合わせメールアドレス</div>
-                    <div><?=esc($ticket->mail)?></div>
+                    <a href="#">
+                        <div class="list-group-item-action p-1 clearfix copy_button" data-toggle="tooltip" data-placement="top" title="コピー" data-value="<?=esc($ticket->mail)?>">
+                            <div class="float-left">
+                                <?=esc($ticket->mail)?>
+                            </div>
+                            <div class="float-right">
+                                <span class="fal fa-copy"></span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
                 <?if($ticket_form_items){?>
                     <?foreach($ticket_form_items as $item){?>
-                        <div class="group-item">
+                        <div class="group-item mb-2">
                             <div class="item-title"><?=esc($item->title)?></div>
-                            <div><?=esc($item->value)?></div>
+                            <a href="#">
+                                <div class="list-group-item-action p-1 clearfix copy_button" data-toggle="tooltip" data-placement="top" title="コピー" data-value="<?=esc($item->value)?>">
+                                    <div class="float-left">
+                                        <?=esc($item->value)?>
+                                    </div>
+                                    <div class="float-right">
+                                        <span class="fal fa-copy"></span>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     <?}?>
                 <?}?>
@@ -25,7 +43,18 @@
                     <?foreach($ticket_subform_items as $item){?>
                         <div class="group-item">
                             <div class="item-title"><?=esc($item->title)?></div>
-                            <div><?=esc($item->value)?></div>
+                            <?if($item->value !=""){?>
+                            <a href="#">
+                                <div class="list-group-item-action p-1 clearfix copy_button" data-toggle="tooltip" data-placement="top" title="コピー" data-value="<?=esc($item->value)?>">
+                                    <div class="float-left">
+                                        <?=esc($item->value)?>
+                                    </div>
+                                    <div class="float-right">
+                                        <span class="fal fa-copy"></span>
+                                    </div>
+                                </div>
+                            </a>
+                            <?}?>
                         </div>
                     <?}?>
                 <?}?>
