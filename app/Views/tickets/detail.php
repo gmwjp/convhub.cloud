@@ -106,6 +106,21 @@
                     <div class="text-center my-2">このチケットはユーザー自身が解決しました</div>
                 <?}?>
             </div>
+            <?if($ticket->summary_flg == 1 && $ticket->summary !=""){?>
+                <? // 要約表示 ?>
+                <div class="col-10 offset-2">
+                    <div class="alert alert-secondary">
+                        <div class="clearfix">
+                            <div class="float-left">
+                                <label>ConvHUB system（自動要約）&nbsp;<small class="text-muted">社内メモ</small></label>
+                            </div>
+                        </div>
+                        <div>
+                            <?=setTicketLink(setUrlLink(nl2br(esc($ticket->summary))))?>
+                        </div>
+                    </div>
+                </div>
+            <?}?>
             <?foreach($comments as $comment){?>
                 <?if($comment->user_section == "user"){?>
                     <? //運営事務局からの回答 ?>
