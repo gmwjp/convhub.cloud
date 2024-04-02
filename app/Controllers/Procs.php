@@ -19,5 +19,23 @@ class Procs extends _MyController {
 				unlink(WRITEPATH."file/attach/".$attach);	//該当ファイルの削除
 			}
 		}
+	}	
+	//summry_flg = 0のチケット一覧を取得し、要約処理を実行する。要約処理が完了したものはsummry_flg = 1に更新する
+	//要約処理が失敗したものはsummry_flg = 2に更新する
+	function generate_summary(){
+		$tickets = $this->model("Tickets")->where("summary_flg",0)->findAll();
+		foreach ($tickets as $ticket) {
+			$form = $this->model("Forms")->find($ticket->form_id);
+			$summary = $this->library("Gpt")->generateSummary($form->name."\n".$ticket->body);
+			if($summary){
+				unset($dat);
+				$dat["id"] = $ticket->id;
+				$dat["summary"] = $summary;
+				$dat["summary_flg"] = 1;
+				$this->model("Tickets")->write($dat);
+			} else {
+				$dat["summary_flg"] = 2;
+			}
+		}
 	}
 }

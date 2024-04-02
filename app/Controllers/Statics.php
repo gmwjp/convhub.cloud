@@ -7,7 +7,4 @@ class Statics extends _MyController {
 	function term(){
 		return $this->view("/statics/term");
 	}
-	// function test(){
-	// 	$this->library("SmtpMailer")->gmail_send();
-	// }
 }
