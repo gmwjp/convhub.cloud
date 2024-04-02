@@ -391,7 +391,7 @@ class Forms extends _MyController {
 		if($form){
 			$this->set("form",$form);
 			$this->title($form->name."：ウィジェット管理");
-			$this->set("widgets",$this->model("Forms")->getWidgets($form->id));
+			$this->set("widgets",$this->model("Forms")->getWidgets($form->id,request()));
 			return $this->view("/forms/widgets");		 	
 		} else {
 			$this->redirect("/statics/error");

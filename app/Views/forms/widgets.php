@@ -1,9 +1,18 @@
 <?=$this->element("page_title")?>
-<div class="text-right">
-    <form action="/widgets/sync_data/<?=esc($form->id)?>" method="post">
-        <button type="submit" class="btn btn-dark" name="execute" value="on">同期を実行する</button>
-        <?=csrf()?>
-    </form>
+<div class="row">
+    <div class="col-6 text-left">
+        <select name="order" class="form-control custom-select" id="order">
+            <option value="view" <?if(request()->getGet("order") == "view"){?>selected<?}?>>表示数順</option>
+            <option value="yes" <?if(request()->getGet("order") == "yes"){?>selected<?}?>>高評価順</option>
+            <option value="no" <?if(request()->getGet("order") == "no"){?>selected<?}?>>低評価順</option>
+        </select>
+    </div>
+    <div class="col-6 text-right">
+        <form action="/widgets/sync_data/<?=esc($form->id)?>" method="post">
+            <button type="submit" class="btn btn-dark" name="execute" value="on">同期を実行する</button>
+            <?=csrf()?>
+        </form>
+    </div>
 </div>
 <?if($widgets){?>
     <table class="table mt-2" id="table">
@@ -36,3 +45,10 @@
         <?}?>    
     </table>
 <?}?>
+<script>
+    $(function(){
+        $("#order").change(function(){
+            location.href = "/forms/widgets/<?=esc($form->id)?>?order="+$(this).val();
+        })
+    });
+</script>

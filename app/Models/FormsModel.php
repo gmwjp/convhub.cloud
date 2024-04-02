@@ -98,8 +98,20 @@ class FormsModel extends _MyModel {
 	function getSubforms($form_id){
 		return $this->model("Subforms")->where("form_id",$form_id)->orderBy("order_no","asc")->findAll();
 	}
-    function getWidgets($form_id){
-        return $this->model("Widgets")->where("form_id",$form_id)->orderBy("id","asc")->findAll();
+    function getWidgets($form_id,$request){
+        $this->model("Widgets")->where("form_id",$form_id);
+        if($request->getGet("order")){
+            if($request->getGet("order") == "view"){
+                $this->model("Widgets")->orderBy("view_count","desc");
+            }else if($request->getGet("order") == "yes"){
+                $this->model("Widgets")->orderBy("yes_count","desc");
+            }else if($request->getGet("order") == "no"){
+                $this->model("Widgets")->orderBy("no_count","desc");
+            }
+        } else {
+            $this->model("Widgets")->orderBy("view_count","desc");
+        }
+        return $this->model("Widgets")->findAll();
     }
     function createCode(){
 		while(true){
