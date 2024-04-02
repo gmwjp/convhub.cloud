@@ -61,7 +61,7 @@
                             <div><small><?=changeDate($ticket->created)?></small></div>
                         </div>
                     </div>
-                    <?=nl2br(esc($ticket->body))?>
+                    <?=setUrlLink(nl2br(esc($ticket->body)))?>
                     <?if(trim($ticket->attaches) != ""){?>
                         <div>
                             <hr>
@@ -92,9 +92,9 @@
                             </div>
                             <div>
                                 <?if($comment->public_flg == 0){?>
-                                    <?=setTicketLink(nl2br(esc($comment->body)))?>
+                                    <?=setTicketLink(setUrlLink(nl2br(esc($comment->body))))?>
                                 <?} else {?>
-                                    <?=nl2br(esc($comment->body))?>
+                                    <?=setUrlLink(nl2br(esc($comment->body)))?>
                                 <?}?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
@@ -122,7 +122,7 @@
                                 </div>
                             </div>
                             <div>
-                                <?=nl2br(esc($comment->body))?>
+                                <?=setUrlLink(nl2br(esc($comment->body)))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
                                         <hr>

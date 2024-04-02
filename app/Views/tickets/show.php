@@ -13,7 +13,7 @@
                             <div><small><?=changeDate($ticket->created)?></small></div>
                         </div>
                     </div>
-                    <?=nl2br(esc($ticket->body))?>
+                    <?=setUrlLink(nl2br(esc($ticket->body)))?>
                     <?if(trim($ticket->attaches) != ""){?>
                         <div>
                             <hr>
@@ -40,7 +40,7 @@
                                 </div>
                             </div>
                             <div>
-                                <?=nl2br(esc($comment->body))?>
+                                <?=setUrlLink(nl2br(esc($comment->body)))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
                                         <hr>
@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                             <div>
-                                <?=nl2br(esc($comment->body))?>
+                                <?=setUrlLink(nl2br(esc($comment->body)))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
                                         <hr>
