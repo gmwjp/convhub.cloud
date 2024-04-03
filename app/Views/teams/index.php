@@ -1,5 +1,6 @@
 <?=$this->element("page_title")?>
 <div class="text-right">
+    <a href="/groups/index" class="btn btn-secondary">グループ管理</a>
     <a href="/users/invite" class="btn btn-dark">新規招待</a>
 </div>
 <ul class="list-group mt-2">
@@ -13,7 +14,7 @@
             <div class="text-muted">
                 <small>最終ログイン：<?=changeDate($user->created)?></small>
             </div>
-            <?=esc($user->nickname)?>
+            <?=esc($user->nickname)?><?if($user->group_name){?><small>：<?=esc($user->group_name)?></small><?}?>
         </a>
     <?}?>
 </ul>

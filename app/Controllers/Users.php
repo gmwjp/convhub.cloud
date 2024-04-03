@@ -215,6 +215,7 @@ class Users extends _MyController {
 		$user = $this->model("Users")->where("id",$id)->where("team_id",$this->my_user->team_id)->last();
 		if($user){
 			$this->set("user",$user);
+			$this->set("group",$this->model("Groups")->find($user->group_id));
 			return $this->view("/users/detail");
 		} else {
 			$this->redirect("/statics/error");
@@ -227,6 +228,7 @@ class Users extends _MyController {
 		$user = $this->model("Users")->where("team_id",$this->my_user->team_id)->where("id",$user_id)->last();
 		if($user){
 			$this->set("user",$user);
+			$this->set("groups",$this->model("Teams")->getGroups($user->team_id));
 			if(!request()->getPost("execute")){
 				$user->auths = explode(",",$user->auths);
 				request()->addPosts($user);
@@ -237,6 +239,7 @@ class Users extends _MyController {
 					unset($dat);
 					$dat["id"] = $user_id;
 					$dat["nickname"] = request()->getPost("nickname");
+					$dat["group_id"] = request()->getPost("group_id");
 					$dat["mail"] = request()->getPost("mail");
 					if(request()->getPost("auths")){
 						$dat["auths"] = implode(",",request()->getPost("auths"));

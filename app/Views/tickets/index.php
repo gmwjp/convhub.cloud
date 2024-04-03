@@ -1,12 +1,11 @@
-<?=$this->element("page_title")?>
 <div class="row mt-2">
     <div class="col-3">
         <nav class="nav nav-pills flex-column">
             <a class="nav-link <?if($section=="none"){?>active<?}?>" href="/tickets/index/none">未割当<div class="float-right"><?=nf($ticket_nums["none"])?></div></a>
             <a class="nav-link <?if($section=="my_yet"){?>active<?}?>" href="/tickets/index/my_yet">あなたの未解決<div class="float-right"><?=nf($ticket_nums["my_yet"])?></div></a>
-            <a class="nav-link <?if($section=="my_end"){?>active<?}?>" href="/tickets/index/my_end">あなたの解決済<div class="float-right"><?=nf($ticket_nums["my_end"])?></div></a>
+            <a class="nav-link <?if($section=="group_yet"){?>active<?}?>" href="/tickets/index/group_yet">グループの未解決<div class="float-right"><?=nf($ticket_nums["my_yet"])?></div></a>
             <a class="nav-link <?if($section=="all_yet"){?>active<?}?>" href="/tickets/index/all_yet">すべての未解決<div class="float-right"><?=nf($ticket_nums["all_yet"])?></div></a>
-            <a class="nav-link <?if($section=="all_end"){?>active<?}?>" href="/tickets/index/all_end">すべての解決済<div class="float-right"><?=nf($ticket_nums["all_end"])?></div></a>
+            <a class="nav-link <?if($section=="all_end"){?>active<?}?>" href="/tickets/index/all_end">解決済<div class="float-right"><?=nf($ticket_nums["all_end"])?></div></a>
             <a class="nav-link <?if($section=="auto_end"){?>active<?}?>" href="/tickets/index/auto_end">自動解決済<div class="float-right"><?=nf($ticket_nums["auto_end"])?></div></a>
             <a class="nav-link <?if($section=="all"){?>active<?}?>" href="/tickets/index/all">すべてのチケット<div class="float-right"><?=nf($ticket_nums["all"])?></div></a>
         </nav>

@@ -58,6 +58,9 @@ class UsersModel extends _MyModel {
 			"nickname" => [
 				"rules" => 'required|max_length[32]'
 			],
+			"group_id" => [
+				"rules" => 'numeric'
+			],
 			"mail" => [
 				"rules" => 'required|valid_email'
 			]
@@ -65,6 +68,9 @@ class UsersModel extends _MyModel {
 		"invite" => [
 			"nickname" => [
 				"rules" => 'required|max_length[32]'
+			],
+			"group_id" => [
+				"rules" => 'numeric'
 			],
 			"mail" => [
 				"rules" => 'required|valid_email'

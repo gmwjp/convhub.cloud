@@ -11,6 +11,18 @@
 		<?=err($errors->getError("mail"))?>
 	</div>
 	<div class="form-group">
+		<div><label>グループ</label></div>
+		<select name="group_id" class="form-control custom-select">
+			<option value="0"></option>
+			<?if($groups){?>
+			<?foreach($groups as $group){?>
+				<option value="<?=esc($group->id)?>" <?if($group->id == request()->getPost("group_id")){?>selected<?}?>><?=esc($group->name)?></option>
+			<?}?>
+			<?}?>
+		</select>
+		<?=err($errors->getError("group_id"))?>
+	</div>
+	<div class="form-group">
 		<div><label>権限</label></div>
 		<div><input type="checkbox" name="auths[]" value="user" <?if(in_array("user",request()->getPost("auths"))){?>checked<?}?>>&nbsp;ユーザー管理</div>
 		<div><input type="checkbox" name="auths[]" value="form" <?if(in_array("form",request()->getPost("auths"))){?>checked<?}?>>&nbsp;フォーム管理</div>

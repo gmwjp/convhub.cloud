@@ -8,6 +8,10 @@
 	<div><?=esc(mask($user->mail))?></div>
 </div>
 <div class="form-group">
+	<div><label>グループ</label></div>
+	<div><?if($group){?><?=esc($group->name)?><?}?></div>
+</div>
+<div class="form-group">
 	<div><label>権限</label></div>
 	<div>
 		<?if($user->auths !=""){?>

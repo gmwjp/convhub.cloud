@@ -18,6 +18,10 @@ class Tickets extends _MyController {
 				"user_id" => $this->my_user->id,
 				"status" => 1
 			],
+			"group_yet" => [
+				"group_id" => $this->my_user->group_id,
+				"status" => 1
+			],
 			"my_end" => [
 				"user_id" => $this->my_user->id,
 				"status" => 2
@@ -186,7 +190,11 @@ class Tickets extends _MyController {
 			if($section == "user_id"){
 				unset($dat);
 				$dat["id"] = $ticket->id;
-				$dat["user_id"] = request()->getPost("value");
+				$user = $this->model("Users")->find(request()->getPost("value"));
+				if($user){
+					$dat["user_id"] = request()->getPost("value");
+					$dat["group_id"] = $user->group_id;
+				}
 				$this->model("Tickets")->write($dat);
 			}
 			$this->library("Api")->success();
