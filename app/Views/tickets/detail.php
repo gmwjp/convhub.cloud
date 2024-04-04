@@ -151,7 +151,7 @@
                                     </div>
                                 <?}?>
                             </div>
-                            <?if($comment->read_datetime !=""){?>
+                            <?if($comment->read_datetime !="" && $comment->public_flg != 0){?>
                             <div class="text-right mt-2"><small>既読：<?=changeDate($comment->read_datetime)?></small></div>
                             <?}?>
                         </div>
