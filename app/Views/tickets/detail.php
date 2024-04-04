@@ -71,7 +71,7 @@
     <div class="col-sm-12 col-md-6">
         <div class="clearfix">
             <div class="float-left">
-                <h3><?=esc($ticket->title)?>&nbsp;<small>#<?=esc($ticket->id)?></small></h3>
+                <h4><?=esc($ticket->title)?>&nbsp;<small>#<?=esc($ticket->id)?></small></h4>
             </div>
             <div class="float-right">
                 <span class="p-1 badge badge-<?=esc($this->model("Tickets")->params["status"][$ticket->status]["color"])?>">
