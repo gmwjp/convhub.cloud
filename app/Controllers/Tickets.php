@@ -145,6 +145,15 @@ class Tickets extends _MyController {
 			$this->set("ticket_subform_items",$this->model("Tickets")->getSubformItems($ticket->id));
 			//コメントを取得
 			$this->set("comments",$comments = $this->model("Tickets")->getComments($ticket->id));
+			//既読処理
+			foreach($comments as $comment){				
+				if($comment->read_datetime == "" && $comment->user_section == "user"){
+					unset($dat);
+					$dat["id"] = $comment->id;
+					$dat["read_datetime"] = date("Y-m-d H:i:s");
+					$this->model("Comments")->write($dat);
+				}
+			}
 			if(request()->getPost("execute")){
 				//バリデーションチェック
 				request()->addPost("user_section","customer");
