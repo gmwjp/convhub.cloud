@@ -3,7 +3,7 @@
         <nav class="nav nav-pills flex-column">
             <a class="nav-link <?if($section=="none"){?>active<?}?>" href="/tickets/index/none">未割当<div class="float-right"><?=nf($ticket_nums["none"])?></div></a>
             <a class="nav-link <?if($section=="my_yet"){?>active<?}?>" href="/tickets/index/my_yet">あなたの未解決<div class="float-right"><?=nf($ticket_nums["my_yet"])?></div></a>
-            <a class="nav-link <?if($section=="group_yet"){?>active<?}?>" href="/tickets/index/group_yet">グループの未解決<div class="float-right"><?=nf($ticket_nums["my_yet"])?></div></a>
+            <a class="nav-link <?if($section=="group_yet"){?>active<?}?>" href="/tickets/index/group_yet">グループの未解決<div class="float-right"><?=nf($ticket_nums["group_yet"])?></div></a>
             <a class="nav-link <?if($section=="all_yet"){?>active<?}?>" href="/tickets/index/all_yet">すべての未解決<div class="float-right"><?=nf($ticket_nums["all_yet"])?></div></a>
             <a class="nav-link <?if($section=="all_end"){?>active<?}?>" href="/tickets/index/all_end">解決済<div class="float-right"><?=nf($ticket_nums["all_end"])?></div></a>
             <a class="nav-link <?if($section=="auto_end"){?>active<?}?>" href="/tickets/index/auto_end">自動解決済<div class="float-right"><?=nf($ticket_nums["auto_end"])?></div></a>
@@ -74,9 +74,6 @@
                         <div class="float-left">
                             <div class="">
                                 <small>#<?=esc($ticket->id)?>&nbsp;<?=changeDate($ticket->created)?></small>
-                                <?if($ticket->last_comment_user_id != ""){?>
-                                <small class="ml-2">更新：<?=changeDate($ticket->last_comment_datetime)?></small>
-                                <?}?>
                             </div>
                         </div>
                     </div>
