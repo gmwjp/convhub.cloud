@@ -25,6 +25,7 @@ class Subforms extends _MyController {
 		$form = $this->model("Forms")->where("team_id",$this->my_user->team_id)->where("id",$form_id)->last();
 		if($form){
 			$this->set("form",$form);
+			$this->set("users",$this->model("Teams")->getUsers($this->my_user->team_id));
 			//実行フラグを確認
 			if(request()->getPost("execute")){
 				//バリデーションの組み立て
@@ -132,6 +133,7 @@ class Subforms extends _MyController {
 		$subform = $this->model("Subforms")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
 		if($subform){
 			$this->set("subform",$subform);
+			$this->set("users",$this->model("Teams")->getUsers($this->my_user->team_id));
 			//項目を取得
 			$this->set("subform_items",$subform_items = $this->model("Subforms")->getItems($subform->id));
 

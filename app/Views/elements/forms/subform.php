@@ -17,6 +17,21 @@
     </div>
 </div>
 <div class="form-group">
+    <div class="item-title">
+        初期担当者
+    </div>
+    <div>
+        <select name="init_user_id" class="form-control custom-select">
+            <option value=""></option>
+            <?foreach($users as $user){?>
+                <option value="<?=esc($user->id)?>" <?if(request()->getPost("init_user_id")==$user->id){?>selected<?}?>><?=esc($user->nickname)?></option>
+            <?}?>
+        </select>
+        <?=err($errors->getError("init_user_id"))?>
+    </div>
+</div>
+
+<div class="form-group">
     <input type="hidden" name="copy_flg" value="0">
     <input type="checkbox" name="copy_flg" value="1" id="copy_flg" <?if(request()->getPost("copy_flg") == 1){?>checked<?}?>>
     <label for="copy_flg">問い合わせフォームにて、サブフォーム名を件名にコピーする</label>

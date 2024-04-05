@@ -241,6 +241,13 @@ class Forms extends _MyController {
 							}	
 							request()->addPost("notions",json_encode($notions));
 						}
+						if(request()->getGet("subform")){
+							//サブフォームの場合、初期担当者を設定
+							$subform = $this->model("Subforms")->where("id",request()->getGet("subform"))->last();
+							if($subform && $subform->init_user_id){
+								request()->addPost("user_id",$subform->init_user_id);
+							}
+						}
 						//基本データ
 						$ticket_id = $this->model("Tickets")->write(request()->getPost());
 						//追加項目
