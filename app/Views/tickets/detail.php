@@ -187,7 +187,7 @@
             <?}?>
         </div>
         <div class="mt-3">
-            <form method="post" action="/tickets/detail/<?=esc($ticket->id)?>" enctype="multipart/form-data">
+            <form method="post" action="/tickets/detail/<?=esc($ticket->id)?>" enctype="multipart/form-data" id="comment_form">
                 <div class="clearfix my-1">
                     <div class="float-left">
                         <select class="custom-select" name="public_flg" id="public_flg">
@@ -340,6 +340,24 @@ $(document).ready(function() {
                 info("担当者を変更しました");
             } else {
                 error(response.message);
+            }
+        });
+    });
+    $("#comment_form").submit(function(e){
+        e.preventDefault();
+        var form = this;
+        $.ajax({
+            url: '/users/get_token',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                csrf_token_value = data.value;
+                $('input[name="' + csrf_token_name + '"]').val(csrf_token_value); 
+                // トークンがセットされた後、フォームをプログラム的に送信
+                form.submit();
+            },
+            error: function() {
+                error('CSRF取得エラー');
             }
         });
     });

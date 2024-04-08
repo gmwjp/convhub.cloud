@@ -66,7 +66,7 @@
         </div>
         <ul class="list-group mt-2">
             <?foreach($tickets as $ticket){?>
-                <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($ticket->id)?>"  data-placement="top" data-trigger="hover" tabindex="0" data-toggle="popover" title="<?=esc($ticket->title)?>" data-content="<?=esc($ticket->body)?>">
+                <a class="list-group-item list-group-item-action" target="_blank" href="/tickets/detail/<?=esc($ticket->id)?>"  data-placement="top" data-trigger="hover" tabindex="0" data-toggle="popover" title="<?=esc($ticket->title)?>" data-content="<?=esc($ticket->body)?>">
                     <div class="clearfix">
                         <div class="float-right">
                             <span class="badge badge-<?=esc($this->model("Tickets")->params["status"][$ticket->status]["color"])?> p-1"><?=esc($this->model("Tickets")->params["status"][$ticket->status]["text"])?></span>
