@@ -245,7 +245,11 @@ class Forms extends _MyController {
 							//サブフォームの場合、初期担当者を設定
 							$subform = $this->model("Subforms")->where("id",request()->getGet("subform"))->last();
 							if($subform && $subform->init_user_id){
-								request()->addPost("user_id",$subform->init_user_id);
+								$init_user = $this->model("Users")->find($subform->init_user_id);
+								if($init_user){
+									request()->addPost("user_id",$init_user->id);
+									request()->addPost("group_id",$init_user->group_id);
+								}
 							}
 						}
 						//基本データ
