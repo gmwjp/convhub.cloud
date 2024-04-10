@@ -11,8 +11,29 @@ class BaseRequest extends IncomingRequest
         unset($currentPostData[$key]);
         $this->setGlobal("post", $currentPostData);
     }
+    function addPostFile($key_name, $save_path = WRITEPATH . "uploads"){
+        $file_data = false;
+    
+        $file = $this->getFile($key_name);
+        if($file !== null && $file->getSize() != 0 && $file->isValid()){
+            // ファイル情報の配列を作成
+            $file_data = [
+                "file_name" => $file->getName(),
+                "file_size" => $file->getSize(),
+                "mime_type" => $file->getMimeType(),
+            ];
+            $new_name = $file->getRandomName();
+            $file->move($save_path, $new_name);
+            $file_data["save_name"] = $new_name;
+        }
+    
+        if($file_data){
+            $this->addPost($key_name, $file_data);
+        }    
+    }
     function addPostFiles($key_name,$save_path = WRITEPATH."uploads"){
         $files_data = false;
+
         foreach($this->getFileMultiple($key_name) as $key => $file){
             if($file->getSize() != 0 && $file->isValid()){
                 //ファイル情報の配列を作成
@@ -24,6 +45,7 @@ class BaseRequest extends IncomingRequest
                 $files_data[$key]["save_name"] = $new_name;
             }
         }
+
         if($files_data){
             $this->addPost($key_name,$files_data);
         }    
