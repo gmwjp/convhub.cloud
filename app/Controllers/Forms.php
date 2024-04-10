@@ -117,14 +117,14 @@ class Forms extends _MyController {
 							$this->model("Form_items")->write($dat);
 						}
 					}
-					if(request()->getPost("image")["name"] !=""){
+					request()->addPostFile("image");
+					if(request()->getPost("image")){
 						$this->model("Forms")->image_resize(
 							dirname(__FILE__)."/../../public/img/forms/".$form->code.".png",
-							request()->getPost("image")["tmp_name"],
+							request()->getPost("image")["save_name"],
 							null,30
 						);
 					}
-	
 					session()->setFlashdata("message","フォームを編集しました");
 					$this->redirect("/forms/index");
 				}
