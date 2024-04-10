@@ -77,7 +77,7 @@
                 <!-- logo -->
                 <a href="/forms/show/input/<?=esc($form->code)?>" class="navbar-brand mr-lg-5 p-0">
 					<?if(file_exists(dirname(__FILE__)."/../../../public/img/forms/".$form->code.".png")){?>
-						<img src="/img/forms/<?=esc($form->code)?>.png?d=<?=date("YmdHis")?>">
+						<img src="/img/forms/<?=esc($form->code)?>.png?d=<?=date("YmdHis")?>" style="height:30px;">
 					<?}?>
                 </a>
 				<?if($form->url !=""){?>
