@@ -63,7 +63,7 @@ class Forms extends _MyController {
 					}
 				}
 				//画像の保存
-				request()->addPostFiles("image");
+				request()->addPostFile("image");
 				if(request()->getPost("image")){
 					$this->model("Forms")->image_resize(
 						dirname(__FILE__)."/../../public/img/forms/".$code.".png",
