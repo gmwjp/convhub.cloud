@@ -63,7 +63,21 @@
                 <div><b>案内した記事：</b></div>
                 <?foreach(json_decode($ticket->notions) as $notion){?>
                     <div class="mt-2"><a href="<?=esc($this->library("Crypt2")->decode($notion->url))?>" target="_blank"><?=esc($notion->title)?><i class="ml-1 fal fa-external-link"></i><?if($notion->read == 1){?><span class="badge badge-secondary ml-1">閲覧</span><?}?></a></div>
+                    <?}?>
                 <?}?>
+                <?if($ticket->query_params){?>
+                    <hr>
+                    <a href="#">
+                        <div class="list-group-item-action p-1 clearfix" id="metadata_button" data-toggle="tooltip" data-placement="top" title="metadataを表示">
+                            <div class="float-left"><b>metadata</b></div>
+                            <div class="float-right"><span class="fal fa-caret-square-down"></span></div>
+                        </div>
+                        <ul id="metadata" class="none alert alert-secondary border">
+                            <?foreach(json_decode($ticket->query_params) as $key => $val){?>
+                                <li><?=esc($key)?>：<?=esc($val)?></li>
+                            <?}?>
+                        </ul>
+                    </a>
                 <?}?>
             </div>
         </div>
@@ -359,6 +373,11 @@ $(document).ready(function() {
             error: function() {
                 error('CSRF取得エラー');
             }
+        });
+    });
+    $(function(){
+        $("#metadata_button").click(function(){
+            $("#metadata").fadeToggle();
         });
     });
 });
