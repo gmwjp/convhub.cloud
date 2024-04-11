@@ -67,7 +67,7 @@
                 <?}?>
                 <?if($ticket->query_params){?>
                     <hr>
-                    <div><b>Metadata</b>&nbsp;&nbsp;<small><i class="fas fa-caret-square-down" style="cursor:pointer;" id="metadata_button"></i></small></div>
+                    <a href="#"><div id="metadata_button" class="list-group-item-action"><b>Metadata</b></div></a>
                     <ul id="metadata" class="none alert alert-secondary border">
                         <?foreach(json_decode($ticket->query_params) as $key => $val){?>
                             <li><?=esc($key)?>：<?=esc($val)?></li>

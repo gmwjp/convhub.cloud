@@ -153,12 +153,6 @@
                 </div>
             </div>
             <input type="hidden" name="execute" value="on">
-            <?if(request()->getUri()->getQuery()){
-                // GETクエリをJsonに変換
-                $queryString = request()->getUri()->getQuery();
-                parse_str($queryString, $queryArray);
-                request()->addPost("query_params",json_encode($queryArray));
-            }?>
             <input type="hidden" name="query_params" value="<?=esc(request()->getPost("query_params"))?>">
             <?=csrf()?>
         </form>
