@@ -117,6 +117,12 @@
 									<span> フォーム </span>
 								</a>
 							</li>
+							<li class="side-nav-item">
+								<a href="/templates/index" class="side-nav-link">
+								<i class="far fa-comment-alt-lines"></i>
+									<span> テンプレート </span>
+								</a>
+							</li>
 						</ul>
 					</div>
 				</div>

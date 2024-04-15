@@ -3,7 +3,7 @@ namespace App\Models;
 class TeamsModel extends _MyModel {
 	var $table = "teams";
 	function getTemplates($team_id){
-		return $this->model("Templates")->where("team_id",$team_id)->orderBy("id","desc")->findAll();
+		return $this->model("Templates")->where("team_id",$team_id)->orderBy("order_no","asc")->findAll();
 	}
 	function getGroups($team_id){
 		return $this->model("Groups")->where("team_id",$team_id)->orderBy("id","desc")->findAll();

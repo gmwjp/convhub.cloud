@@ -195,6 +195,9 @@
                             <option value="1">パブリック返信</option>
                         </select>
                     </div>
+                    <div class="float-right">
+                        <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#exampleModal">テンプレート選択<span class="fal fa-chevron-up ml-1"></span></button>
+                    </div>
                 </div>
                 <textarea id="body" name="body" rows="4" class="form-control mt-1"><?=esc(request()->getPost("body"))?></textarea>
                 <div class="clearfix mt-1">
@@ -266,6 +269,35 @@
         <?}?>
     </div>
 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-custom" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">テンプレート選択</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="text-muted text-center mb-2"><small>クリックするとテキストボックスの末尾に文章が追加されます</small></div>
+        <?if($templates){?>
+            <div class="list-group">
+            <?foreach($templates as $template){?>
+                <a class="list-group-item template_select_button list-group-item-action" href="#" data-id="<?=esc($template->id)?>">
+                    <div class="clearfix">
+                        <div class="float-left">
+                            <b><?=esc($template->name)?></b>
+                        </div>
+                    </div>
+                    <div class="text-muted" style="max-height:40px;overflow:hidden;"><small id="template_<?=esc($template->id)?>"><?=esc($template->body)?></small></div>
+                </a>
+            <?}?>
+            </div>
+        <?}?>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 function resizeForm(){
     $("body").css({
@@ -306,6 +338,21 @@ function setTextform(){
 $("#public_flg").change(function(){
     setTextform();
 });
+$(".template_select_button").click(function(){
+    var id = $(this).data("id");
+    var body = $("#template_"+id).html();
+    if($("#body").val()==""){
+        $("#body").val(body);
+    } else {
+        $("#body").val($("#body").val()+"\n"+body);
+    }
+    $("#exampleModal").modal("hide");
+    setTimeout(function(){
+        var len = $('#body').val().length;
+        $('#body').focus().get(0).setSelectionRange(len, len);
+    },500);
+})
+
 $(window).resize(function() {
     resizeForm();
 });

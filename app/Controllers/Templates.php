@@ -33,6 +33,11 @@ class Templates extends _MyController {
 				request()->addPost("team_id",$this->my_user->team_id);
 				request()->addPost("user_id",$this->my_user->id);
 				$template_id = $this->model("Templates")->write(request()->getPost());
+				//順番を保存
+				unset($dat);
+				$dat["id"] = $template_id;
+				$dat["order_no"] = $template_id;
+				$template_id = $this->model("Templates")->write($dat);
 				//リダイレクト
 				session()->setFlashdata("message","テンプレートを追加しました");
 				$this->redirect("/templates/index");
@@ -70,5 +75,56 @@ class Templates extends _MyController {
 		//リダイレクト
 		session()->setFlashdata("message","テンプレートを削除しました");
 		$this->redirect("/templates/index");
+	}
+	function up($id){
+		$this->hasPermission("form");
+		checkId($id);
+		$template = $this->model("Templates")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
+		if($template){
+			$templates = $this->model("Templates")->where("team_id",$this->my_user->team_id)->orderBy("order_no","asc")->findAll();
+			foreach($templates as $key => $t){
+				if($t->id == $template->id){
+					if(!empty($templates[$key-1])){
+						unset($dat);
+						$dat["id"] = $template->id;
+						$dat["order_no"] = $templates[$key-1]->order_no;
+						$this->model("Templates")->write($dat);
+						unset($dat);
+						$dat["id"] = $templates[$key-1]->id;
+						$dat["order_no"] = $template->order_no;
+						$this->model("Templates")->write($dat);
+					}
+				}
+			}
+			$this->redirect("/templates/index");
+		} else {
+			$this->redirect("/statics/error");
+		}
+	}
+	function down($id){
+		$this->hasPermission("form");
+		checkId($id);
+		$template = $this->model("Templates")->where("team_id",$this->my_user->team_id)->where("id",$id)->last();
+		if($template){
+			$templates = $this->model("Templates")->where("team_id",$this->my_user->team_id)->orderBy("order_no","asc")->findAll();
+			foreach($templates as $key => $t){
+				if($t->id == $template->id){
+					if(!empty($templates[$key+1])){
+						unset($dat);
+						$dat["id"] = $template->id;
+						$dat["order_no"] = $templates[$key+1]->order_no;
+						$this->model("Templates")->write($dat);
+						unset($dat);
+						$dat["id"] = $templates[$key+1]->id;
+						$dat["order_no"] = $template->order_no;
+						$this->model("Templates")->write($dat);
+					}
+				}
+			}
+			$this->redirect("/templates/index");
+		} else {
+			$this->redirect("/statics/error");
+		}
+
 	}
 }
