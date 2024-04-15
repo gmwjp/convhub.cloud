@@ -133,6 +133,7 @@
             </div>
             <?=csrf()?>
             <input type="hidden" name="execute" value="on" id="execute">
+            <input type="hidden" name="query_params" value="<?=esc(request()->getPost("query_params"))?>">
         </form>
     </div>
     <div class="col-md-4 col-sm-12">

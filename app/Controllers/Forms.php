@@ -185,6 +185,12 @@ class Forms extends _MyController {
 							}
 						}
 					}
+					if(request()->getUri()->getQuery()){
+						// GETクエリをJsonに変換
+						$queryString = request()->getUri()->getQuery();
+						parse_str($queryString, $queryArray);
+						request()->addPost("query_params",json_encode($queryArray));
+					}
 				}
 				//入力画面
 				session()->remove("files");

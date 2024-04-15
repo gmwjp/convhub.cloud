@@ -15,7 +15,7 @@
 			<?}?>
 		<?}?>
 		<title><?if(!empty($page_title)){?><?=$page_title?> | <?}?>ConvHUB</title>
-		<link rel="shortcut icon" href="/assets/images/favicon.ico">
+		<link rel="shortcut icon" href="/assets/images/favicon.ico?d=20240415">
 		<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="light-style" />
 		<link href="/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="dark-style" />
