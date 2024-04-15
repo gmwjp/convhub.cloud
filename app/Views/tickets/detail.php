@@ -162,7 +162,7 @@
                                     <div><small><?=changeDate($comment->created)?></small></div>
                                 </div>
                             </div>
-                            <div>
+                            <div style="overflow-wrap: break-word;">
                                 <?if($comment->public_flg == 0){?>
                                     <?=setTicketLink(setUrlLink(nl2br(esc($comment->body))))?>
                                 <?} else {?>
@@ -196,7 +196,7 @@
                                     <div><small><?=changeDate($comment->created)?></small></div>
                                 </div>
                             </div>
-                            <div>
+                            <div style="overflow-wrap: break-word;">
                                 <?=setUrlLink(nl2br(esc($comment->body)))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
@@ -280,7 +280,7 @@
             <div>
                 <ul class="list-group">
                     <?foreach($old_tickets as $t){?>
-                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>" target="_blank"  data-placement="top" data-trigger="hover" tabindex="0" data-toggle="popover" title="<?=esc($t->title)?>" data-content="<?=esc($t->body)?>">
+                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>" data-placement="top" data-trigger="hover" tabindex="0" data-toggle="popover" title="<?=esc($t->title)?>" data-content="<?=esc($t->body)?>">
                             <div class="clearfix">
                                 <div class="float-left text-muted">
                                     <small>#<?=esc($t->id)?>&nbsp;<?=changeDate(esc($t->created))?></small>
