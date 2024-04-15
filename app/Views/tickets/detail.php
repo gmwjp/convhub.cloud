@@ -1,6 +1,20 @@
-
-<div class="row">
-    <div class="col-sm-12 col-md-3" style="overflow:scroll;" id="header">
+<style>
+#comment_box {
+    position: fixed; /* 要素を固定位置に設定 */
+    bottom: 0;       /* 下端に配置 */
+    left: 0;         /* 左端から開始 */
+    right: 0;        /* 右端まで広げる */
+    z-index: 1000;   /* 上に表示するためのz-index */
+    background-color: white; /* 背景色は白（必要に応じて変更可能） */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* 上側に影をつける */
+    padding: 10px 20px; /* パディングを追加 */
+}
+#content {
+    padding-bottom: 200px;
+}
+</style>
+<div class="row" id="content">
+    <div class="col-sm-12 col-md-3" id="header">
         <div class="card">
             <div class="card-body">
                 <?if($form){?>
@@ -79,7 +93,7 @@
                 </span>
             </div>
         </div>
-        <div style="overflow:scroll;" id="comments">
+        <div id="comments">
             <div class="col-10">
                 <div class="alert bg-white border">
                     <div class="clearfix">
@@ -186,7 +200,7 @@
                 <?}?>
             <?}?>
         </div>
-        <div class="mt-3">
+        <div class="mt-3" id="comment_box">
             <form method="post" action="/tickets/detail/<?=esc($ticket->id)?>" enctype="multipart/form-data" id="comment_form">
                 <div class="clearfix my-1">
                     <div class="float-left">
@@ -213,7 +227,7 @@
             </form>
         </div>
     </div>
-    <div class="col-sm-12 col-md-3" id="footer" style="overflow:scroll;" >
+    <div class="col-sm-12 col-md-3" id="footer">
         <div class="card">
             <div class="card-body">
                 <form method="post" action="/tickets/change/<?=esc($ticket->id)?>">
@@ -267,23 +281,6 @@
     </div>
 </div>
 <script>
-function resizeForm(){
-    $("body").css({
-        height : $(window).height(),
-        overflow : "hidden"
-    });
-    $("#header").css({
-        height: ($(window).height() - 120) + "px"
-    });
-    $("#footer").css({
-        height: ($(window).height() - 120) + "px"
-    });
-    $("#comments").css({
-        height: ($(window).height() - 380) + "px"
-    });
-    $("#comments").scrollTop($("#comments")[0].scrollHeight);
-
-}
 function setTextform(){
     if($("#public_flg").val() == 1){
         $("#body").css({
@@ -306,13 +303,8 @@ function setTextform(){
 $("#public_flg").change(function(){
     setTextform();
 });
-$(window).resize(function() {
-    resizeForm();
-});
 $(document).ready(function() {
-    resizeForm();
-    setTextform();
-    
+    setTextform();    
     $("#upload").change(function() {
         var fileCount = $(this).get(0).files.length;
         if(fileCount > 0){
@@ -361,5 +353,17 @@ $(document).ready(function() {
             }
         });
     });
+    // テキストエリアのサイズ変更を検出してパディングを調整する関数
+    function adjustPadding() {
+        var textareaHeight = $('#comment_box').outerHeight(); // テキストエリアの現在の高さを取得
+        console.log(textareaHeight );
+        $('#content').css('padding-bottom', textareaHeight); // コンテンツのpadding-bottomを更新
+    }
+    // テキストエリアのサイズ変更イベントに反応する
+    $('#body').on('mouseup keyup', function() {
+        adjustPadding();
+    });
+    // ページ読み込み時に一度パディングを調整
+    adjustPadding();
 });
 </script>
