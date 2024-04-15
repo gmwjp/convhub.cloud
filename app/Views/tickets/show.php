@@ -39,7 +39,7 @@
                                     <div><small><?=changeDate($ticket->created)?></small></div>
                                 </div>
                             </div>
-                            <div>
+                            <div style="overflow-wrap: break-word;">
                                 <?=setUrlLink(nl2br(esc($comment->body)))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
@@ -66,7 +66,7 @@
                                     <div><small><?=changeDate($ticket->created)?></small></div>
                                 </div>
                             </div>
-                            <div>
+                            <div style="overflow-wrap: break-word;">
                                 <?=setUrlLink(nl2br(esc($comment->body)))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
