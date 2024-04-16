@@ -35,7 +35,9 @@
                             </div>
                         </div>
                     </a>
+                    <div class="mt-1 text-right"><a href="https://support-sys.g-m-w.jp/datas/index/all/users?mail=<?=esc($ticket->mail)?>&match=1&execute=on" class="btn btn-light btn-sm" target="_blank">ユーザー検索<span class="ml-1 fal fa-external-link"></span></a></div>
                 </div>
+
                 <?if($ticket_form_items){?>
                     <?foreach($ticket_form_items as $item){?>
                         <div class="group-item mb-2">
