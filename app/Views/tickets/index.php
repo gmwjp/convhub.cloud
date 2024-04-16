@@ -9,6 +9,10 @@
             <a class="nav-link <?if($section=="auto_end"){?>active<?}?>" href="/tickets/index/auto_end">自動解決済<div class="float-right"><?=nf($ticket_nums["auto_end"])?></div></a>
             <a class="nav-link <?if($section=="all"){?>active<?}?>" href="/tickets/index/all">すべてのチケット<div class="float-right"><?=nf($ticket_nums["all"])?></div></a>
         </nav>
+        <div class="text-center">
+            <hr>
+            <a href="/tickets/sums" class="btn btn-light"><span class="fa fa-chart-area mr-1"></span>チケット集計</a>
+        </div>
     </div>
     <div class="col-9">
         <div class="text-right">

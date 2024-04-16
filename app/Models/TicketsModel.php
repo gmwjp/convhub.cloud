@@ -53,6 +53,12 @@ class TicketsModel extends _MyModel {
 				$this->groupEnd();
 			}
 		}
+		if(!empty($param["start_date"])){
+			$this->where("tickets.created >= ",$param["start_date"]." 00:00:00");
+		}
+		if(!empty($param["end_date"])){
+			$this->where("tickets.created <= ",$param["end_date"]." 23:59:59");
+		}
 		$this->join("forms","tickets.form_id = forms.id","left");
 	}
 	function getFormItems($ticket_id){
