@@ -29,5 +29,29 @@ class Operates extends _MyController {
         }
         // それぞれの結果を出力
     }
+    function export_zendesk($section = "pictspace"){
+        $dat = [
+            "pictbland" => [
+                "domain" => "pictbl-mf-gl",
+                "form_id" => 5,
+                "subform_id" => 16
+            ],
+            "pictspace" => [
+                "domain" => "pictspace-support",
+                "form_id" => 6,
+                "subform_id" =>  25
+            ],
+            "pictsquare" => [
+                "domain" => "pictsquare-support",
+                "form_id" => 7,
+                "subform_id" => 30
+            ]
+        ];
+        $this->library("ZendeskExporter")->exportTickets(
+            $dat[$section],
+			"rhara@g-m-w.jp",
+			env("zendesk.token"),$this
+		);
+    }
 }
 ?>

@@ -22,7 +22,7 @@ class TicketsModel extends _MyModel {
 	}
 	function getIndex($team_id,$param){
 		$this->createParam($team_id,$param);
-		return $this->orderBy("id","desc")->findAll();
+		return $this->orderBy("created","desc")->findAll();
 	}
 	function createParam($team_id,$param){
 		$this->select("tickets.*,forms.name forms_name");
