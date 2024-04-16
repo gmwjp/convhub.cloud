@@ -58,7 +58,27 @@ class Tickets extends _MyController {
 		$this->set("tickets",$tickets);
 		return $this->view("/tickets/index");
 	}
+	function sums($ym = false){
+		if(!$ym){
+			$ym = date("Y-m");
+		}
+		$this->hasPermission();
+		$this->title("チケット集計：".$ym);
+		$this->set("ym",$ym);
+		
+		$this->set("users",$this->model("Teams")->getUsers($this->my_user->team_id));
+		$this->set("groups",$this->model("Teams")->getGroups($this->my_user->team_id));
+		$this->set("forms",$this->model("Teams")->getForms($this->my_user->team_id));
+		$param["start_date"] = $ym."-01";
+		$param["end_date"] = $ym."-".date("t",strtotime($ym."-01"));
+		$this->set("param",$param);
+		$this->set("next_month" ,date("Y-m",strtotime($ym."-01 +1 month")));
+		$this->set("prev_month" ,date("Y-m",strtotime($ym."-01 -1 month")));
+		$this->set("tickets",$this->model("Tickets")->getIndex($this->my_user->team_id,$param));
+		return $this->view("/tickets/sums");
+	}
 	function detail($ticket_id){
+		$this->hasPermission();
 		checkId($ticket_id);
 		$ticket = $this->model("Tickets")->find($ticket_id);
 		if($ticket){
