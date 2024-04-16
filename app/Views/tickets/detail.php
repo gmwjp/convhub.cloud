@@ -121,6 +121,13 @@
                         </div>
                     </div>
                     <?=setUrlLink(nl2br(esc($ticket->body)))?>
+                    <?if($ticket->summary_flg == 1 && $ticket->summary !=""){?>
+                        <div class="text-right"><button type="button" class="btn btn-light btn-sm" id="summary_button"><span class="fal fa-chevron-down mr-1"></span>要約を表示</a></div>
+                        <div class="none" id="summary">
+                            <hr>
+                            <?=setTicketLink(setUrlLink(nl2br(esc($ticket->summary))))?>
+                        </div>
+                    <?}?>
                     <?if(trim($ticket->attaches) != ""){?>
                         <div>
                             <hr>
@@ -131,26 +138,12 @@
                             </div>
                         </div>
                     <?}?>
+
                 </div>
                 <?if($ticket->user_id == -1){?>
                     <div class="text-center my-2">このチケットはユーザー自身が解決しました</div>
                 <?}?>
             </div>
-            <?if($ticket->summary_flg == 1 && $ticket->summary !=""){?>
-                <? // 要約表示 ?>
-                <div class="col-10 offset-2">
-                    <div class="alert alert-secondary">
-                        <div class="clearfix">
-                            <div class="float-left">
-                                <label>ConvHUB system（自動要約）&nbsp;<small class="text-muted">社内メモ</small></label>
-                            </div>
-                        </div>
-                        <div>
-                            <?=setTicketLink(setUrlLink(nl2br(esc($ticket->summary))))?>
-                        </div>
-                    </div>
-                </div>
-            <?}?>
             <?foreach($comments as $comment){?>
                 <?if($comment->user_section == "user"){?>
                     <? //運営事務局からの回答 ?>
@@ -417,6 +410,9 @@ $(document).ready(function() {
     });
     $("#metadata_button").click(function(){
         $("#metadata").fadeToggle();
+    });
+    $("#summary_button").click(function(){
+        $("#summary").fadeToggle();
     });
     // テキストエリアのサイズ変更を検出してパディングを調整する関数
     function adjustPadding() {
