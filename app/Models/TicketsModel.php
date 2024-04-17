@@ -21,7 +21,6 @@ class TicketsModel extends _MyModel {
 		return $this->countAllResults();
 	}
 	function getIndex($team_id,$param){
-		ini_set("memory_limit","512M");
 		$this->createParam($team_id,$param);
 		return $this->orderBy("created","desc")->findAll();
 	}
