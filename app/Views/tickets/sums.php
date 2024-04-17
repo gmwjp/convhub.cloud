@@ -1,5 +1,6 @@
 <?=$this->element("page_title")?>
 <nav class="nav nav-pills mb-2">
+    <a class="nav-link <?if($section=="user"){?>active<?}?>" href="/tickets/sums/user">ユーザー</a>
     <a class="nav-link <?if($section=="group"){?>active<?}?>" href="/tickets/sums/group">グループ</a>
     <a class="nav-link <?if($section=="form"){?>active<?}?>" href="/tickets/sums/form">フォーム</a>
 </nav>
@@ -11,6 +12,12 @@
 <table class="table table-sm mt-2 table-bordered">
     <tr class="bg-secondary text-white">
         <td>日付</td>
+        <?if($section == "user"){?>
+            <?foreach($users as $user){?>
+                <td><?=esc($user->nickname)?></td>
+                <?$total[$user->id] = 0?>
+            <?}?>
+        <?}?>
         <?if($section == "group"){?>
             <?foreach($groups as $group){?>
                 <td><?=esc($group->name)?></td>
@@ -29,6 +36,21 @@
     <tr>
         <td><?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?></td>
         <?$sum = 0;?>
+        <?if($section == "user"){?>
+            <?foreach($users as $user){?>
+                <? $count = 0;?>
+                <?foreach($tickets as $ticket){?>
+                    <?if(date("Y-m-d",strtotime($ticket->created)) == date("Y-m-d",strtotime($param["start_date"]." +{$i} days"))){?>
+                        <?if($user->id == $ticket->user_id){?>
+                            <?$count++?>
+                            <?$total[$user->id]++?>
+                        <?}?>
+                    <?}?>
+                <?}?>
+                <td><?=nf($count)?></td>
+                <?$sum += $count;?>
+            <?}?>
+        <?}?>
         <?if($section == "group"){?>
             <?foreach($groups as $group){?>
                 <? $count = 0;?>
@@ -65,6 +87,13 @@
     <tr>
         <?$sum_total = 0;?>
         <th>合計</th>
+
+        <?if($section == "user"){?>
+            <?foreach($users as $user){?>
+                <th><?=nf($total[$user->id])?></th>
+                <?$sum_total+=$total[$user->id]?>
+            <?}?>
+        <?}?>
         <?if($section == "group"){?>
             <?foreach($groups as $group){?>
                 <th><?=nf($total[$group->id])?></th>
