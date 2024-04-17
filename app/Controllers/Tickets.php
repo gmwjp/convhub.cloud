@@ -58,7 +58,8 @@ class Tickets extends _MyController {
 		$this->set("tickets",$tickets);
 		return $this->view("/tickets/index");
 	}
-	function sums($ym = false){
+	function sums($section = "group",$ym = false){
+		$this->set("section",$section);
 		if(!$ym){
 			$ym = date("Y-m");
 		}
