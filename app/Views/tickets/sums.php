@@ -13,11 +13,11 @@
     </a>
 </nav>
 <div class="row">
-    <div class="col text-left"><a href="/tickets/sums/<?=esc($section)?>/<?=esc($prev_month)?>" class="btn btn-light"><span class="fal fa-chevron-left mr-1"></span>前月</a></div>
-    <div class="col text-center"><a href="/tickets/sums/<?=esc($section)?>/<?=date("Y-m")?>" class="btn btn-light">当月</a></div>
-    <div class="col text-right"><a href="/tickets/sums/<?=esc($section)?>/<?=esc($next_month)?>" class="btn btn-light">次月<span class="fal fa-chevron-right ml-1"></span></a></div>
+    <div class="col text-left"><a href="/tickets/sums/<?=esc($section)?>/<?=esc($prev_month)?><?if(request()->getGet("form_id")){?>?form_id=<?=request()->getGet("form_id")?><?}?>" class="btn btn-light"><span class="fal fa-chevron-left mr-1"></span>前月</a></div>
+    <div class="col text-center"><a href="/tickets/sums/<?=esc($section)?>/<?=date("Y-m")?><?if(request()->getGet("form_id")){?>?form_id=<?=request()->getGet("form_id")?><?}?>" class="btn btn-light">当月</a></div>
+    <div class="col text-right"><a href="/tickets/sums/<?=esc($section)?>/<?=esc($next_month)?><?if(request()->getGet("form_id")){?>?form_id=<?=request()->getGet("form_id")?><?}?>" class="btn btn-light">次月<span class="fal fa-chevron-right ml-1"></span></a></div>
 </div>
-<table class="table table-sm mt-2 table-bordered">
+<table class="table table-sm mt-2 table-bordered" style="table-layout: fixed;">
     <tr class="bg-secondary text-white">
         <td>日付</td>
         <?if($section == "user"){?>
