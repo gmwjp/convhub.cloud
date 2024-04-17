@@ -11,6 +11,9 @@ class TeamsModel extends _MyModel {
 	function getForms($team_id){
 		return $this->model("Forms")->where("team_id",$team_id)->orderBy("id","desc")->findAll();
 	}
+	function getSubforms($team_id){
+		return $this->model("Subforms")->where("team_id",$team_id)->orderBy("order_no","desc")->findAll();
+	}
 	function getWidgets($team_id){
 		return $this->model("Widgets")->where("team_id",$team_id)->orderBy("id","desc")->findAll();
 	}

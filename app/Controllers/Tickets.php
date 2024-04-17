@@ -70,6 +70,7 @@ class Tickets extends _MyController {
 		$this->set("users",$this->model("Teams")->getUsers($this->my_user->team_id));
 		$this->set("groups",$this->model("Teams")->getGroups($this->my_user->team_id));
 		$this->set("forms",$this->model("Teams")->getForms($this->my_user->team_id));
+		$this->set("subforms",$this->model("Teams")->getSubforms($this->my_user->team_id));
 		$param["start_date"] = $ym."-01";
 		$param["end_date"] = $ym."-".date("t",strtotime($ym."-01"));
 		$param["active_user_only"] = true;

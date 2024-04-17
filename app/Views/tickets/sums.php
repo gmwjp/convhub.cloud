@@ -2,7 +2,15 @@
 <nav class="nav nav-pills mb-2">
     <a class="nav-link <?if($section=="user"){?>active<?}?>" href="/tickets/sums/user">ユーザー</a>
     <a class="nav-link <?if($section=="group"){?>active<?}?>" href="/tickets/sums/group">グループ</a>
-    <a class="nav-link <?if($section=="form"){?>active<?}?>" href="/tickets/sums/form">フォーム</a>
+    <a class="nav-link <?if($section=="form" || $section=="subform"){?>active<?}?> " href="/tickets/sums/form">フォーム
+    <?if($section == "subform" && request()->getGet("form_id")){?>
+        <?foreach($forms as $form){?>
+            <?if($form->id == request()->getGet("form_id")){?>
+                ：<?=esc($form->name)?>
+            <?}?>
+        <?}?>
+    <?}?>
+    </a>
 </nav>
 <div class="row">
     <div class="col text-left"><a href="/tickets/sums/<?=esc($section)?>/<?=esc($prev_month)?>" class="btn btn-light"><span class="fal fa-chevron-left mr-1"></span>前月</a></div>
@@ -26,8 +34,19 @@
         <?}?>
         <?if($section == "form"){?>
             <?foreach($forms as $form){?>
-                <td><?=esc($form->name)?></td>
+                <td>
+                    <?=esc($form->name)?>
+                    <a href="/tickets/sums/subform?form_id=<?=esc($form->id)?>" class="ml-1" data-toggle="tooltip" data-placement="top" title="サブフォームごと"><span class="fal fa-list"></span></a>
+                </td>
                 <?$total[$form->id] = 0?>
+            <?}?>
+        <?}?>
+        <?if($section == "subform"){?>
+            <?foreach($subforms as $subform){?>
+                <?if(request()->getGet("form_id") == $subform->form_id){?>
+                    <td><?=esc($subform->name)?></td>
+                    <?$total[$subform->id] = 0?>
+                <?}?>
             <?}?>
         <?}?>
         <td>小計</td>
@@ -81,6 +100,25 @@
                 <?$sum += $count;?>
             <?}?>
         <?}?>
+        <?if($section == "subform"){?>
+            <?foreach($subforms as $subform){?>
+                <?if(request()->getGet("form_id") == $subform->form_id){?>
+                    <? $count = 0;?>
+                    <?foreach($tickets as $ticket){?>
+                        <?if(date("Y-m-d",strtotime($ticket->created)) == date("Y-m-d",strtotime($param["start_date"]." +{$i} days"))){?>
+                            <?if($subform->id == $ticket->subform_id){?>
+                                
+                                <?$count++?>
+                                <?$total[$subform->id]++?>
+                                
+                            <?}?>
+                        <?}?>
+                    <?}?>
+                    <td><?=nf($count)?></td>
+                    <?$sum += $count;?>
+                <?}?>
+            <?}?>
+        <?}?>
         <td><?=nf($sum)?></td>
     </tr>
 <?}?>
@@ -104,6 +142,14 @@
             <?foreach($forms as $form){?>
                 <th><?=nf($total[$form->id])?></th>
                 <?$sum_total+=$total[$form->id]?>
+            <?}?>
+        <?}?>
+        <?if($section == "subform"){?>
+            <?foreach($subforms as $subform){?>
+                <?if(request()->getGet("form_id") == $subform->form_id){?>
+                <th><?=nf($total[$subform->id])?></th>
+                <?$sum_total+=$total[$subform->id]?>
+                <?}?>
             <?}?>
         <?}?>
         <th><?=nf($sum_total)?></th>
