@@ -72,6 +72,7 @@ class Tickets extends _MyController {
 		$this->set("forms",$this->model("Teams")->getForms($this->my_user->team_id));
 		$param["start_date"] = $ym."-01";
 		$param["end_date"] = $ym."-".date("t",strtotime($ym."-01"));
+		$param["active_user_only"] = true;
 		$this->set("param",$param);
 		$this->set("next_month" ,date("Y-m",strtotime($ym."-01 +1 month")));
 		$this->set("prev_month" ,date("Y-m",strtotime($ym."-01 -1 month")));

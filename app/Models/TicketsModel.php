@@ -44,6 +44,9 @@ class TicketsModel extends _MyModel {
 		if(!empty($param["group_id"])){
 			$this->where("tickets.group_id",$param["group_id"]);
 		}
+		if(!empty($param["active_user_only"])){
+			$this->where("tickets.user_id != ",-99);	//ZENDESKからインポートしたデータは省く
+		}
 		if(!empty($param["keyword"])){
 			$param["keyword"] = str_replace("　"," ",$param["keyword"]);
 			foreach(explode(" ",$param["keyword"]) as $word){
