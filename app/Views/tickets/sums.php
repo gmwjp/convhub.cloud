@@ -93,9 +93,13 @@
             <?foreach($forms as $form){?>
                 <? $count = 0;?>
                 <?foreach($tickets as $ticket){?>
+                    <div><?=$ticket->id?></div>
+                    <div>-- <?=date("Y-m-d",strtotime($ticket->created)) ."==". date("Y-m-d",strtotime($param["start_date"]." +{$i} days"))?></div>
                     <?if(date("Y-m-d",strtotime($ticket->created)) == date("Y-m-d",strtotime($param["start_date"]." +{$i} days"))){?>
+                        <div>-- <?=$form->id ."==". $ticket->form_id?></div>
                         <?if($form->id == $ticket->form_id){?>
                             <?$count++?>
+                            <div>-- <?=$count?></div>
                             <?$total[$form->id]++?>
                         <?}?>
                     <?}?>
