@@ -91,22 +91,16 @@
         <?}?>
         <?if($section == "form"){?>
             <?foreach($forms as $form){?>
-
-                <td>
                 <? $count = 0;?>
                 <?foreach($tickets as $ticket){?>
-                    <div><?=$ticket->id?></div>
-                    <div>-- <?=date("Y-m-d",strtotime($ticket->created)) ."==". date("Y-m-d",strtotime($param["start_date"]." +{$i} days"))?></div>
                     <?if(date("Y-m-d",strtotime($ticket->created)) == date("Y-m-d",strtotime($param["start_date"]." +{$i} days"))){?>
-                        <div>-- <?=$form->id ."==". $ticket->form_id?></div>
                         <?if($form->id == $ticket->form_id){?>
                             <?$count++?>
-                            <div>-- <?=$count?></div>
                             <?$total[$form->id]++?>
                         <?}?>
                     <?}?>
                 <?}?>
-                <a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&form_id=<?=esc($form->id)?>"><?=nf($count)?></a></td>
+                <td><a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&form_id=<?=esc($form->id)?>"><?=nf($count)?></a></td>
                 <?$sum += $count;?>
             <?}?>
         <?}?>
