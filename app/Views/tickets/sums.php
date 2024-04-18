@@ -91,6 +91,8 @@
         <?}?>
         <?if($section == "form"){?>
             <?foreach($forms as $form){?>
+
+                <td>
                 <? $count = 0;?>
                 <?foreach($tickets as $ticket){?>
                     <div><?=$ticket->id?></div>
@@ -104,7 +106,7 @@
                         <?}?>
                     <?}?>
                 <?}?>
-                <td><a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&form_id=<?=esc($form->id)?>"><?=nf($count)?></a></td>
+                <a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&form_id=<?=esc($form->id)?>"><?=nf($count)?></a></td>
                 <?$sum += $count;?>
             <?}?>
         <?}?>
