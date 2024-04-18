@@ -51,9 +51,13 @@
         <?}?>
         <td>小計</td>
     </tr>
+    <?$week = array( "日", "月", "火", "水", "木", "金", "土" );?>
 <?for($i = 0 ; $i < date("t",strtotime($param["start_date"]));$i++){?>
-    <tr>
-        <td><?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?></td>
+    <tr <?if(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")) == date("Y-m-d")){?>style="background-color:#fafad2;"<?}?>>
+        <td>
+            <?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>
+            <span class="ml-1"><?=$week[date("w",strtotime($param["start_date"]." +{$i} days"))]?></span>
+        </td>
         <?$sum = 0;?>
         <?if($section == "user"){?>
             <?foreach($users as $user){?>
