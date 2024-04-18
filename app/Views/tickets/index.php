@@ -60,6 +60,21 @@
                             </select>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="item-title">問い合わせ日（FROM）</div>
+                                <div><input type="date" class="form-control" name="start_date" value="<?=esc(request()->getGet("start_date"))?>"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <div class="item-title">問い合わせ日（TO）</div>
+                                <div><input type="date" class="form-control" name="end_date" value="<?=esc(request()->getGet("end_date"))?>"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="text-center mt-2">
                         <button type="submit" class="btn btn-dark" name="execute" value="on">検索を実行</button>
                         <a href="/tickets/index/<?=esc($section)?>" class="btn btn-outline-secondary">検索条件をクリア</a>

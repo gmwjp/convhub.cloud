@@ -66,7 +66,7 @@
                         <?}?>
                     <?}?>
                 <?}?>
-                <td><?=nf($count)?></td>
+                <td><a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&user_id=<?=esc($user->id)?>"><?=nf($count)?></a></td>
                 <?$sum += $count;?>
             <?}?>
         <?}?>
@@ -81,7 +81,7 @@
                         <?}?>
                     <?}?>
                 <?}?>
-                <td><?=nf($count)?></td>
+                <td><a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&group_id=<?=esc($group->id)?>"><?=nf($count)?></a></td>
                 <?$sum += $count;?>
             <?}?>
         <?}?>
@@ -96,7 +96,7 @@
                         <?}?>
                     <?}?>
                 <?}?>
-                <td><?=nf($count)?></td>
+                <td><a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&form_id=<?=esc($form->id)?>"><?=nf($count)?></a></td>
                 <?$sum += $count;?>
             <?}?>
         <?}?>
@@ -119,7 +119,7 @@
                 <?}?>
             <?}?>
         <?}?>
-        <td><?=nf($sum)?></td>
+        <td><a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"]." +{$i} days")))?>"><?=nf($sum)?></a></td>
     </tr>
 <?}?>
     <tr>
@@ -128,19 +128,19 @@
 
         <?if($section == "user"){?>
             <?foreach($users as $user){?>
-                <th><?=nf($total[$user->id])?></th>
+                <th><a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-01",strtotime($param["start_date"])))?>&end_date=<?=esc(date("Y-m-t",strtotime($param["start_date"])))?>&user_id=<?=esc($user->id)?>"><?=nf($total[$user->id])?></a></th>
                 <?$sum_total+=$total[$user->id]?>
             <?}?>
         <?}?>
         <?if($section == "group"){?>
             <?foreach($groups as $group){?>
-                <th><?=nf($total[$group->id])?></th>
+                <th><a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"])))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"])))?>&group_id=<?=esc($group->id)?>"><?=nf($total[$group->id])?></th>
                 <?$sum_total+=$total[$group->id]?>
             <?}?>
         <?}?>
         <?if($section == "form"){?>
             <?foreach($forms as $form){?>
-                <th><?=nf($total[$form->id])?></th>
+                <th><a target="_blank" href="/tickets/index/all?execute=on&start_date=<?=esc(date("Y-m-d",strtotime($param["start_date"])))?>&end_date=<?=esc(date("Y-m-d",strtotime($param["start_date"])))?>&form_id=<?=esc($form->id)?>"><?=nf($total[$form->id])?></th>
                 <?$sum_total+=$total[$form->id]?>
             <?}?>
         <?}?>
