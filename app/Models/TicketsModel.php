@@ -38,6 +38,9 @@ class TicketsModel extends _MyModel {
 		if(!empty($param["status"])){
 			$this->where("tickets.status",$param["status"]);
 		}
+		if(!empty($param["id"])){
+			$this->where("tickets.id",$param["id"]);
+		}
 		if(!empty($param["form_id"])){
 			$this->where("tickets.form_id",$param["form_id"]);
 		}

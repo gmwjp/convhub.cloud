@@ -22,6 +22,10 @@
             <div class="card-body">
                 <form method="get" action="/tickets/index/<?=esc($section)?>">
                     <div class="form-group">
+                        <div class="item-title">チケットID</div>
+                        <div><input type="text" class="form-control" name="id" value="<?=esc(request()->getGet("id"))?>"></div>
+                    </div>
+                    <div class="form-group">
                         <div class="item-title">キーワード</div>
                         <div><input type="text" class="form-control" name="keyword" value="<?=esc(request()->getGet("keyword"))?>"></div>
                         <div class="text-muted"><small>件名・本文・メールアドレスを検索します。スペース区切りでAND条件になります。</small></div>
