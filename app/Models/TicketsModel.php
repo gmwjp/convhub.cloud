@@ -48,7 +48,10 @@ class TicketsModel extends _MyModel {
 			$this->where("tickets.group_id",$param["group_id"]);
 		}
 		if(!empty($param["active_user_only"])){
-			//$this->where("tickets.user_id != ",-99);	//ZENDESKからインポートしたデータは省く
+			$this->groupStart(); // 条件のグループ化を開始
+			$this->where("tickets.user_id != ",-99);	//ZENDESKからインポートしたデータは省く
+			$this->orWhere("tickets.user_id IS NULL");	//ZENDESKからインポートしたデータは省く
+			$this->groupEnd(); // 条件のグループ化を開始
 		}
 		if(!empty($param["keyword"])){
 			$param["keyword"] = str_replace("　"," ",$param["keyword"]);
