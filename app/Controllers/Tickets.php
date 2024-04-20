@@ -80,6 +80,26 @@ class Tickets extends _MyController {
 		$this->set("tickets",$this->model("Tickets")->getIndex($this->my_user->team_id,$param));
 		return $this->view("/tickets/sums");
 	}
+	function gpt(){
+		$this->hasPermission();
+		//要約文から清書を作成
+		$prompt = $this->model("Prompts")->where("team_id",$this->my_user->team_id)->where("id",request()->getPost("prompt_id"))->last();
+		if($prompt){
+			$summary = $this->library("Gpt")->generateAnswer(
+				$prompt->body,
+				request()->getPost("ticket_body"),
+				request()->getPost("question")
+			);
+			$this->library("Api")->success($summary);	
+		} else {
+			$this->library("Api")->error("プロンプトが見つかりません");	
+		}
+	}
+	function get_prompt($prompt_id){
+		$this->hasPermission();
+		checkId($prompt_id);
+		$this->library("Api")->success($this->model("Prompts")->where("team_id",$this->my_user->team_id)->where("id",$prompt_id)->last());
+	}
 	function detail($ticket_id){
 		$this->hasPermission();
 		checkId($ticket_id);
@@ -88,6 +108,7 @@ class Tickets extends _MyController {
 			$this->title($ticket->title);
 			$this->set("users",$this->model("Teams")->getUsers($this->my_user->team_id));
 			$this->set("templates",$this->model("Teams")->getTemplates($this->my_user->team_id));
+			$this->set("prompts",$this->model("Teams")->getPrompts($this->my_user->team_id));
 			$this->set("form",$form = $this->model("Forms")->find($ticket->form_id));	
 			if($ticket->subform_id){
 				$this->set("subform",$subform = $this->model("Subforms")->find($ticket->subform_id));	

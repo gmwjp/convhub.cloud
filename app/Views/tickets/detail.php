@@ -120,7 +120,7 @@
                             <div><small><?=changeDate($ticket->created)?></small></div>
                         </div>
                     </div>
-                    <?=setUrlLink(nl2br(esc($ticket->body)))?>
+                    <div id="ticket_body"><?=setUrlLink(nl2br(esc($ticket->body)))?></div>
                     <?if($ticket->summary_flg == 1 && $ticket->summary !=""){?>
                         <div class="text-right"><button type="button" class="btn btn-light btn-sm" id="summary_button"><span class="fal fa-chevron-down mr-1"></span>要約を表示</a></div>
                         <div class="none" id="summary">
@@ -219,7 +219,7 @@
                         </select>
                     </div>
                     <div class="float-right">
-                        <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#exampleModal">テンプレート選択<span class="fal fa-chevron-up ml-1"></span></button>
+                        <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#answerModal">回答文作成<span class="fal fa-chevron-up ml-1"></span></button>
                     </div>
                 </div>
                 <textarea id="body" name="body" rows="4" class="form-control mt-1"><?=esc(request()->getPost("body"))?></textarea>
@@ -292,31 +292,57 @@
         <?}?>
     </div>
 </div>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="answerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-custom" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">テンプレート選択</h5>
+        <h5 class="modal-title" id="exampleModalLabel">回答文作成</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <div class="text-muted text-center mb-2"><small>クリックするとテキストボックスの末尾に文章が追加されます</small></div>
-        <?if($templates){?>
-            <div class="list-group">
-            <?foreach($templates as $template){?>
-                <a class="list-group-item template_select_button list-group-item-action" href="#" data-id="<?=esc($template->id)?>">
-                    <div class="clearfix">
-                        <div class="float-left">
-                            <b><?=esc($template->name)?></b>
-                        </div>
-                    </div>
-                    <div class="text-muted" style="max-height:40px;overflow:hidden;"><small id="template_<?=esc($template->id)?>"><?=esc($template->body)?></small></div>
-                </a>
-            <?}?>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">テンプレート</a>
+                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">GPT回答作成</a>
             </div>
-        <?}?>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <?if($templates){?>
+                    <div class="list-group mt-2">
+                    <?foreach($templates as $template){?>
+                        <a class="list-group-item template_select_button list-group-item-action" href="#" data-id="<?=esc($template->id)?>">
+                            <div class="clearfix">
+                                <div class="float-left">
+                                    <b><?=esc($template->name)?></b>
+                                </div>
+                            </div>
+                            <div class="text-muted" style="max-height:40px;overflow:hidden;"><small id="template_<?=esc($template->id)?>"><?=esc($template->body)?></small></div>
+                        </a>
+                    <?}?>
+                    </div>
+                <?}?>
+                <div class="text-muted text-center mt-2"><small>クリックするとテキストボックスの末尾に文章が追加されます</small></div>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <select class="form-control mt-2" id="prompt_id">
+                    <?foreach($prompts as $prompt){?>
+                        <option value="<?=esc($prompt->id)?>"><?=esc($prompt->name)?></option>
+                    <?}?>
+                </select>
+                <div class="my-2" id="prompt_body"><?=esc($prompts[0]->body)?></div>
+                <textarea id="body_question" class="form-control" placeholder="文章の要約を入力" rows="7"></textarea>
+                <div class="text-center my-2">
+                    <button type="button" class="btn btn-secondary" id="gpt_button"><span class="fal fa-arrow-down"></span> 要約から文章を作成</button>
+                </div>
+                <textarea id="body_answer" class="form-control" placeholder="GPTからの回答表示" rows="7" readonly="readonly"></textarea>
+                <div class="text-center my-2">
+                    <button type="button" class="btn btn-dark hide" id="set_answer_button">この回答を本文に入力</button>
+                </div>
+            </div>
+        </div>
       </div>
     </div>
   </div>
@@ -352,7 +378,7 @@ $(".template_select_button").click(function(){
     } else {
         $("#body").val($("#body").val()+"\n"+body);
     }
-    $("#exampleModal").modal("hide");
+    $("#answerModal").modal("hide");
     setTimeout(function(){
         var len = $('#body').val().length;
         $('#body').focus().get(0).setSelectionRange(len, len);
@@ -423,6 +449,45 @@ $(document).ready(function() {
     // テキストエリアのサイズ変更イベントに反応する
     $('#body').on('mouseup keyup', function() {
         adjustPadding();
+    });
+    $("#gpt_button").click(function(){
+        $("#gpt_button").html('<i class="fas fa-spinner fa-spin"></i>').addClass("disabled");;
+        postData("/tickets/gpt",{
+            ticket_body : $("#ticket_body").text(),
+            prompt_id : $("#prompt_id").val(),
+            question:$("#body_question").val()
+        },function(data){
+            var response = JSON.parse(data);
+            if(response.result == "success"){
+                $("#gpt_button").html('↓ 要約から文章を作成').removeClass("disabled");
+                $("#body_answer").val(response.data);
+            } else {
+                error(response.message);
+            }
+        });
+    });
+    $("#prompt_id").change(function(){
+        $.get("/tickets/get_prompt/"+$(this).val(),function(data){
+            var response = JSON.parse(data);
+            if(response.result == "success"){
+                $("#prompt_body").html(response.data.body);
+            } else {
+                error(response.message);
+            }
+        });
+    });
+    $("#set_answer_button").click(function(){
+        var body = $("#body_answer").val();
+        if($("#body").val()==""){
+            $("#body").val(body);
+        } else {
+            $("#body").val($("#body").val()+"\n"+body);
+        }
+        $("#answerModal").modal("hide");
+        setTimeout(function(){
+            var len = $('#body').val().length;
+            $('#body').focus().get(0).setSelectionRange(len, len);
+        },500);
     });
     // ページ読み込み時に一度パディングを調整
     adjustPadding();

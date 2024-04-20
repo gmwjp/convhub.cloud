@@ -2,6 +2,9 @@
 namespace App\Models;
 class TeamsModel extends _MyModel {
 	var $table = "teams";
+	function getPrompts($team_id){
+		return $this->model("Prompts")->where("team_id",$team_id)->orderBy("order_no","asc")->findAll();
+	}
 	function getTemplates($team_id){
 		return $this->model("Templates")->where("team_id",$team_id)->orderBy("order_no","asc")->findAll();
 	}
