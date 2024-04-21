@@ -25,7 +25,7 @@
                 <?}?>
                 <div class="group-item">
                     <div class="item-title">問い合わせメールアドレス</div>
-                    <a href="#">
+                    <a href="javascript:void(0);">
                         <div class="list-group-item-action p-1 clearfix copy_button" data-toggle="tooltip" data-placement="top" title="コピー" data-value="<?=esc($ticket->mail)?>">
                             <div class="float-left">
                                 <?=esc($ticket->mail)?>
@@ -42,7 +42,7 @@
                     <?foreach($ticket_form_items as $item){?>
                         <div class="group-item mb-2">
                             <div class="item-title"><?=esc($item->title)?></div>
-                            <a href="#">
+                            <a href="javascript:void(0);">
                                 <div class="list-group-item-action p-1 clearfix copy_button" data-toggle="tooltip" data-placement="top" title="コピー" data-value="<?=esc($item->value)?>">
                                     <div class="float-left">
                                         <?=esc($item->value)?>
@@ -60,7 +60,7 @@
                         <div class="group-item">
                             <div class="item-title"><?=esc($item->title)?></div>
                             <?if($item->value !=""){?>
-                            <a href="#">
+                            <a href="javascript:void(0);">
                                 <div class="list-group-item-action p-1 clearfix copy_button" data-toggle="tooltip" data-placement="top" title="コピー" data-value="<?=esc($item->value)?>">
                                     <div class="float-left">
                                         <?=esc($item->value)?>
@@ -83,17 +83,17 @@
                 <?}?>
                 <?if($ticket->query_params){?>
                     <hr>
-                    <a href="#">
+                    <a href="javascript:void(0);">
                         <div class="list-group-item-action p-1 clearfix" id="metadata_button" data-toggle="tooltip" data-placement="top" title="metadataを表示">
                             <div class="float-left"><b>metadata</b></div>
-                            <div class="float-right"><span class="fal fa-caret-square-down"></span></div>
+                            <div class="float-right"><span class="fal fa-chevron-down"></span></div>
                         </div>
-                        <ul id="metadata" class="none alert alert-secondary border">
-                            <?foreach(json_decode($ticket->query_params) as $key => $val){?>
-                                <li><?=esc($key)?>：<?=esc($val)?></li>
-                            <?}?>
-                        </ul>
                     </a>
+                    <ul id="metadata" class="none alert alert-secondary border">
+                        <?foreach(json_decode($ticket->query_params) as $key => $val){?>
+                            <li><?=esc($key)?>：<?=esc($val)?></li>
+                        <?}?>
+                    </ul>
                 <?}?>
             </div>
         </div>
