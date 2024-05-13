@@ -12,6 +12,9 @@
 #content {
     padding-bottom: 200px;
 }
+.break-word {
+    overflow-wrap: break-word;
+}
 </style>
 <div class="row" id="content">
     <div class="col-sm-12 col-md-3" id="header">
@@ -23,11 +26,11 @@
                 <?if(!empty($subform)){?>
                 <label><?=esc($subform->name)?></label>
                 <?}?>
-                <div class="group-item">
+                <div class="group-item break-word">
                     <div class="item-title">問い合わせメールアドレス</div>
                     <a href="javascript:void(0);">
                         <div class="list-group-item-action p-1 clearfix copy_button" data-toggle="tooltip" data-placement="top" title="コピー" data-value="<?=esc($ticket->mail)?>">
-                            <div class="float-left">
+                            <div class="float-left" style="width:90%;">
                                 <?=esc($ticket->mail)?>
                             </div>
                             <div class="float-right">
@@ -40,11 +43,11 @@
 
                 <?if($ticket_form_items){?>
                     <?foreach($ticket_form_items as $item){?>
-                        <div class="group-item mb-2">
+                        <div class="group-item mb-2  break-word">
                             <div class="item-title"><?=esc($item->title)?></div>
                             <a href="javascript:void(0);">
                                 <div class="list-group-item-action p-1 clearfix copy_button" data-toggle="tooltip" data-placement="top" title="コピー" data-value="<?=esc($item->value)?>">
-                                    <div class="float-left">
+                                    <div class="float-left"  style="width:90%;">
                                         <?=esc($item->value)?>
                                     </div>
                                     <div class="float-right">
@@ -57,12 +60,12 @@
                 <?}?>
                 <?if($ticket_subform_items){?>
                     <?foreach($ticket_subform_items as $item){?>
-                        <div class="group-item">
+                        <div class="group-item break-word">
                             <div class="item-title"><?=esc($item->title)?></div>
                             <?if($item->value !=""){?>
                             <a href="javascript:void(0);">
                                 <div class="list-group-item-action p-1 clearfix copy_button" data-toggle="tooltip" data-placement="top" title="コピー" data-value="<?=esc($item->value)?>">
-                                    <div class="float-left">
+                                    <div class="float-left" style="width:90%;">
                                         <?=esc($item->value)?>
                                     </div>
                                     <div class="float-right">
@@ -111,7 +114,7 @@
         </div>
         <div id="comments">
             <div class="col-10">
-                <div class="alert bg-white border">
+                <div class="alert bg-white border break-word">
                     <div class="clearfix">
                         <div class="float-left">
                             <label><?=esc(requester_name($ticket->mail))?></label>
@@ -148,7 +151,7 @@
                 <?if($comment->user_section == "user"){?>
                     <? //運営事務局からの回答 ?>
                     <div class="col-10 offset-2">
-                        <div class="alert <?if($comment->public_flg == 1){?>alert-success<?} else {?>alert-secondary<?}?>">
+                        <div class="alert <?if($comment->public_flg == 1){?>alert-success<?} else {?>alert-secondary<?}?> break-word">
                             <div class="clearfix">
                                 <div class="float-left">
                                     <label>回答者&nbsp;<small>[<?=esc($comment->users_nickname)?>]</small><?if($comment->public_flg == 0){?>&nbsp;<small class="text-muted">社内メモ</small><?}?></label>
@@ -157,7 +160,7 @@
                                     <div><small><?=changeDate($comment->created)?></small></div>
                                 </div>
                             </div>
-                            <div style="overflow-wrap: break-word;">
+                            <div>
                                 <?if($comment->public_flg == 0){?>
                                     <?=setTicketLink(setUrlLink(nl2br(esc($comment->body))))?>
                                 <?} else {?>
@@ -182,7 +185,7 @@
                 <?} else {?>
                     <? //リクエスタからの回答 ?>
                     <div class="col-10">
-                        <div class="alert bg-white border">
+                        <div class="alert bg-white border break-word">
                             <div class="clearfix">
                                 <div class="float-left">
                                     <label><?=esc(requester_name($ticket->mail))?></label>
@@ -191,7 +194,7 @@
                                     <div><small><?=changeDate($comment->created)?></small></div>
                                 </div>
                             </div>
-                            <div style="overflow-wrap: break-word;">
+                            <div>
                                 <?=setUrlLink(nl2br(esc($comment->body)))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
