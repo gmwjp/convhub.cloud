@@ -1,3 +1,8 @@
+<style>
+    .popover{
+    max-width: 50%; /* Max Width of the popover (depending on the container!) */
+}
+</style>
 <div class="row mt-2">
     <div class="col-3">
         <nav class="nav nav-pills flex-column">
@@ -90,7 +95,8 @@
         
         <ul class="list-group mt-2">
             <?foreach($tickets as $ticket){?>
-                <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($ticket->id)?>"  data-placement="top" data-trigger="hover" tabindex="0" data-toggle="popover" title="<?=esc($ticket->title)?>" data-content="<?=esc($ticket->body)?>">
+                <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($ticket->id)?>"  data-placement="top" data-trigger="hover" tabindex="0" data-toggle="popover" title="<?=esc($ticket->title)?>" data-html="true" 
+                    data-content="<?=esc($ticket->body)?><?if($ticket->last_comment){?><hr><small><div class='<?if($ticket->last_comment->public_flg == 0){?>alert-secondary p-2<?}?>'><?=esc($ticket->last_comment->body)?></div></small><?}?>">
                     <div class="clearfix">
                         <div class="float-right">
                             <span class="badge badge-<?=esc($this->model("Tickets")->params["status"][$ticket->status]["color"])?> p-1"><?=esc($this->model("Tickets")->params["status"][$ticket->status]["text"])?></span>

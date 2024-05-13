@@ -50,9 +50,11 @@ class Tickets extends _MyController {
 		$this->set("ticket_nums",$ticket_nums);
 		$this->set("users",$this->model("Teams")->getUsers($this->my_user->team_id));
 		$this->set("forms",$this->model("Teams")->getForms($this->my_user->team_id));
-
 		$tickets_all = $this->model("Tickets")->getIndex($this->my_user->team_id,request()->getGet());
 		$tickets = $this->library("pagenate")->getPageData($tickets_all,_def_page_num,$this->library("pagenate")->getPage());
+		foreach($tickets as $key => $val){
+			$tickets[$key]->last_comment = $this->model("Comments")->where("ticket_id",$val->id)->last();
+		}
 		$this->set("page",$this->library("pagenate")->getPage());
 		$this->set("total", count($tickets_all));
 		$this->set("tickets",$tickets);
@@ -117,7 +119,11 @@ class Tickets extends _MyController {
 			$this->set("ticket_form_items",$this->model("Tickets")->getFormItems($ticket->id));
 			$this->set("ticket_subform_items",$this->model("Tickets")->getSubformItems($ticket->id));
 			//過去のチケットを取得
-			$this->set("old_tickets",$this->model("Tickets")->getOldTickets($ticket->id));
+			$old_tickets = $this->model("Tickets")->getOldTickets($ticket->id);
+			foreach($old_tickets as $key => $val){
+				$old_tickets[$key]->last_comment = $this->model("Comments")->where("ticket_id",$val->id)->last();
+			}
+			$this->set("old_tickets",$old_tickets);
 			//コメントを取得
 			$this->set("comments",$this->model("Tickets")->getAllComments($ticket->id));
 

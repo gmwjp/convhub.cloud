@@ -278,7 +278,11 @@
             <div>
                 <ul class="list-group">
                     <?foreach($old_tickets as $t){?>
-                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>" data-placement="top" data-trigger="hover" tabindex="0" data-toggle="popover" title="<?=esc($t->title)?>" data-content="<?=esc($t->body)?>">
+                        <a class="list-group-item list-group-item-action" href="/tickets/detail/<?=esc($t->id)?>" data-placement="top" data-trigger="hover" tabindex="0" data-toggle="popover" title="<?=esc($t->title)?>" data-html="true" 
+                            data-content="<?=esc($t->body)?><?if($t->last_comment){?><hr><div class='
+                                <?if($t->last_comment->public_flg == 0){?>
+                                    alert-secondary p-2
+                                <?}?>'><?=esc($t->last_comment->body)?></div><?}?>">
                             <div class="clearfix">
                                 <div class="float-left text-muted">
                                     <small>#<?=esc($t->id)?>&nbsp;<?=changeDate(esc($t->created))?></small>
