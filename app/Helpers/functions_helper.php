@@ -48,6 +48,9 @@ function changeDate($value,$format = null){
     $val = strtotime($value);
     return date($format,$val);
 }
+function convertQuoteTags($text) {
+    return preg_replace('/\[quote\](.*?)\[\/quote\]/s', '<blockquote>$1</blockquote>', $text);
+}
 function setUrlLink($value){
     $text = preg_replace("{[[:alpha:]]+://[^<>[:space:]]+[[:alnum:]/]}","<a href=\"\\0\" target=\"_blank\" style=\"text-decoration:underline;\" class=\"noaction\">\\0</a>", $value);
     return $text;

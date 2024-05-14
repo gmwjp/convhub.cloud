@@ -1,4 +1,14 @@
 <style>
+blockquote {
+    border-left: 5px solid #ccc;
+    padding-left: 10px;
+    margin-left: 0;
+    color: #666;
+}
+#quoteButton {
+    display: none;
+    position: absolute;
+}
 #comment_box {
     position: fixed; /* 要素を固定位置に設定 */
     bottom: 0;       /* 下端に配置 */
@@ -17,9 +27,11 @@
 }
 </style>
 <div class="row" id="content">
+    <button id="quoteButton" class="btn btn-secondary btn-sm"><span class="fa fa-quote-right mr-1"></span>メッセージ引用</button>
     <div class="col-sm-12 col-md-3" id="header">
         <div class="card">
             <div class="card-body">
+                
                 <?if($form){?>
                     <a href="/forms/show/input/<?=esc($form->code)?>" target="_blank"><h4 class="page-title"><?=esc($form->name)?></h4></a>
                 <?}?>
@@ -104,7 +116,7 @@
     <div class="col-sm-12 col-md-6">
         <div class="clearfix">
             <div class="float-left">
-                <h4><?=esc($ticket->title)?>&nbsp;<small>#<?=esc($ticket->id)?></small></h4>
+                <h4><?=esc($ticket->title)?>&nbsp;<small>#<?=esc($ticket->id)?>&nbsp;<a target="_blank" href="/tickets/show/<?=$this->library("crypt2")->encode(esc($ticket->id))?>"><span class="fal fa-external-link"></span></a></small></h4>
             </div>
             <div class="float-right">
                 <span class="p-1 badge badge-<?=esc($this->model("Tickets")->params["status"][$ticket->status]["color"])?>">
@@ -128,7 +140,7 @@
                         <div class="text-right"><button type="button" class="btn btn-light btn-sm" id="summary_button"><span class="fal fa-chevron-down mr-1"></span>要約を表示</a></div>
                         <div class="none" id="summary">
                             <hr>
-                            <?=setTicketLink(setUrlLink(nl2br(esc($ticket->summary))))?>
+                            <?=convertQuoteTags(setTicketLink(setUrlLink(nl2br(esc($ticket->summary)))))?>
                         </div>
                     <?}?>
                     <?if(trim($ticket->attaches) != ""){?>
@@ -162,9 +174,9 @@
                             </div>
                             <div>
                                 <?if($comment->public_flg == 0){?>
-                                    <?=setTicketLink(setUrlLink(nl2br(esc($comment->body))))?>
+                                    <?=convertQuoteTags(setTicketLink(setUrlLink(nl2br(esc($comment->body)))))?>
                                 <?} else {?>
-                                    <?=setUrlLink(nl2br(esc($comment->body)))?>
+                                    <?=convertQuoteTags(setUrlLink(nl2br(esc($comment->body))))?>
                                 <?}?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
@@ -195,7 +207,7 @@
                                 </div>
                             </div>
                             <div>
-                                <?=setUrlLink(nl2br(esc($comment->body)))?>
+                                <?=convertQuoteTags(setUrlLink(nl2br(esc($comment->body))))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
                                         <hr>
@@ -498,5 +510,30 @@ $(document).ready(function() {
     });
     // ページ読み込み時に一度パディングを調整
     adjustPadding();
+
+    $(document).mouseup(function() {
+        const selectedText = window.getSelection().toString();
+        const $quoteButton = $('#quoteButton');
+        if (selectedText) {
+            const rect = window.getSelection().getRangeAt(0).getBoundingClientRect();
+            $quoteButton.css({
+                top: rect.bottom + window.scrollY-70,
+                left: rect.left + window.scrollX,
+                zIndex : 1000,
+                width : 200,
+                display: 'block'
+            });
+        } else {
+            $quoteButton.hide();
+        }
+    });
+    $('#quoteButton').click(function() {
+        const selectedText = window.getSelection().toString();
+        const $messageTextArea = $('#body');
+        $messageTextArea.val($messageTextArea.val() + `[quote]${selectedText}[/quote]\n`);
+        $(this).hide();
+        var len = $('#body').val().length;
+        $('#body').focus().get(0).setSelectionRange(len, len);
+    });
 });
 </script>

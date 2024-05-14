@@ -1,10 +1,27 @@
+<style>
+.break-word {
+    overflow-wrap: break-word;
+}
+blockquote {
+    border-left: 5px solid #ccc;
+    padding-left: 10px;
+    margin-left: 0;
+    color: #666;
+}
+#quoteButton {
+    display: none;
+    position: absolute;
+}
+</style>
 <div class="row mt-2">
+    <button id="quoteButton" class="btn btn-secondary btn-sm"><span class="fa fa-quote-right mr-1"></span>メッセージ引用</button>
+
     <div class="col-sm-12 col-md-9">
         <h3><?=esc($ticket->title)?></h3>
         <div class="text-muted text-center"><small>問い合わせ内容によっては回答に時間が掛かる場合や、回答できない可能性がありますことをご了承ください</small></div>
         <div id="comments" class="mt-2">
             <div class="col-10 offset-2">
-                <div class="alert alert-success">
+                <div class="alert alert-success break-word">
                     <div class="clearfix">
                         <div class="float-left">
                             <label>あなた</label>
@@ -13,7 +30,7 @@
                             <div><small><?=changeDate($ticket->created)?></small></div>
                         </div>
                     </div>
-                    <?=setUrlLink(nl2br(esc($ticket->body)))?>
+                    <?=convertQuoteTags(setUrlLink(nl2br(esc($ticket->body))))?>
                     <?if(trim($ticket->attaches) != ""){?>
                         <div>
                             <hr>
@@ -30,7 +47,7 @@
                 <?if($comment->user_section == "customer"){?>
                     <? //リクエスタからの回答 ?>
                     <div class="col-10 offset-2">
-                        <div class="alert alert-success">
+                        <div class="alert alert-success break-word">
                             <div class="clearfix">
                                 <div class="float-left">
                                     <label>あなた</label>
@@ -40,7 +57,7 @@
                                 </div>
                             </div>
                             <div style="overflow-wrap: break-word;">
-                                <?=setUrlLink(nl2br(esc($comment->body)))?>
+                                <?=convertQuoteTags(setUrlLink(nl2br(esc($comment->body))))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
                                         <hr>
@@ -57,7 +74,7 @@
                 <?} else {?>
                     <? //運営事務局からの回答 ?>
                     <div class="col-10">
-                        <div class="alert bg-white border">
+                        <div class="alert bg-white border break-word">
                             <div class="clearfix">
                                 <div class="float-left">
                                     <label>事務局</label>
@@ -67,7 +84,7 @@
                                 </div>
                             </div>
                             <div style="overflow-wrap: break-word;">
-                                <?=setUrlLink(nl2br(esc($comment->body)))?>
+                                <?=convertQuoteTags(setUrlLink(nl2br(esc($comment->body))))?>
                                 <?if(trim($comment->attaches) != ""){?>
                                     <div>
                                         <hr>
@@ -144,6 +161,29 @@ $(function(){
             $("#file_num").html("添付ファイル");
         }
     });
-
+    $(document).mouseup(function() {
+        const selectedText = window.getSelection().toString();
+        const $quoteButton = $('#quoteButton');
+        if (selectedText) {
+            const rect = window.getSelection().getRangeAt(0).getBoundingClientRect();
+            $quoteButton.css({
+                top: rect.bottom + window.scrollY-70,
+                left: rect.left + window.scrollX,
+                zIndex : 1000,
+                width : 200,
+                display: 'block'
+            });
+        } else {
+            $quoteButton.hide();
+        }
+    });
+    $('#quoteButton').click(function() {
+        const selectedText = window.getSelection().toString();
+        const $messageTextArea = $('#body');
+        $messageTextArea.val($messageTextArea.val() + `[quote]${selectedText}[/quote]\n`);
+        $(this).hide();
+        var len = $('#body').val().length;
+        $('#body').focus().get(0).setSelectionRange(len, len);
+    });
 });
 </script>
