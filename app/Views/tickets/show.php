@@ -53,7 +53,7 @@ blockquote {
                                     <label>あなた</label>
                                 </div>
                                 <div class="float-right">
-                                    <div><small><?=changeDate($ticket->created)?></small></div>
+                                    <div><small><?=changeDate($comment->created)?></small></div>
                                 </div>
                             </div>
                             <div style="overflow-wrap: break-word;">
@@ -80,7 +80,7 @@ blockquote {
                                     <label>事務局</label>
                                 </div>
                                 <div class="float-right">
-                                    <div><small><?=changeDate($ticket->created)?></small></div>
+                                    <div><small><?=changeDate($comment->created)?></small></div>
                                 </div>
                             </div>
                             <div style="overflow-wrap: break-word;">
