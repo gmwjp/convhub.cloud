@@ -138,7 +138,7 @@
                             <label>問い合わせ内容&nbsp;<span class="badge badge-info font-weight-normal">必須</span></label>
                             <textarea rows="4" class="form-control" name="body"><?=esc(request()->getPost("body"))?></textarea>
                             <?=err($errors->getError("body"))?>
-                            <div class="text-muted mt-1"><small>問い合わせ内容の詳細を入力してください。サポートスタッフのメンバーができるだけ早く対応いたします。</small></div>
+                            <div class="text-muted mt-1"><small>問い合わせ内容の詳細を入力してください。サポートスタッフのメンバーができるだけ早く対応いたします。<br>文章内にパスワード情報などは記載しないようお願いいたします。</small></div>
                         </div>
                         <div class="form-group">
                             <label>添付ファイル&nbsp;<span class="badge badge-light font-weight-normal">任意</span></label>
